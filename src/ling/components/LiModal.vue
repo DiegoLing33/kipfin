@@ -3,10 +3,10 @@
         <div class="ui-modal-frame">
             <transition name="bounce">
                 <div :class="(`ui-modal ${size}`)" v-if="showModal">
+                    <button @click="close" class="ui-reset" type="button">
+                        <b-icon-x/>
+                    </button>
                     <b-overlay :show="busy">
-                        <button @click="close" class="ui-reset" type="button">
-                            <b-icon-x/>
-                        </button>
                         <div class="ui-title">
                             {{title}}
                             <slot name="title"></slot>
