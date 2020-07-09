@@ -23,6 +23,9 @@ export interface AppPluginApp {
     fieldFormatter: typeof FieldFormatter;
 
     textFormatter: typeof TextFormatter;
+
+    modalShow(ctx: any, name: string): void;
+    modalClose(ctx: any, name: string): void;
 }
 
 declare module 'vue/types/vue' {
@@ -52,6 +55,12 @@ export default function AppPlugin(vue: any): void {
             const code = (s.substr(0, 1) === '7') ? '+7' : "7";
             return code + " (" + s.substr(1, 3) + ") "
                 + s.substr(4, 3) + " " + s.substr(7, 2) + "-" + s.substr(9, 2);
+        },
+        modalShow(ctx: any, name: string){
+          ctx.$refs[name].show();
+        },
+        modalClose(ctx: any, name: string){
+          ctx.$refs[name].close();
         },
 
         fieldTester: FieldTester,
