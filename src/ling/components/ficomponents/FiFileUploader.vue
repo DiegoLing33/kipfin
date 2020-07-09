@@ -61,6 +61,7 @@
                 this.iconAnimation = "";
                 this.disableField = false;
                 this.currentState = 'editing';
+                this.$emit('file', this.model);
             }
         }
     }

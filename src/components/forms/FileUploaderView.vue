@@ -1,10 +1,15 @@
 <template>
     <div>
-        <li-modal ref="modal" :visible="modal" title="Загрузка файлов">
+        <li-modal ref="modal" title="Загрузка файлов">
+
             <select-field :no-state="true" @change="onTypeChanged" :props="selectionField"></select-field>
-            <file-field :disabled="disableUploading" :no-state="true" @change="onFilesChanged" class="mt-2" :props="fileField"></file-field>
+            <file-field :disabled="disableUploading" :no-state="true" @change="onFilesChanged" class="mt-2"
+                        :props="fileField"></file-field>
             <template v-slot:footer>
-                <b-button block :disabled="!ready" variant="primary" @click="send">Загрузить выбранные файлы</b-button>
+                <b-overlay :show="busy">
+                    <b-button block :disabled="!ready" variant="primary" @click="send">Загрузить выбранные файлы
+                    </b-button>
+                </b-overlay>
             </template>
         </li-modal>
         <b-button @click="$refs['modal'].show()" variant="primary">
@@ -31,7 +36,6 @@
         private busy = false;
         private ready = false;
         private disableUploading = true;
-        private modal = false;
 
         private selectionField: SelectFieldProps = {
             type: FieldType.SELECT,
@@ -62,7 +66,7 @@
 
         private onTypeChanged(type: string) {
             this.selectedType = type;
-            this.disableUploading = type === '';
+            this.disableUploading = (type === '');
             this.testLoader();
         }
 
@@ -81,7 +85,8 @@
                 this.busy = true;
                 await this.$transaction(this, async () => {
                     await API.files.upload(this.selectedFiles, this.selectedType, this.selectedType === "passport");
-                    window.location.reload();
+                    this.$emit("updated");
+                    (this.$refs['modal'] as any).close();
                 });
                 this.busy = false;
             } else {

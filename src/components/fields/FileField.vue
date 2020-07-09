@@ -5,10 +5,11 @@
             <b-input-group
                     :prepend="props.prepend">
                 <b-form-file
+                        :disabled="disabled"
                         :browse-text="props.multiply ? 'Выбрать файлы' : 'Выбрать файл'"
                         :id="(`input-${props.name}`)"
                         v-model="fieldValue"
-                        :state="fieldState === null ? null : fieldState === true"
+                        :state="noState ? null : (fieldState === null ? null : fieldState === true)"
                         :aria-describedby="(`input-${props.name}-help input-${props.name}-feedback`)"
                         :placeholder="props.placeholder"
                         :accept="props.accept"
@@ -21,7 +22,7 @@
             </b-input-group>
 
             <!-- This will only be shown if the preceding input has an invalid state -->
-            <div class="text-danger" v-if="fieldState !== true" :id="(`input-${props.name}-feedback`)">
+            <div class="text-danger" v-if="fieldState !== true && !noState" :id="(`input-${props.name}-feedback`)">
                 <small>{{this.fieldState}}</small>
             </div>
 
@@ -43,6 +44,9 @@
     @Component
     export default class FileField extends Vue {
         @Prop({required: true}) props!: FileFieldProps;
+        @Prop({required: false, default: false}) noState!: boolean;
+        @Prop({required: false, default: false}) disabled!: boolean;
+
         private fieldValue: Blob[] | null = null;
         private busy = false;
 

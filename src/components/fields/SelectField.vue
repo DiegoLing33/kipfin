@@ -9,7 +9,7 @@
                         v-model="fieldValue"
                         :options="props.options"
                         :type="props.inputType || 'text'"
-                        :state="fieldState === null ? null : fieldState === true"
+                        :state="noState ? null : (fieldState === null ? null : fieldState === true)"
                         :aria-describedby="(`input-${props.name}-help input-${props.name}-feedback`)"
                         :placeholder="props.placeholder"
                         :formatter="props.formatter || ((a) => a)"
@@ -23,7 +23,7 @@
             </b-input-group>
 
             <!-- This will only be shown if the preceding input has an invalid state -->
-            <div class="text-danger" v-if="fieldState !== true" :id="(`input-${props.name}-feedback`)">
+            <div class="text-danger" v-if="fieldState !== true && !noState" :id="(`input-${props.name}-feedback`)">
                 <small>{{this.fieldState}}</small>
             </div>
 
@@ -45,6 +45,8 @@
     @Component
     export default class SelectField extends Vue {
         @Prop({required: true}) props!: SelectFieldProps;
+        @Prop({required: false, default: false}) noState!: boolean;
+
         private fieldValue = "";
         private busy       = false;
 

@@ -7,7 +7,7 @@
             <file-field @change="onFilesChanged2" class="mt-2" :props="fileField2"></file-field>
         </b-modal>
         <b-button v-b-modal:file-load squared variant="info" block>
-            <b-icon-plus-circle/>
+            <b-icon-plus-circle class="float-left"/>
             Добавить файлы
         </b-button>
     </div>

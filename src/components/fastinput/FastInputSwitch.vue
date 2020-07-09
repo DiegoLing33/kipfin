@@ -9,6 +9,9 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
 
+    /**
+     * @todo Get rid of it
+     */
     @Component
     export default class FastInputSwitch extends Vue {
         @Prop({required: true}) pre!: boolean;
