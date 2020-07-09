@@ -1211,6 +1211,13 @@
   resolved "https://registry.npm.taobao.org/@types/strip-json-comments/download/@types/strip-json-comments-0.0.30.tgz#9aa30c04db212a9a0649d6ae6fd50accc40748a1"
   integrity sha1-mqMMBNshKpoGSdaub9UKzMQHSKE=
 
+"@types/vue-cropperjs@^4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@types/vue-cropperjs/-/vue-cropperjs-4.1.0.tgz#686239b0af31be4fa0f419c8e471a9a516bcf68b"
+  integrity sha512-1CRpWlLxWancUIleJEQMzSznxkJviesg2XeSpGB7T940Qsv7IMLf/H6tMDhxAD0OTeC+LDkCJvVKVvg7iTUnhw==
+  dependencies:
+    vue ">=2.0.0"
+
 "@types/webpack-env@^1.15.2":
   version "1.15.2"
   resolved "https://registry.npm.taobao.org/@types/webpack-env/download/@types/webpack-env-1.15.2.tgz#927997342bb9f4a5185a86e6579a0a18afc33b0a"
@@ -2836,6 +2843,11 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
+classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha512-JR/iSQOSt+LQIWwrwEzJ9uk0xfN3mTVYMwt1Ir5mUcSN6pU+V4zQFFaJsclJbPuAUQH+yfWef6tm7l1quW3C8Q==
+
 clean-css@4.2.x:
   version "4.2.3"
   resolved "https://registry.npm.taobao.org/clean-css/download/clean-css-4.2.3.tgz#507b5de7d97b48ee53d84adb0160ff6216380f78"
@@ -3251,6 +3263,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+cropperjs@^1.5.6:
+  version "1.5.7"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.5.7.tgz#b65019725bae1c6285e881fb661b2141fa57025b"
+  integrity sha512-sGj+G/ofKh+f6A4BtXLJwtcKJgMUsXYVUubfTo9grERiDGXncttefmue/fyQFvn8wfdyoD1KhDRYLfjkJFl0yw==
+
 cross-spawn@^3.0.0:
   version "3.0.1"
   resolved "https://registry.npm.taobao.org/cross-spawn/download/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
@@ -3534,6 +3551,11 @@ de-indent@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/de-indent/download/de-indent-1.0.2.tgz#b2038e846dc33baa5796128d0804b455b8c1e21d"
   integrity sha1-sgOOhG3DO6pXlhKNCAS0VbjB4h0=
+
+debounce@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
+  integrity sha512-mYtLl1xfZLi1m4RtQYlZgJUNQjl4ZxVnHzIR8nLLgi4q1YT8o/WM+MK/f8yfcc9s5Ir5zRaPZyZU6xs1Syoocg==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8:
   version "2.6.9"
@@ -3844,6 +3866,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     inherits "^2.0.1"
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
+
+easy-bem@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/easy-bem/-/easy-bem-1.0.2.tgz#3f759158c045465744900aa26ba8bd7d88d7a969"
+  integrity sha512-tHtLDhcEHZIMKdiiZElQoR8TcZ/6rvcNp7//93Vx/mqNLah9BOFGhhzTUfWLJs7uxZiKMdP/KzGOtzq14DrrqQ==
 
 easy-stack@^1.0.0:
   version "1.0.0"
@@ -10291,6 +10318,15 @@ vm-browserify@^1.0.1:
   resolved "https://registry.npm.taobao.org/vm-browserify/download/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha1-eGQcSIuObKkadfUR56OzKobl3aA=
 
+vue-advanced-cropper@^0.16.7:
+  version "0.16.7"
+  resolved "https://registry.yarnpkg.com/vue-advanced-cropper/-/vue-advanced-cropper-0.16.7.tgz#ea959bd260c04b1f1491158de1d02c5c7f53767d"
+  integrity sha512-YQCvQg4EVXHUrvdSWdrJ2xL5OC8FNH8nofu5sDaDwcAlvpi6DDs7AXzxkh/f7AHOkBc6Lro4qw5bii1yjcpNww==
+  dependencies:
+    classnames "^2.2.6"
+    debounce "^1.2.0"
+    easy-bem "^1.0.2"
+
 vue-class-component@^7.1.0, vue-class-component@^7.2.3:
   version "7.2.3"
   resolved "https://registry.npm.taobao.org/vue-class-component/download/vue-class-component-7.2.3.tgz#a5b1abd53513a72ad51098752e2dedd499807cca"
@@ -10309,6 +10345,13 @@ vue-cookies-ts@^1.5.19:
   integrity sha512-vG9NOoB1okEwCP6PrlpJWfhizRbbOCqcQHuHBr2jnc44cdUEAWS00byDrmRSAEZyzxapL4Vl8fzjoO7ponttUg==
   dependencies:
     cookies-ts "^1.0.4"
+
+vue-cropperjs@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/vue-cropperjs/-/vue-cropperjs-4.1.0.tgz#f52b944611e689fd5f0c59bab0b30fe64de1b58e"
+  integrity sha512-ORQTaxsygsFvz21Hyf5yNUwQXGRdLXYF4964ueLjR+VpKjHkoqV67oDT3gLCHyrq5HRKmwJPShUiHzdhIo3JTQ==
+  dependencies:
+    cropperjs "^1.5.6"
 
 vue-eslint-parser@^7.0.0:
   version "7.1.0"
@@ -10392,7 +10435,7 @@ vue-template-es2015-compiler@^1.6.0, vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha1-HuO8mhbsv1EYvjNLsV+cRvgvWCU=
 
-vue@^2.6.11:
+vue@>=2.0.0, vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==

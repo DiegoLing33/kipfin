@@ -19,9 +19,11 @@
     "jszip-utils": "^0.1.0",
     "register-service-worker": "^1.7.1",
     "vue": "^2.6.11",
+    "vue-advanced-cropper": "^0.16.7",
     "vue-class-component": "^7.2.3",
     "vue-cookie": "^1.1.4",
     "vue-cookies-ts": "^1.5.19",
+    "vue-cropperjs": "^4.1.0",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
@@ -30,6 +32,7 @@
   "devDependencies": {
     "@types/bootstrap": "^4.5.0",
     "@types/jest": "^24.0.19",
+    "@types/vue-cropperjs": "^4.1.0",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.4.0",
@@ -62,7 +65,9 @@
     "parserOptions": {
       "ecmaVersion": 2020
     },
-    "rules": {},
+    "rules": {
+      "camelcase": "off"
+    },
     "overrides": [
       {
         "files": [
