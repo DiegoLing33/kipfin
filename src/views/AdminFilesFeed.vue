@@ -3,9 +3,10 @@
             title="Лента файлов"
             description="Информация о загрузке файлов абитуриентами"
     >
-        <user-documents-view
-                :go-user-by-click="true"
-                :show-tips="false" :source="source"></user-documents-view>
+        <documents-grid-view
+            :documents="source"
+            :go-user-by-click="true"
+        />
     </user-content>
 </template>
 
@@ -13,16 +14,15 @@
     import {Component, Vue} from "vue-property-decorator";
     import API from "@/api/API";
     import StoreLoader from "@/client/StoreLoader";
-    import UserDocumentsView from "@/components/UserDocumentsView.vue";
-    import PSPUtils from "@/utils/PSPUtils";
-    import {Dict} from "@/app/types";
     import UserContent from "@/components/theme/UserContent.vue";
+    import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
+    import KFDocument from "@/client/KFDocument";
 
     @Component({
-        components: {UserContent, UserDocumentsView}
+        components: {DocumentsGridView, UserContent}
     })
     export default class AdminFilesFeed extends Vue {
-        private source: Dict<any> = {};
+        private source: KFDocument[] = [];
 
         mounted() {
             StoreLoader.wait(this.$store, () => {
@@ -38,7 +38,7 @@
                 const list2 = (await API.request("files.listByType", {
                     type: 'notify'
                 })).list;
-                this.source = PSPUtils.groupItems([...list, ...list2]);
+                this.source = KFDocument.fromList([...list, ...list2]);
             });
         }
     }
