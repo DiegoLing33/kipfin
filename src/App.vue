@@ -1,0 +1,75 @@
+<template>
+    <div id="app">
+        <navigation-bar id="navigation-bar"></navigation-bar>
+        <wrapper-container :menu="menu">
+            <router-view/>
+        </wrapper-container>
+    </div>
+</template>
+
+<script lang="ts">
+
+    import {Component, Vue} from "vue-property-decorator";
+    import NavigationBar from "@/components/navigation/NavigationBar.vue";
+    import WrapperContainer from "@/components/theme/WrapperContainer.vue";
+
+    @Component({
+        components: {WrapperContainer, NavigationBar}
+    })
+    export default class App extends Vue {
+
+        async mounted() {
+            const cht = this.$cookies.get("token") as string | undefined;
+            if (cht) this.$store.commit("setCurrentUser", cht);
+        }
+
+        get menu(){
+            const menuItems = [
+                {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
+                {title: "Мои документы", icon: 'files', url: "/user/documents"},
+            ];
+            if(this.$store.getters.isAdmin)
+                return [...menuItems, ...[
+                    {nav: "Прием"},
+                    {title: "Панель управления", icon: "house", url: "/admin"},
+                    {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},
+                    {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
+                    {title: "Чат с приемной комиссией", icon: "chat", url: "/admin/chats"},
+                    {title: "Активность", icon: "clock-history", url: "/admin/fire"},
+                ]];
+            else
+                return [...menuItems, ...[
+                    {nav: "Анкета"},
+                    {title: "Законные представители", icon: "people-fill", url: "/user/parents"},
+                    {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
+                    {title: "Чат с приемной комиссией", icon: "chat", url: "/user/chat"},
+                ]]
+        }
+
+    }
+</script>
+
+<style lang="scss">
+    body {
+        background-color: #e7e7e7 !important;
+    }
+
+    #app {
+        font-family: PT-Sans, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        color: #2c3e50;
+    }
+
+    .bg {
+        background: url("https://abitur.bsu.edu.ru/upload/iblock/e19/1111IMG_6047.jpg") no-repeat;
+        background-size: cover;
+        opacity: 0.2;
+        position: fixed;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+</style>

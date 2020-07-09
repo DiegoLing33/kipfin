@@ -1,0 +1,75 @@
+$blue-color: #256569;
+
+html, body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif !important;
+}
+
+
+.nav-tabs .nav-item a {
+  color: #495057;
+  border: none;
+  background-color: transparent;
+  transition: all 0.2s;
+  padding-bottom: 8px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+
+  &.active, &.active:hover {
+    background-color: transparent !important;
+    border-bottom: 2px solid lighten($blue-color, 20);
+    padding-bottom: 6px;
+  }
+
+  &:hover {
+    background-color: lighten($blue-color, 65) !important;
+    border: none;
+  }
+}
+
+//.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link,
+//.nav-tabs > .active > a, .nav-tabs > .active > a:hover,
+//.nav-tabs .nav-link:hover, .nav-tabs .nav-item.show .nav-link:hover{
+//border-bottom: 2px solid lighten($blue-color, 20);
+//  &:hover{
+//
+//    border-bottom: 2px solid lighten($blue-color, 40);
+//  }
+//}
+
+html * {
+  outline: 0 !important;
+}
+
+.btn {
+  &.control {
+    background-color: white;
+    border-color: white;
+    color: #333333;
+    transition: all 0.2s;
+
+    &:hover {
+      background-color: #676767;
+      border-color: #676767;
+      color: white;
+    }
+  }
+}
+
+.sub-active{
+  text-decoration: none !important;
+  background-color: rgba($blue-color, 0.2) !important;
+}
+
+.sub-nav {
+  padding: 10px 0;
+  background-color: transparent;
+  transition: all 0.3s;
+  border-radius: 4px;
+
+  &:hover {
+    text-decoration: none !important;
+    background-color: $blue-color !important;
+    color: #f1f1f1;
+  }
+}

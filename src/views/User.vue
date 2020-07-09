@@ -1,0 +1,275 @@
+<template>
+    <user-content
+            v-if="user.raw.ok"
+    >
+        <template v-slot:header>
+            <user-avatar-box :large="true" :image-first="true" :user="user"></user-avatar-box>
+            <div class="mt-3">
+                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
+                    <b-icon-gear-fill /> Настройки
+                </b-button>
+                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
+                    <b-icon-chat /> Сообщения
+                </b-button>
+<!--                <b-button v-if="!isItMe" class="control mr-2" @click="$router.push('/user/chat')">-->
+<!--                    <b-icon-chat-dots /> Написать сообщение-->
+<!--                </b-button>-->
+            </div>
+        </template>
+        <b-tabs content-class="mt-3" justified>
+            <b-tab title="Информация" active>
+                <profile-information-section :user="user" :callback="onSave" />
+            </b-tab>
+            <b-tab title="Образование">
+                <profile-education-section :user="user"  :callback="onSave"/>
+            </b-tab>
+            <b-tab title="Специальность">
+                <profile-specialization-section :user="user"  :callback="onSpecializationChange" />
+            </b-tab>
+        </b-tabs>
+        <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
+        <profile-progress-view v-if="!$store.getters.isAdmin" :user="user"/>
+        <b-card class="mt-3 mb-3 ">
+            <template v-slot:header>
+                Состояние абитуриента: {{$app.studentStatus.text[user.raw.studentStatus]}}
+            </template>
+            <b-button
+                    class="mb-3"
+                    v-if="user.raw.studentStatus === '0' || user.raw.studentStatus === '200'"
+                    @click="sendTest" variant="success" block>Отправить анкету на обработку
+            </b-button>
+            <user-comments-by-admission :user="user"/>
+        </b-card>
+
+        <b-card title="Дополнительно" class="mb-3">
+            <fast-input-switch :callback="(function(v){return this.onSave('motherCapital', v ? 1: 0)}.bind(this))"
+                               :pre="user.raw.motherCapital === '1'">
+                Материнский капитал
+            </fast-input-switch>
+            <div class="text-muted small mt-1">
+                <b>Когда я смогу отправить уведомление?</b> - сначала Ваша анкета будет находиться в обработке. После
+                успешного прохождения
+                данного этапа анкета перейдет в состояние "Выгрузка данных". Наши специалисты перенсут Ваши данные в
+                Финансовый университет и загрузят в Ваш кабинет
+                два файла - <b>заявление</b> и <b>уведомление</b>.
+               </div>
+        </b-card>
+
+        <div v-if="$store.getters.isAdmin">
+            <b-card title="Файлы" class="mb-3">
+                <user-documents-view :show-tips="false" @updated="this.update" :source="userFiles"></user-documents-view>
+            </b-card>
+            <b-card title="Законные представители" class="mb-3">
+                <user-parents :parents="parents"></user-parents>
+            </b-card>
+            <b-card title="Паспортные данные" class="mb-3">
+                <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item">
+                </passport-view>
+            </b-card>
+        </div>
+        <admin-helper
+                :on-rule-set="onRuleSet"
+                :on-send-set="onSendSet"
+                :set-student-status="setStudentStatus"
+                ref="adminHelper" :user="user" v-if="$store.getters.isAdmin" />
+    </user-content>
+</template>
+
+<script lang="ts">
+    import {Component, Vue, Watch} from "vue-property-decorator";
+    import API from "@/api/API";
+    import KFUser from "@/client/KFUser";
+    import StoreLoader from "@/client/StoreLoader";
+    import UserContainer from "@/views/UserContainer.vue";
+    import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
+    import ProfileProgressView from "@/components/ProfileProgressView.vue";
+    import UserCommentsByAdmission from "@/components/UserCommentsByAdmission.vue";
+    import UserDocumentsView from "@/components/UserDocumentsView.vue";
+    import {Dict} from "@/app/types";
+    import {APIFileResult} from "@/api/APIFiles";
+    import PSPUtils from "@/utils/PSPUtils";
+    import UserParents from "@/views/Profile/UserParents.vue";
+    import PassportView from "@/components/PassportView.vue";
+    import AdmissionActionsUserView from "@/components/AdmissionActionsUserView.vue";
+    import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
+    import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
+    import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
+    import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
+    import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
+    import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
+    import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
+    import UserContent from "@/components/theme/UserContent.vue";
+    import AdminHelper from "@/components/AdminHelper.vue";
+    import LiModal from "@/ling/components/LiModal.vue";
+    import OneSUser from "@/views/OneSUser.vue";
+
+    @Component({
+        components: {
+            OneSUser,
+            LiModal,
+            AdminHelper,
+            UserContent,
+            ProfileSpecializationSection,
+            ProfileEducationSection,
+            ProfileInformationSection,
+            FiSelect,
+            UserAvatarBox,
+            UserStatusToolbox,
+            FileUploaderAdminView,
+            AdmissionActionsUserView,
+            PassportView,
+            UserParents,
+            UserDocumentsView,
+            UserCommentsByAdmission,
+            ProfileProgressView,
+            FastInputSwitch, UserContainer,
+        }
+    })
+    export default class UserView extends Vue {
+
+        private user: KFUser = KFUser.createZeroUser();
+        private userFiles: Dict<APIFileResult[]> = {};
+        private parents: unknown[] = [];
+        private psp: unknown[] = [];
+
+        async mounted() {
+            StoreLoader.wait(this.$store, () => {
+                this.update();
+            });
+        }
+
+        private showOneSModel(){
+            (this.$refs['adminHelper'] as any).hide();
+            (this.$refs['oneSModel'] as any).show();
+        }
+
+        private async update() {
+            if (this.$route.params.id) {
+                this.user = new KFUser(await API.users.get(this.$route.params.id));
+            } else {
+                await this.$store.commit("setCurrentUser", false);
+                this.user = this.$store.state.currentUser;
+            }
+            if (this.$store.getters.isAdmin) {
+                await this.user.updateFiles();
+                await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
+                this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
+                this.userFiles = PSPUtils.groupItems(this.user.getFiles());
+                this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
+            }
+        }
+
+        private onSave(field: string, value: unknown) {
+            return new Promise(resolve => {
+                API.mission.setField(field, value, this.user.userId, this.$store.getters.isAdmin)
+                    .then(async () => {
+                        resolve(true);
+                        await this.update();
+                        this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
+                    })
+                    .catch(reason => {
+                        this.$bvToast.toast(reason, {title: "Ошибка"});
+                        resolve(false);
+                    });
+            });
+        }
+
+        private onSpecializationChange(field: string, value: string) {
+            return new Promise(resolve => {
+                const method = field === "facultyId" ? "mission.setSpecialization" : "mission.setBase";
+                const args: Dict<unknown> = field === "facultyId" ? {specialization: value} : {base: value};
+                if (this.$store.getters.isAdmin) args["userId"] = this.user.userId;
+                API.request(method, args).then(async () => {
+                    resolve(true);
+                    this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
+                    if (field === 'facultyId') window.location.reload();
+                    else await this.update();
+                }).catch(reason => {
+                    this.$bvToast.toast(reason, {title: "Ошибка!"});
+                    resolve(false);
+                });
+            });
+        }
+
+
+        @Watch("$route")
+        onRoute(){
+            window.location.reload();
+        }
+
+        protected get isItMe(){
+            return this.user.userId === this.$store.state.currentUser.userId;
+        }
+
+        private onRuleSet(rule: string) {
+            return (value: string) => {
+                value = value ? '1' : '0';
+                return new Promise(resolve => {
+                    API.mission.setFieldAdmin(rule, value, this.user.userId)
+                        .then(async () => {
+                            resolve(true);
+                            await this.update();
+                            this.$bvToast.toast("Разрешение [" + rule + "] изменено!", {title: "Успех"});
+                            window.location.reload();
+                        }).catch(reason => {
+                        this.$bvToast.toast(reason, {title: "Ошибка!"});
+                        resolve(false);
+                    });
+                });
+            };
+        }
+
+        private onSendSet() {
+            return new Promise(resolve => {
+                let val = this.$store.state.currentUser.userId;
+                if (this.user.raw['worked'] !== '0') val = 0;
+
+                API.mission.setFieldAdmin("worked", val, this.user.userId)
+                    .then(async () => {
+                        resolve(true);
+                        await this.update();
+                    }).catch(reason => {
+                    this.$bvToast.toast(reason, {title: "Ошибка!"});
+                    resolve(false);
+                });
+            });
+        }
+
+        sendTest() {
+            this.$transaction(this, async () => {
+                await API.request("mission.sendTest");
+                window.location.reload();
+            });
+        }
+
+        makeReserve() {
+            this.$transaction(this, async () => {
+                const res = await this.user.createReserve('1');
+                if (res.ok) window.location.reload();
+            });
+        }
+
+        makeNoReserve() {
+            this.$transaction(this, async () => {
+                const res = await this.user.createReserve('0');
+                if (res.ok) window.location.reload();
+            });
+        }
+
+        setStudentStatus(status: string) {
+            return new Promise(resolve => {
+                API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
+                    .then(() => {
+                        resolve(true);
+                        window.location.reload();
+                    }).catch(reason => {
+                    this.$bvToast.toast(reason, {title: "Ошибка"});
+                    resolve(false);
+                })
+            });
+        }
+    }
+</script>
+
+<style scoped>
+</style>
