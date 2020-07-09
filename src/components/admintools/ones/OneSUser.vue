@@ -59,7 +59,8 @@
                     <copy-field label="ТЕЛ НОМР:" class="mb-1" :value="phpts(parent.phone)[2]"></copy-field>
                     <copy-field label="Почта:" class="mb-1" :value="parent.mail"></copy-field>
                     <copy-field label="Место работы:" class="mb-1" :value="parent.work"></copy-field>
-                    <b-button class=" mt-3" block @click="downloadAgreeAndNotify">Скачать заявление и уведомление</b-button>
+                    <b-button class=" mt-3" block @click="downloadAgreeAndNotify">Скачать заявление и уведомление
+                    </b-button>
                 </div>
             </div>
         </div>
@@ -71,25 +72,14 @@
     import KFUser from "@/client/KFUser";
     import API from "@/api/API";
     import StoreLoader from "@/client/StoreLoader";
-    import CopyField from "@/components/CopyField.vue";
+    import CopyField from "@/components/admintools/ones/CopyField.vue";
     import {Dict} from "@/app/types";
     import {APIFileResult} from "@/api/APIFiles";
     import Zipper from "@/ling/utils/Zipper";
     import FileIO from "@/ling/utils/FileIO";
-    import UserDocumentsView from "@/components/UserDocumentsView.vue";
-    import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
     import PSPUtils from "@/utils/PSPUtils";
-    import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
-    import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
-    import UserContent from "@/components/theme/UserContent.vue";
 
-    @Component({
-        components: {
-            UserContent,
-            FiSelect,
-            UserStatusToolbox, FileUploaderAdminView, UserDocumentsView, CopyField
-        }
-    })
+    @Component({components: {CopyField}})
     export default class OneSUser extends Vue {
         @Prop({required: true}) user!: KFUser;
         private userFiles: APIFileResult[] = [];

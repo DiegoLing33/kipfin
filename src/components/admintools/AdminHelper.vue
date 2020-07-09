@@ -6,7 +6,7 @@
                 <div class="helper-scroll">
                     <b-button squared
                               variant="primary" block v-b-toggle:calc>
-                        <b-icon-app-indicator />
+                        <b-icon-app-indicator class="float-left" />
                         Калькулятор среднего балла
                     </b-button>
                     <b-collapse accordion="help-accordion" id="calc">
@@ -47,7 +47,7 @@
                         </b-table-simple>
                     </b-collapse>
                     <b-button variant="primary" squared block v-b-toggle:oneS>
-                        <b-icon-arrow-down-up />
+                        <b-icon-arrow-down-up class="float-left" />
                         1С Трансфер</b-button>
                     <b-collapse accordion="help-accordion" id="oneS">
                         <b-card style="border-radius: 0">
@@ -55,7 +55,7 @@
                         </b-card>
                     </b-collapse>
                     <b-button variant="primary" squared block v-b-toggle:proc>
-                        <b-icon-tools />
+                        <b-icon-tools class="float-left" />
                         Обработка</b-button>
                     <b-collapse accordion="help-accordion" id="proc">
                         <b-card style="border-radius: 0">
@@ -68,7 +68,7 @@
                         </b-card>
                     </b-collapse>
                     <b-button variant="primary" squared block v-b-toggle:allows>
-                        <b-icon-shield-fill />
+                        <b-icon-shield-fill class="float-left" />
                         Разрешения</b-button>
                     <b-collapse accordion="help-accordion" id="allows">
                         <b-card style="border-radius: 0">
@@ -87,7 +87,7 @@
                     </b-collapse>
 
                     <b-button variant="info" squared @click="printCard" block>
-                        <b-icon-card-image />
+                        <b-icon-card-image class="float-left" />
                         Карточка абитуриента
                     </b-button>
                     <file-uploader-admin-view :user="user"/>
@@ -114,7 +114,7 @@
     import {Component, Prop, Vue} from "vue-property-decorator";
     import {IntDict} from "@/app/types";
     import KFUser from "@/client/KFUser";
-    import OneSUser from "@/views/OneSUser.vue";
+    import OneSUser from "@/components/admintools/ones/OneSUser.vue";
     import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
     import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
