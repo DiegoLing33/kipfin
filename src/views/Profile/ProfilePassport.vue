@@ -42,7 +42,7 @@
     import RadioField from "@/components/fields/RadioField.vue";
     import {SelectFieldProps} from "@/components/fields/SelectFieldI";
     import {Dict} from "@/app/types";
-    import PassportView from "@/components/PassportView.vue";
+    import PassportView from "@/components/profile/PassportView.vue";
     import StoreLoader from "@/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
 

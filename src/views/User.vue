@@ -11,9 +11,6 @@
                 <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
                     <b-icon-chat /> Сообщения
                 </b-button>
-<!--                <b-button v-if="!isItMe" class="control mr-2" @click="$router.push('/user/chat')">-->
-<!--                    <b-icon-chat-dots /> Написать сообщение-->
-<!--                </b-button>-->
             </div>
         </template>
         <b-tabs content-class="mt-3" justified>
@@ -57,7 +54,7 @@
 
         <div v-if="$store.getters.isAdmin">
             <b-card title="Файлы" class="mb-3">
-                <user-documents-view :show-tips="false" @updated="this.update" :source="userFiles"></user-documents-view>
+                <documents-grid-view @updated="update" :documents="documents"/>
             </b-card>
             <b-card title="Законные представители" class="mb-3">
                 <user-parents :parents="parents"></user-parents>
@@ -80,17 +77,15 @@
     import API from "@/api/API";
     import KFUser from "@/client/KFUser";
     import StoreLoader from "@/client/StoreLoader";
-    import UserContainer from "@/views/UserContainer.vue";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
-    import ProfileProgressView from "@/components/ProfileProgressView.vue";
-    import UserCommentsByAdmission from "@/components/UserCommentsByAdmission.vue";
-    import UserDocumentsView from "@/components/UserDocumentsView.vue";
+    import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
+    import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
     import {Dict} from "@/app/types";
     import {APIFileResult} from "@/api/APIFiles";
     import PSPUtils from "@/utils/PSPUtils";
     import UserParents from "@/views/Profile/UserParents.vue";
-    import PassportView from "@/components/PassportView.vue";
-    import AdmissionActionsUserView from "@/components/AdmissionActionsUserView.vue";
+    import PassportView from "@/components/profile/PassportView.vue";
+    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
     import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
     import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
@@ -99,12 +94,15 @@
     import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
     import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
     import UserContent from "@/components/theme/UserContent.vue";
-    import AdminHelper from "@/components/AdminHelper.vue";
+    import AdminHelper from "@/components/admintools/AdminHelper.vue";
     import LiModal from "@/ling/components/LiModal.vue";
-    import OneSUser from "@/views/OneSUser.vue";
+    import OneSUser from "@/components/admintools/ones/OneSUser.vue";
+    import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
+    import KFDocument from "@/client/KFDocument";
 
     @Component({
         components: {
+            DocumentsGridView,
             OneSUser,
             LiModal,
             AdminHelper,
@@ -119,14 +117,14 @@
             AdmissionActionsUserView,
             PassportView,
             UserParents,
-            UserDocumentsView,
             UserCommentsByAdmission,
             ProfileProgressView,
-            FastInputSwitch, UserContainer,
+            FastInputSwitch,
         }
     })
     export default class UserView extends Vue {
 
+        private documents: KFDocument[] = [];
         private user: KFUser = KFUser.createZeroUser();
         private userFiles: Dict<APIFileResult[]> = {};
         private parents: unknown[] = [];
@@ -155,6 +153,7 @@
                 await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
                 this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
                 this.userFiles = PSPUtils.groupItems(this.user.getFiles());
+                this.documents = KFDocument.fromList(this.user.getFiles() as any);
                 this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
             }
         }

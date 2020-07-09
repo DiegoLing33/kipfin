@@ -22,12 +22,10 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import HomeCarousel from "@/components/home/HomeCarousel.vue";
-    import HomeHowToItem from "@/components/home/HomeHowToItem.vue";
     import TextField from "@/components/fields/TextField.vue";
 
     @Component({
-        components: {TextField, HomeHowToItem, HomeCarousel}
+        components: {TextField}
     })
     export default class Home extends Vue {
 
