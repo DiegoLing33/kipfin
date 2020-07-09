@@ -1,20 +1,22 @@
 <template>
-    <div v-if="visibility" class="ui-modal-bg" @click="onClickBackground">
+    <div v-if="visibility" :class="(`ui-modal-bg`)" @click="onClickBackground">
         <div class="ui-modal-frame">
             <transition name="bounce">
-                <div class="ui-modal" :style="style" v-if="showModal">
-                    <button @click="close" class="ui-reset" type="button">
-                        <b-icon-x/>
-                    </button>
-                    <div class="ui-title">
-                        {{title}}
-                        <slot name="title"></slot>
-                    </div>
-                    <div class="my-4 w-100">
-                        <slot></slot>
-                    </div>
-                    <b-button v-if="closeButton" @click="close">Понятно</b-button>
-                    <slot name="footer"></slot>
+                <div :class="(`ui-modal ${size}`)" v-if="showModal">
+                    <b-overlay :show="busy">
+                        <button @click="close" class="ui-reset" type="button">
+                            <b-icon-x/>
+                        </button>
+                        <div class="ui-title">
+                            {{title}}
+                            <slot name="title"></slot>
+                        </div>
+                        <div class="modal-body my-4 w-100">
+                            <slot></slot>
+                        </div>
+                        <b-button v-if="closeButton" @click="close">Понятно</b-button>
+                        <slot name="footer"></slot>
+                    </b-overlay>
                 </div>
             </transition>
         </div>
@@ -22,7 +24,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+    import {Component, Prop, Vue} from "vue-property-decorator";
 
     /**
      *  The LiModal component.
@@ -32,39 +34,32 @@
     @Component
     export default class LiModal extends Vue {
         @Prop({required: false, default: ''}) title!: string;
-        @Prop({required: false, default: false}) visible!: boolean;
         @Prop({default: "md"}) size!: string;
         @Prop({default: false}) closeButton!: boolean;
+        @Prop({default: false}) busy!: boolean;
 
-        private visibility = this.visible;
+        private visibility = false;
         private showModal = false;
-
-        get style() {
-            // if (this.size === 'lg') return {width: "890px", maxWidth: "95%"};
-            return {};
-        }
-
-        @Watch("visible")
-        private onVisibleChange() {
-            this.visibility = !this.visibility;
-        }
 
         public show() {
             this.visibility = true;
             setTimeout(() => {
                 this.showModal = true;
+                (window as any).document.body.className = "modal-open";
             }, 100);
         }
 
         private onClickBackground(e: Event) {
-            console.log((e.target as any).className);
-            if ((e.target as any).className.includes('ui-modal-bg'))
-                this.close();
+            if (e.target && (e.target as any).className && (e.target as any).className.includes) {
+                if ((e.target as any).className.includes('ui-modal-bg'))
+                    this.close();
+            }
         }
 
         public close() {
             this.visibility = false;
             this.showModal = false;
+            (window as any).document.body.className = "";
         }
     }
 </script>

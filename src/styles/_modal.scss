@@ -34,6 +34,10 @@ $easing: cubic-bezier(.5, 0, .5, 1);
   }
 }
 
+.ui-modal-frame {
+  max-width: 95%;
+}
+
 .ui-modal {
   z-index: 999999;
   background-color: #fff;
@@ -46,7 +50,16 @@ $easing: cubic-bezier(.5, 0, .5, 1);
   position: relative;
   box-shadow: 0 1rem 2rem rgba(black, 0.1);
   width: 650px;
-  max-width: 95%;
+
+  &.x {
+    width: 100%;
+    min-width: 1000px;
+  }
+
+  .modal-body{
+    max-height: 800px;
+    overflow-y: scroll;
+  }
 }
 
 .ui-title {
@@ -76,7 +89,7 @@ $easing: cubic-bezier(.5, 0, .5, 1);
 }
 
 
-.ui-modal-bg{
+.ui-modal-bg {
 
   background-color: rgba(0, 0, 0, 0.81);
   z-index: 999998;
@@ -88,4 +101,8 @@ $easing: cubic-bezier(.5, 0, .5, 1);
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+body.modal-show{
+  overflow: hidden;
 }
