@@ -9,7 +9,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import AdmissionActionsUserView from "@/components/AdmissionActionsUserView.vue";
+    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
     import UserContent from "@/components/theme/UserContent.vue";
     @Component({
         components: {UserContent, AdmissionActionsUserView}
