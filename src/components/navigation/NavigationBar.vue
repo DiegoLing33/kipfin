@@ -7,8 +7,8 @@
 
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <navbar-link v-if="!$store.state.ready"  to="/">Главная</navbar-link>
-                <navbar-link v-else  to="/user">Профиль</navbar-link>
+                <navbar-link v-if="!$store.state.ready" to="/">Главная</navbar-link>
+                <navbar-link v-else to="/user">Профиль</navbar-link>
 
                 <a class="nav-link" href="http://lists4priemka.fa.ru/listabits.aspx?fl=12&tl=спо&le=СПО">Рейтинг
                     абитуриентов
@@ -64,8 +64,49 @@
     .nav-user:active {
         opacity: 0.4;
     }
-    .navigation-bg{
-        background: rgb(37,101,105);
-        background: linear-gradient(45deg, rgba(37,101,105,1) 0%, rgba(37,101,105,1) 50%, rgba(28,77,80,1) 50%);
+
+    .navigation-bg {
+        background: rgb(37, 101, 105);
+        background: linear-gradient(45deg, rgba(37, 101, 105, 1) 0%, rgba(37, 101, 105, 1) 50%, rgba(28, 77, 80, 1) 50%);
+        animation: move_line 2s ease-out forwards;
+        -webkit-animation: move_line 2s ease-out forwards;
+        -moz-animation: move_line 2s ease-out forwards;
+        background-size: 400% 400%;
+    }
+
+    @-moz-keyframes move_line {
+        0% {
+            background-position: 0% 50%;
+        }
+        80% {
+            background-position: 51% 50%;
+        }
+        100% {
+            background-position: 50% 50%;
+        }
+    }
+
+    @-webkit-keyframes move_line {
+        0% {
+            background-position: 0% 50%;
+        }
+        80% {
+            background-position: 51% 50%;
+        }
+        100% {
+            background-position: 50% 50%;
+        }
+    }
+
+    @keyframes move_line {
+        0% {
+            background-position: 0% 50%;
+        }
+        80% {
+            background-position: 51% 50%;
+        }
+        100% {
+            background-position: 50% 50%;
+        }
     }
 </style>
