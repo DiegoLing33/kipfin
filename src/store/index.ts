@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import User from "@/app/User";
 import API from "@/api/API";
 import {APIFileResult} from "@/api/APIFiles";
 import KIPD from "@/app/KIPD";

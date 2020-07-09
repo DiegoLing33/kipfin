@@ -10,12 +10,10 @@ import ProfilePassport from "@/views/Profile/ProfilePassport.vue";
 import Chat from "@/views/Chat.vue";
 import UserView from "@/views/User.vue";
 import ProfileDocuments from "@/views/Profile/ProfileDocuments.vue";
-import OneSUser from "@/views/OneSUser.vue";
 import AdminLastActions from "@/views/AdminLastActions.vue";
 import AdminFilesFeed from "@/views/AdminFilesFeed.vue";
 import CreateProfileView from "@/views/Defaults/CreateProfileView.vue";
 import LoginProfile from "@/views/Defaults/LoginProfile.vue";
-import ProfileSettingsChangePassword from "@/components/profile/ProfileSettingsChangePassword.vue";
 import ProfileSettings from "@/views/Profile/ProfileSettings.vue";
 
 Vue.use(VueRouter)
@@ -39,8 +37,6 @@ Vue.use(VueRouter)
       {path: '/user/settings', name: 'User Documents', component: ProfileSettings},
       {path: '/user', name: "User Me Page", component: UserView},
       {path: '/user/:id', name: "User Page", component: UserView},
-
-      {path: '/c/:id', name: "OneS Page", component: OneSUser},
 ];
 
 const router = new VueRouter({
