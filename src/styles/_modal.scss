@@ -1,108 +1,50 @@
-$easing: cubic-bezier(.5, 0, .5, 1);
 
-@keyframes slide-right {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: none;
+.modal-text {
+  .modal-body {
+    text-align: center;
   }
 }
 
-@keyframes icon-error {
-  from, 85%, to {
-    transform: none;
-  }
-  20%, 50% {
-    transform-origin: right center;
-    transform: translateX(-30%) scaleX(1.1);
-  }
-  35%, 65% {
-    transform-origin: left center;
-    transform: translateX(30%) scaleX(1.1);
-  }
-}
-
-@keyframes icon-bg-success {
-  from {
-    transform: scale(1);
-    opacity: .5;
-  }
-  to {
-    transform: scale(4);
-    opacity: 0;
-  }
-}
-
-.ui-modal-frame {
-  max-width: 95%;
-}
-
-.ui-modal {
-  z-index: 999999;
-  background-color: #fff;
-  padding: 20px;
+.modal-content {
   border-radius: .5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  box-shadow: 0 1rem 2rem rgba(black, 0.1);
-  width: 650px;
 
-  &.x {
-    width: 100%;
-    min-width: 1000px;
-  }
-
-  .modal-body{
-    max-height: 800px;
-    overflow-y: scroll;
-  }
-}
-
-.ui-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-
-.ui-reset {
-  appearance: none;
-  background: none;
-  border: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  padding: 1rem;
-
-  &:before {
-    color: #AAAFBD;
+  .modal-header {
+    border: none !important;
+    text-align: center;
+    justify-content: center;
+    font-size: 1.2rem;
     font-weight: bold;
-    font-size: 1.5rem;
+    padding: 0.5rem;
   }
 
-  &:focus {
-    outline: none;
+  .modal-footer {
+    justify-content: center;
+    border: none !important;
+    padding: 0.5rem;
+  }
+
+  .modal-body {
+    padding: 0;
   }
 }
-
-
-.ui-modal-bg {
-
-  background-color: rgba(0, 0, 0, 0.81);
-  z-index: 999998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-}
-
-body.modal-show{
-  overflow: hidden;
-}
+//
+//
+//.bounce-enter-active {
+//  animation: bounce-in .5s;
+//}
+//
+//.bounce-leave-active {
+//  animation: bounce-in .5s reverse;
+//}
+//
+//@keyframes bounce-in {
+//  0% {
+//    transform: translateY(-200px)
+//  }
+//  50% {
+//    transform: translateY(20px)
+//  }
+//  100% {
+//    transform: translateY(0)
+//  }
+//}

@@ -27,12 +27,19 @@
         <profile-settings-change-password @send="passwordChangeHandler" class="mt-3"/>
         <hr/>
         <b-button variant="danger" @click="logout" block>Выход из аккаунта</b-button>
-        <li-modal :busy="loading" title="Аватар" ref="modal">
+        <li-modal name="avatarCrop" :busy="loading" title="Аватар" ref="modal">
             <crop-image-tool-component
                     :image="image"
                     :aspect="1"
                     @ready="fileAccessed"
+                    ref="croptool"
+                    :no-button="true"
             />
+            <template v-slot:footer>
+                <b-button @click="saveClick"
+                          block variant="primary" class="mt-3">Сохранить
+                </b-button>
+            </template>
         </li-modal>
     </user-content>
 </template>
@@ -78,6 +85,10 @@
             await API.users.logout();
             this.$cookies.remove("token");
             window.location.href = '/';
+        }
+
+        private saveClick(){
+            (this.$refs['croptool'] as any).onResultClick();
         }
 
         private onFileSelected(files: Blob) {

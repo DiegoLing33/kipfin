@@ -100,8 +100,8 @@
                     <a href="/private.pdf" target="_blank">согласие на обработку своих персональных данных</a>
                 </div>
                 <b-button variant="success" @click="onSubmit">Создать личный кабинет</b-button>
-                <li-modal class="text-center" :close-button="true" title="Ошибка" ref="errorModal">
-                    <div class="text-danger">{{error}}</div>
+                <li-modal name="errorCreateModal" :close-button="true" title="Ошибка" ref="errorModal">
+                    <div class="text-danger text-center p-2">{{error}}</div>
                 </li-modal>
             </b-card>
         </b-overlay>

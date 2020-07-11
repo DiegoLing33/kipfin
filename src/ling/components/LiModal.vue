@@ -1,26 +1,16 @@
 <template>
-    <div v-if="visibility" :class="(`ui-modal-bg`)" @click="onClickBackground">
-        <div class="ui-modal-frame">
-            <transition name="bounce">
-                <div :class="(`ui-modal ${size}`)" v-if="showModal">
-                    <button @click="close" class="ui-reset" type="button">
-                        <b-icon-x/>
-                    </button>
-                    <b-overlay :show="busy">
-                        <div class="ui-title">
-                            {{title}}
-                            <slot name="title"></slot>
-                        </div>
-                        <div class="modal-body my-4 w-100">
-                            <slot></slot>
-                        </div>
-                        <b-button v-if="closeButton" @click="close">Понятно</b-button>
-                        <slot name="footer"></slot>
-                    </b-overlay>
-                </div>
-            </transition>
-        </div>
-    </div>
+    <b-modal
+            :class="(text ? 'modal-text' : '')"
+            :size="size" scrollable no-enforce-focus :id="(`m_${name}`)">
+        <template v-slot:modal-header>
+            <div class="custom-modal-title">{{title}}</div>
+        </template>
+        <slot></slot>
+        <template v-slot:modal-footer>
+            <b-button v-if="closeButton" @click="close">Понятно</b-button>
+            <slot name="footer"></slot>
+        </template>
+    </b-modal>
 </template>
 
 <script lang="ts">
@@ -33,55 +23,29 @@
      */
     @Component
     export default class LiModal extends Vue {
+        @Prop({required: true}) name!: string;
         @Prop({required: false, default: ''}) title!: string;
         @Prop({default: "md"}) size!: string;
         @Prop({default: false}) closeButton!: boolean;
         @Prop({default: false}) busy!: boolean;
+        @Prop({default: true}) text!: boolean;
 
-        private visibility = false;
-        private showModal = false;
-
+        /**
+         * Shows the modal
+         */
         public show() {
-            this.visibility = true;
-            setTimeout(() => {
-                this.showModal = true;
-                (window as any).document.body.className = "modal-open";
-            }, 100);
+            this.$bvModal.show('m_' + this.name);
         }
 
-        private onClickBackground(e: Event) {
-            if (e.target && (e.target as any).className && (e.target as any).className.includes) {
-                if ((e.target as any).className.includes('ui-modal-bg'))
-                    this.close();
-            }
-        }
-
+        /**
+         * Hides the modal
+         */
         public close() {
-            this.visibility = false;
-            this.showModal = false;
-            (window as any).document.body.className = "";
+            this.$bvModal.hide('m_' + this.name);
         }
     }
 </script>
 
 <style scoped>
-    .bounce-enter-active {
-        animation: bounce-in .5s;
-    }
 
-    .bounce-leave-active {
-        animation: bounce-in .5s reverse;
-    }
-
-    @keyframes bounce-in {
-        0% {
-            transform: translateY(-200px)
-        }
-        50% {
-            transform: translateY(20px)
-        }
-        100% {
-            transform: translateY(0)
-        }
-    }
 </style>

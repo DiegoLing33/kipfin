@@ -1,28 +1,49 @@
 <template>
-    <li-modal size="x" ref="modal" v-if="selectedFile !== null" :title="selectedFile.getFileName()">
+    <li-modal name="fileInfo" size="xl" ref="modal" v-if="selectedFile !== null" :title="selectedFile.getFileName()">
         <b-embed v-if="selectedFile.fileName.endsWith('.pdf')" controls
                  :src="selectedFile.getFileURL()"
                  style="max-width: 100%;"/>
-        <div v-else>
+        <div v-else style="background-color: rgb(70, 70, 70); text-align: center">
             <crop-image-tool-component
-                    v-if="selectedFile.storageName === 'student-photo' && $store.getters.isAdmin"
+                    v-if="cropMode"
                     :image="selectedFile.getFileURL()"
                     @ready="downloadCroppedImage"
-                    :aspect="3/4"
+                    ref="cropper"
+                    :aspect="selectedFile.storageName === 'student-photo' ? 3/4 : null"
+                    :resizable="selectedFile.storageName !== 'student-photo'"
+                    height="400px"
             />
             <img
                     v-else
-                    :style="`max-width: 100%;  transform: rotate(${rotation}deg)`" alt="Документ"
+                    :style="`transform: rotate(${rotation}deg)`" alt="Документ"
                     :src="selectedFile.getFileURL()">
 
         </div>
         <template slot="footer">
             <div class="w-100 text-center" v-if="selectedFile.storageName !== 'ach' && $store.getters.isAdmin">
                 <b-button-group class="m-2">
-                    <b-button @click="rotate">
+                    <b-button
+                            v-b-tooltip.hover title="Повернуть"
+                            @click="rotate">
                         <b-icon-arrow-clockwise/>
                     </b-button>
-                    <b-button variant="danger" @click="setFileStatus(selectedFile, 0)">
+                    <b-button
+                            v-b-tooltip.hover title="Обрезать изображение"
+                            :variant="cropMode ? 'primary' : 'secondary'"
+                            @click="crop">
+                        <b-icon-crop/>
+                    </b-button>
+                    <b-button
+                            v-b-tooltip.hover title="Скачать"
+                            @click="download(selectedFile)">
+                        <b-icon-download/>
+                    </b-button>
+                    <b-button v-b-tooltip.hover title="Печать" @click="print(selectedFile)">
+                        <b-icon-calendar2-check/>
+                    </b-button>
+                    <b-button
+                            v-b-tooltip.hover title="Удалить"
+                            variant="danger" @click="setFileStatus(selectedFile, 0)">
                         <b-icon-trash/>
                     </b-button>
                 </b-button-group>
@@ -34,10 +55,14 @@
                     ></status-selector>
                 </b-button-group>
                 <b-button-group class="m-2">
-                    <b-button variant="success" @click="setFileStatus(selectedFile, 2)">
+                    <b-button
+                            v-b-tooltip.hover title="Установить как: Принято"
+                            variant="success" @click="setFileStatus(selectedFile, 2)">
                         <b-icon-check2/>
                     </b-button>
-                    <b-button variant="danger" @click="setFileStatus(selectedFile, 3)">
+                    <b-button
+                            v-b-tooltip.hover title="Установить как: Не принято"
+                            variant="danger" @click="setFileStatus(selectedFile, 3)">
                         <b-icon-x/>
                     </b-button>
                 </b-button-group>
@@ -56,8 +81,7 @@
     import LiModal from "@/ling/components/LiModal.vue";
     import VueCropper from "vue-cropperjs";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
-    import FileIO from "@/ling/utils/FileIO";
-    import UserUtils from "@/utils/UserUtils";
+    import API from "@/api/API";
 
     /**
      *  The DocumentPreviewModal component.
@@ -82,18 +106,57 @@
         private rotation = 0;
 
         /**
+         * The crop mode
+         */
+        private cropMode = false;
+
+        /**
          * Rotates the file
          */
         rotate() {
             this.rotation = (this.rotation + 90) % 360;
+            if (this.$refs['cropper'])
+                (this.$refs['cropper'] as any).getCropper().rotate(90);
         }
 
         /**
          * Shows the file
          */
         show(file: KFDocument) {
+            this.rotation = 0;
+            this.cropMode = false;
             this.selectedFile = file;
             (this.$refs['modal'] as any).show();
+        }
+
+        crop() {
+            this.cropMode = !this.cropMode;
+        }
+
+        download(file: KFDocument) {
+            fetch(file.getFileURL())
+                .then(resp => resp.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    // the filename you want
+                    a.download = file.getFileName();
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(() => alert('Что-то не так... Файл не найден'));
+        }
+
+        async print(file: KFDocument) {
+            const url = 'http://kipfin.ru/new/files/' + file.fileName;
+            const mywindow = window.open(url, 'PRINT',) as Window;
+            mywindow.print();
+            setTimeout(() => {
+                mywindow.close();
+            }, 5000);
         }
 
         /**
@@ -114,13 +177,20 @@
          * @param blob
          */
         private downloadCroppedImage(blob: Blob) {
-            const fileName = UserUtils.getFullName(this.selectedFile.author) + " Фото.jpg";
-            FileIO.requestDownloadingFile(fileName, URL.createObjectURL(blob));
+            this.$transaction(this, async () => {
+                await API.files.uploadX(blob, this.selectedFile.storageName,
+                    this.selectedFile.fileUserId, "2");
+                // @fixme - NO RELOAD!
+                window.location.reload();
+                this.$app.modalClose(this, "modal");
+            });
         }
 
     }
 </script>
 
-<style scoped>
-
+<style>
+    .tooltip {
+        z-index: 9999151 !important;
+    }
 </style>
