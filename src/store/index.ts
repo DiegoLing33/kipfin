@@ -2,16 +2,19 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import API from "@/api/API";
 import {APIFileResult} from "@/api/APIFiles";
-import KIPD from "@/app/KIPD";
 import KFUser from "@/client/KFUser";
+import KFDocument from "@/client/KFDocument";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        currentToken: "",
+        currentUserFiles: Array<KFDocument>(),
+        currentUser: KFUser.createZeroUser(),
+        apiErrorText: "",
         ready: false,
         token: "",
-        currentUser: KFUser.createZeroUser(),
         me: {
             authed: false,
             "user_id": "0",
@@ -46,71 +49,55 @@ export default new Vuex.Store({
         lastUserUpdate: new Date(),
     },
     getters: {
+
+        /**
+         * Returns the current user
+         * @param state
+         */
+        currentUser(state): KFUser {
+            return state.currentUser;
+        },
+
+        /**
+         * Returns the current token value
+         * @param state
+         */
+        currentToken(state) {
+            return state.currentToken;
+        },
+
         /**
          * Returns all files of current user
          * @param state
          */
-        myFiles(state): APIFileResult[] {
-            return state.files;
+        currentUserFiles(state): KFDocument[] {
+            return state.currentUserFiles;
         },
 
         /**
-         * Returns required documents
+         * Returns true, if current token is real
          * @param state
-         * @param getters
          */
-        requiredDocuments(state, getters) {
-            const tester = (type: string) => state.currentUser.getFiles().filter((f: APIFileResult) => f.file_type === type && f.file_status !== "3").length === 0;
-            return ["passport", "attestat", "student-photo"].filter(tester);
+        isUserCanBeLoggedIn(state) {
+            return state.currentToken && state.currentToken !== "";
         },
 
         /**
-         * Returns in progress documents
+         * Returns true, if current user has access
          * @param state
-         * @param getters
+         * @param value
          */
-        inProgressDocuments(state, getters) {
-            const tester = (type: string) => state.currentUser.getFiles().some((f: APIFileResult) => f.file_type === type && f.file_status === "1");
-            return ["passport", "attestat", "student-photo"].filter(tester);
+        isAccess(state, value) {
+            return state.currentUser.group.hasAccess(value);
         },
 
         /**
-         * Returns required documents names
+         * Returns true, if user is admin
          * @param state
-         * @param getters
          */
-        requiredDocumentsNames(state, getters) {
-            return getters.requiredDocuments.map((f: string) => KIPD.fileTypes[f]);
-        },
-
-        /**
-         * Returns the documents status
-         * @param state
-         * @param getters
-         */
-        documentsStatus(state, getters) {
-            if (getters.requiredDocuments.length > 0) return ["Не заполнено", "danger"];
-            if (getters.inProgressDocuments.length > 0 && getters.requiredDocuments.length === 0) return ["В обработке", "info"];
-            return ["Принято", "success"];
-        },
-
-        schoolStatus(state, getters) {
-            if (state.currentUser.getRaw().school.schoolStatus === "0") return ["Не заполнено", "danger"];
-            if (state.currentUser.getRaw().school.schoolStatus === "1") return ["В обработке", "info"];
-            if (state.currentUser.getRaw().school.schoolStatus === "3") return ["Не принято", "danger"];
-            return ["Принято", "success"];
-        },
-
-        canSendRequest(state, getters) {
-            const a = state.currentUser.getRaw().school.schoolStatus !== "0";
-            const b = getters.requiredDocuments.length === 0;
-            const c = parseInt(state.currentUser.getRaw().studentStatus) < 1;
-            return a && b && c;
-        },
-
         isAdmin(state) {
             return state.currentUser.group.hasAccess('7');
-        }
+        },
     },
     mutations: {
         /**
@@ -132,7 +119,61 @@ export default new Vuex.Store({
                 throw Error("Данные авторизации не корректны");
             }
         },
+
+        /**
+         * Sets the current token
+         * @param state
+         * @param token
+         */
+        setCurrentToken(state, token: string) {
+            state.currentToken = token;
+        },
+
+        /**
+         * Sets the current user value
+         * @param state
+         * @param data
+         */
+        setCurrentUserData(state, data) {
+            if (data) {
+                state.currentUser = data;
+                state.ready = true;
+            } else {
+                state.currentUser = KFUser.createZeroUser();
+                state.ready = false;
+            }
+        }
     },
-    actions: {},
+    actions: {
+        /**
+         * Updates the current user data
+         * @param context
+         * @param token
+         */
+        async updateCurrentUser(context, token?: string) {
+            token = token || context.getters.currentToken;
+            API.init(token as string);
+            const user = new KFUser(await API.users.me());
+            context.commit("setCurrentUserData", user);
+        },
+
+        /**
+         * Updates the current user files
+         * @param context
+         */
+        async updateCurrentUserFiles(context) {
+            context.state.currentUserFiles = await context.state.currentUser.loadAllUserFiles();
+        },
+
+        /**
+         * Updates the current token INFO from cookies
+         * @param context
+         * @param cookies
+         */
+        async updateCurrentUserToken(context, cookies) {
+            const token = cookies.get("token") || "";
+            context.commit("setCurrentToken", token);
+        }
+    },
     modules: {}
 })

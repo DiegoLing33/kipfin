@@ -4,6 +4,7 @@ import UserUtils from "@/utils/UserUtils";
 import {APIFileResult} from "@/api/APIFiles";
 import KFUserGroup from "@/client/user/KFUserGroup";
 import KFUserFlags from "@/client/user/KFUserFlags";
+import KFDocument from "@/client/KFDocument";
 
 export default class KFUser {
 
@@ -97,6 +98,14 @@ export default class KFUser {
      */
     public async updateFiles() {
         this.loadedFiles = (await API.files.list(this.userId)).list;
+    }
+
+    /**
+     * Loads all user files (KFDocument 's)
+     */
+    public async loadAllUserFiles(){
+        const raw = (await API.files.list(this.userId)).list || [];
+        return KFDocument.fromList(raw as any); //@fixme - any case
     }
 
     /**

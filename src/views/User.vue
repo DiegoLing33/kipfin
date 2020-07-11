@@ -126,7 +126,6 @@
 
         private documents: KFDocument[] = [];
         private user: KFUser = KFUser.createZeroUser();
-        private userFiles: Dict<APIFileResult[]> = {};
         private parents: unknown[] = [];
         private psp: unknown[] = [];
 
@@ -145,15 +144,14 @@
             if (this.$route.params.id) {
                 this.user = new KFUser(await API.users.get(this.$route.params.id));
             } else {
-                await this.$store.commit("setCurrentUser", false);
+                await this.$store.dispatch("updateCurrentUser")
                 this.user = this.$store.state.currentUser;
             }
             if (this.$store.getters.isAdmin) {
                 await this.user.updateFiles();
                 await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
                 this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
-                this.userFiles = PSPUtils.groupItems(this.user.getFiles());
-                this.documents = KFDocument.fromList(this.user.getFiles() as any);
+                this.documents = await this.user.loadAllUserFiles();
                 this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
             }
         }
@@ -167,7 +165,7 @@
                         this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
                     })
                     .catch(reason => {
-                        this.$bvToast.toast(reason, {title: "Ошибка"});
+                        this.$api.error(this, reason);
                         resolve(false);
                     });
             });
@@ -184,7 +182,7 @@
                     if (field === 'facultyId') window.location.reload();
                     else await this.update();
                 }).catch(reason => {
-                    this.$bvToast.toast(reason, {title: "Ошибка!"});
+                    this.$api.error(this, reason);
                     resolve(false);
                 });
             });
@@ -211,7 +209,7 @@
                             this.$bvToast.toast("Разрешение [" + rule + "] изменено!", {title: "Успех"});
                             window.location.reload();
                         }).catch(reason => {
-                        this.$bvToast.toast(reason, {title: "Ошибка!"});
+                        this.$api.error(this, reason);
                         resolve(false);
                     });
                 });
@@ -228,7 +226,7 @@
                         resolve(true);
                         await this.update();
                     }).catch(reason => {
-                    this.$bvToast.toast(reason, {title: "Ошибка!"});
+                    this.$api.error(this, reason);
                     resolve(false);
                 });
             });
@@ -241,19 +239,6 @@
             });
         }
 
-        makeReserve() {
-            this.$transaction(this, async () => {
-                const res = await this.user.createReserve('1');
-                if (res.ok) window.location.reload();
-            });
-        }
-
-        makeNoReserve() {
-            this.$transaction(this, async () => {
-                const res = await this.user.createReserve('0');
-                if (res.ok) window.location.reload();
-            });
-        }
 
         setStudentStatus(status: string) {
             return new Promise(resolve => {
@@ -262,7 +247,7 @@
                         resolve(true);
                         window.location.reload();
                     }).catch(reason => {
-                    this.$bvToast.toast(reason, {title: "Ошибка"});
+                    this.$api.error(this, reason);
                     resolve(false);
                 })
             });

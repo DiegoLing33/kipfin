@@ -4,6 +4,11 @@
         <wrapper-container :menu="menu">
             <router-view/>
         </wrapper-container>
+        <li-modal name="apiError" close-button title="Что-то пошло не так...!">
+            <div class="text-center p-2 text-danger">
+                {{$store.state.apiErrorText}}
+            </div>
+        </li-modal>
     </div>
 </template>
 
@@ -12,15 +17,21 @@
     import {Component, Vue} from "vue-property-decorator";
     import NavigationBar from "@/components/navigation/NavigationBar.vue";
     import WrapperContainer from "@/components/theme/WrapperContainer.vue";
+    import LiModal from "@/ling/components/LiModal.vue";
 
     @Component({
-        components: {WrapperContainer, NavigationBar}
+        components: {LiModal, WrapperContainer, NavigationBar}
     })
     export default class App extends Vue {
 
         async mounted() {
-            const cht = this.$cookies.get("token") as string | undefined;
-            if (cht) this.$store.commit("setCurrentUser", cht);
+            this.$transaction(this, async () => {
+                await this.$store.dispatch("updateCurrentUserToken", this.$cookies);
+                if(this.$store.getters.isUserCanBeLoggedIn){
+                    await this.$store.dispatch("updateCurrentUser");
+                    await this.$store.dispatch("updateCurrentUserFiles"); // 4what?
+                }
+            });
         }
 
         get menu(){

@@ -10,6 +10,7 @@ export interface APITransactionFunc {
 
 export interface APIPluginInterface {
     transaction(context: any, func: () => void): void;
+    error(context: any, text: string): void;
 }
 
 declare module 'vue/types/vue' {
@@ -30,8 +31,12 @@ export function APIPlugin(vue: any): void {
             try {
                 await func.bind(context)();
             } catch (e) {
-                context.$bvToast.toast(e, {title: "Ошибка!"});
+                this.error(context, e);
             }
+        },
+        error(context: any, text: string){
+            context.$store.state.apiErrorText = text;
+            context.$bvModal.show("m_apiError");
         }
     };
     vue.prototype.$transaction = async(context: any, func: () => void) => {
@@ -75,7 +80,7 @@ export default class API {
     /**
      * The access token
      */
-    public static TOKEN = "ede8673287b49d4702fc05e399a89c48";
+    public static TOKEN = "";
 
     /**
      * The URL

@@ -117,7 +117,7 @@
         bottom: 0;
         left: 0;
         right: 0;
-        font-size: 1.5vw;
+        font-size: 14px;
         padding: 15px;
         transition: all 0.2s;
     }

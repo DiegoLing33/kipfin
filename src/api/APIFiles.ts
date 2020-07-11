@@ -62,9 +62,10 @@ export default class APIFiles {
      * @param files
      * @param storage
      * @param userId
+     * @param status
      */
-    public async uploadX(files: Blob | Blob[], storage: string, userId: string): Promise<APIResult> {
-        return await API.request("files.uploadX", {type: storage, userId}, {files: files});
+    public async uploadX(files: Blob | Blob[], storage: string, userId: string, status = "1000"): Promise<APIResult> {
+        return await API.request("files.uploadX", {type: storage, userId, status}, {files: files});
     }
 
 }
