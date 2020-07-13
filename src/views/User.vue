@@ -23,6 +23,12 @@
             <b-tab title="Специальность">
                 <profile-specialization-section :user="user"  :callback="onSpecializationChange" />
             </b-tab>
+            <b-tab v-if="$store.state.currentUser.group.hasAccess('13')">
+                <template v-slot:title>
+                    <b-icon-gear /> Управление
+                </template>
+                <user-admin-settings :user="user" />
+            </b-tab>
         </b-tabs>
         <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
         <profile-progress-view v-if="!$store.getters.isAdmin" :user="user"/>
@@ -99,9 +105,11 @@
     import OneSUser from "@/components/admintools/ones/OneSUser.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
     import KFDocument from "@/client/KFDocument";
+    import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
 
     @Component({
         components: {
+            UserAdminSettings,
             DocumentsGridView,
             OneSUser,
             LiModal,
