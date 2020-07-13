@@ -15,6 +15,8 @@ import AdminFilesFeed from "@/views/AdminFilesFeed.vue";
 import CreateProfileView from "@/views/Defaults/CreateProfileView.vue";
 import LoginProfile from "@/views/Defaults/LoginProfile.vue";
 import ProfileSettings from "@/views/Profile/ProfileSettings.vue";
+import AdminUsersList from "@/views/Admin/AdminUsersList.vue";
+import AdminUsersGroupsList from "@/views/Admin/AdminUsersGroupsList.vue";
 
 Vue.use(VueRouter)
 
@@ -28,6 +30,8 @@ Vue.use(VueRouter)
       {path: '/admin/chats', name: 'Admin Chats', component: AdminChats},
       {path: '/admin/fire', name: 'Admin Chats', component: AdminLastActions},
       {path: '/admin/feed', name: 'Admin Feed', component: AdminFilesFeed},
+      {path: '/admin/users', name: 'Admin Users List', component: AdminUsersList},
+      {path: '/admin/roles', name: 'Admin Users Groups List', component: AdminUsersGroupsList},
 
       {path: '/chat/:id', name: "Chat Room", component: Chat},
       {path: '/user/parents', name: 'User Profile parents', component: ProfileParents},
