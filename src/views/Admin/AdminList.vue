@@ -1,12 +1,12 @@
 <template>
     <user-content
+            :no-body="true"
             min-access="10"
-            title="Абитуриенты"
-            description="Список абитуриентов, которые подали документы"
     >
-        <b-button variant="outline-primary" v-b-toggle:filters block>Показать/скрыть фильтры отображения</b-button>
-        <b-collapse class="my-3" id="filters">
-            <b-card>
+        <template v-slot:header>
+            <collapse-card
+                    title="Фильтры"
+            >
                 <b-form-checkbox
                         v-model="showInProgress"
                         value="yes"
@@ -95,89 +95,101 @@
                 >
                     Показать абитуриентов, которые уже в рейтинге
                 </b-form-checkbox>
+            </collapse-card>
+            <collapse-card
+                    class="mt-3"
+                    title="Специальность"
+                    item-name="фильтр"
+            >
+                <b-select v-model="selectedSpec"
+                          :options="({...$app.specialization, '0': 'Отображать все специальности'})"></b-select>
+                <b-select class="mt-2" v-model="selectedBase"
+                          :options="({...$app.bases, '0': 'Отображать все основы'})"></b-select>
+                <hr class="my-3"/>
                 <b-form-checkbox
-                        v-model="showOnlyReserve"
+                        v-model="sortAttestat"
                         value="yes"
                         unchecked-value="no"
                         switch
                 >
-                    Показать абитуриентов ТОЛЬКО с резервом
+                    Сортировать по аттестату
                 </b-form-checkbox>
-            </b-card>
-        </b-collapse>
-        <b-card title="Специальность" class="mt-3">
-            <b-select v-model="selectedSpec" :options="({...$app.specialization, '0': 'Отображать все специальности'})"></b-select>
-            <b-select class="mt-2" v-model="selectedBase" :options="({...$app.bases, '0': 'Отображать все основы'})"></b-select>
-            <hr class="my-3"/>
-            <b-form-checkbox
-                    v-model="sortAttestat"
-                    value="yes"
-                    unchecked-value="no"
-                    switch
-            >
-                Сортировать по аттестату
-            </b-form-checkbox>
-            <b-form-checkbox
-                    v-model="sortSpec"
-                    value="yes"
-                    unchecked-value="no"
-                    switch
-            >
-                Сортировать по специальности
-            </b-form-checkbox>
-        </b-card>
+                <b-form-checkbox
+                        v-model="sortSpec"
+                        value="yes"
+                        unchecked-value="no"
+                        switch
+                >
+                    Сортировать по специальности
+                </b-form-checkbox>
+            </collapse-card>
 
-        <b-card title="Критерии отображения" class="mt-3">
-            <div>Поиск по имени:</div>
-            <b-input @input="find" v-model="findName" placeholder="Введите часть имени абитуриента"
-                     class="mb-3"></b-input>
-            <b-button class="mb-3 mr-1" size="sm" @click="showAll">Отобразить всех</b-button>
-            <b-button class="mb-3 mr-1" size="sm" @click="showModer">Я проверяю</b-button>
-            <b-button class="mb-3 mr-1" size="sm" @click="showModerEN">Я проверяю инстр.</b-button>
-            <b-button class="mb-3 mr-1" size="sm" @click="showOneS">Я переношу</b-button>
-            <b-button class="mb-3 mr-1" size="sm" @click="showAdmin">Я директор</b-button>
-        </b-card>
-        <div class="my-3 text-secondary">
-            Найдено результатов: {{result.length}}
+            <b-card title="Критерии отображения" class="mt-3">
+                <div>Поиск по имени:</div>
+                <b-row>
+                    <b-col md="9">
+                        <b-input @input="find" v-model="findName" placeholder="Введите часть имени абитуриента"
+                                 class="mb-3"></b-input>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showAll">Отобразить всех</b-button>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showModer">Я проверяю</b-button>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showModerEN">Я проверяю инстр.</b-button>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showOneS">Я переношу</b-button>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showAdmin">Я директор</b-button>
+                    </b-col>
+                    <b-col md="3">
+                        <b-input
+                                v-b-tooltip.hover
+                                title="После ввода идентификатора нажмите Enter для быстрого перехода"
+                                @input="find" v-model="findId" placeholder="Поиск по ID"
+                                @keydown="onKeyDownId"
+                                class="mb-3">
+                        </b-input>
+                        <b-button
+                                :disabled="findId === ''"
+                                variant="info" block class="mb-3" size="sm" @click="$router.push('/user/' + findId)">
+                            Перейти
+                        </b-button>
+                    </b-col>
+                </b-row>
+            </b-card>
+            <div class="mt-3 text-secondary">
+                Найдено результатов: {{result.length}}
+            </div>
+        </template>
+        <div class="found-results">
+            <div
+                    @click="$router.push('/user/' + user.user_id)"
+                    class="found-item"
+                    v-for="user of result"
+                    :key="`u_(${user.user_id})`"
+            >
+                <div class="f-cell text-center font-weight-bold">
+                    {{user.num}}
+                </div>
+                <div class="f-cell">
+                    <user-avatar-box :user="user"/>
+                </div>
+                <div class="f-cell">
+                    {{$app.short[user.facultyId]}}
+                    <div class="text-muted">{{$app.bases[user.studyBase]}}</div>
+                </div>
+                <div class="f-cell">
+                    <b-badge class="m-1" :variant="$app.studentStatus.variant[user.studentStatus]">
+                        {{$app.studentStatus.text[user.studentStatus]}}
+                    </b-badge>
+                    <b-badge class="m-1" v-if="user['worked'] !== '0'" variant="success">
+                        Есть черновик
+                    </b-badge>
+                    <b-badge class="m-1" v-if="user['hasNotification']" variant="success">
+                        Есть уведомление
+                    </b-badge>
+                </div>
+            </div>
         </div>
-        <b-table
-                :fields="tableFields"
-                :items="result" bordered show-empty empty-text="По Вашему запросу ничего не найдено">
-            <template v-slot:cell(studyBase)="row">
-                {{$app.bases[row.item.studyBase]}}
-            </template>
-            <template v-slot:cell(num)="row">
-                {{row.item.num}}
-            </template>
-            <template v-slot:cell(name)="row">
-                <router-link :to="('/user/' + row.item.user_id)">
-                    {{row.item.lastname}} {{row.item.name}} {{row.item.surname}}
-                </router-link>
-                <br/>
-                <b-badge style="white-space: inherit; line-height: inherit; text-align: left"
-                         :variant="$app.studentStatus.variant[row.item.studentStatus]">
-                    {{$app.studentStatus.text[row.item.studentStatus]}}
-                </b-badge>
-                <br v-if="row.item.hasNotification" />
-                <b-badge v-if="row.item.hasNotification" variant="success">
-                    Есть уведомление
-                </b-badge>
-                <br v-if="row.item['worked'] !== '0'" />
-                <b-badge v-if="row.item['worked'] !== '0'" variant="success">
-                    Есть черновик
-                </b-badge>
-            </template>
-            <template v-slot:cell(facultyId)="row">
-                {{$app.short[row.item.facultyId]}}
-            </template>
-            <template v-slot:cell(notified)="row">
-                {{$app.yesNo[row.item.notified]}}
-            </template>
-            <template v-slot:cell(reserved)="row">
-                {{$app.yesNo[row.item.reserved]}}
-            </template>
-        </b-table>
-        <b-button class="my-3" variant="primary" @click="update">Обновить таблицу</b-button>
+        <div v-if="result.length === 0" class="p-3 text-center text-muted">
+            <b-icon-sun font-scale="3"/>
+            <div class="mt-1">Ничего не найдено по выставленным критериям</div>
+        </div>
     </user-content>
 </template>
 
@@ -191,9 +203,12 @@
     import RadioField from "@/components/fields/RadioField.vue";
     import {APIFileResult} from "@/api/APIFiles";
     import UserContent from "@/components/theme/UserContent.vue";
+    import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
+    import CollapseCard from "@/components/theme/CollapseCard.vue";
+    import Server from "@/api/Server";
 
     @Component({
-        components: {UserContent, RadioField, SelectField, TextField}
+        components: {CollapseCard, UserAvatarBox, UserContent, RadioField, SelectField, TextField}
     })
     export default class AdminList extends Vue {
         private items = Array<APIUserResults>();
@@ -224,6 +239,7 @@
         private showOnlyReserve = "no";
 
         private findName = "";
+        private findId = "";
 
         private sortAttestat = "no";
         private sortSpec = "no";
@@ -240,18 +256,37 @@
 
         async update() {
             const users = await API.users.list();
-            const notify = (await API.request("files.listByType", {
+            const notify = (await Server.request("files.listByType", {
                 type: 'notify'
             })).list;
+            console.log(notify);
             this.items = users.list.filter(user => parseInt(user.group.group_id) === 1)
                 .map(value => {
+                    (value.group as any)['groupTitle'] = value.group.title;
+                    (value as any)['userId'] = value.user_id;
                     value.school.schoolValue = String(value.school.schoolValue).replace(',', '.');
                     value.school.schoolValue = parseFloat(value.school.schoolValue || "0") as any;
-                    if (notify.filter((v: APIFileResult) => v.user_id === value.user_id).length > 0)
-                        value.hasNotification = true;
+
+                    for (const file of notify) {
+                        if (file.user_id === value.user_id && file.file_status === '2') {
+                            value.hasNotification = true;
+                            break;
+                        }
+                    }
+
                     return value;
                 });
             this.find();
+        }
+
+        private onKeyDownId(e: KeyboardEvent) {
+            if (e.key === "Enter") {
+                if (this.findId !== "") {
+                    this.$router.push("/user/" + this.findId);
+                } else {
+                    this.$api.error(this, "Нельзя перейти к пустому идентификатору!");
+                }
+            }
         }
 
         @Watch("showInProgress")
@@ -273,7 +308,6 @@
         @Watch("showAnotherCounty")
         @Watch("showInDone")
         @Watch("hasNotifyOnly")
-        @Watch("showOnlyReserve")
         private find() {
             let items = this.items;
 
@@ -297,6 +331,9 @@
                 const raw = [v.lastname, v.name, v.surname].join(" ").toLocaleLowerCase();
                 return raw.includes(this.findName.toLocaleLowerCase());
             });
+
+            if (this.findId !== "")
+                this.result = items.filter(v => v.user_id === this.findId);
 
             if (!(this.selectedSpec === '' || this.selectedSpec === '0'))
                 this.result = this.result.filter(value => value.facultyId === this.selectedSpec);
