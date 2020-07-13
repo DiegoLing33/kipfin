@@ -6,16 +6,38 @@ export type NameList<T> = {
 }
 
 /**
+ * Creates the empty name list
+ */
+export function nameList<T>(v: NameList<T> = {}): NameList<T> {
+    return {...v};
+}
+
+/**
  * Indexed list number:T
  */
 export type IndexList<T> = {
     [index: number]: T;
 }
 
+
+/**
+ * Creates the empty index list
+ */
+export function indexList<T>(): IndexList<T> {
+    return {};
+}
+
 /**
  * Type or null
  */
 export type Nullable<T> = T | null;
+
+/**
+ * Creates Nullable object
+ */
+export function nullable<T>(): Nullable<T> {
+    return null;
+}
 
 /**
  * Nullable utils
@@ -37,6 +59,11 @@ export const Nullable = {
         return value === null;
     }
 }
+
+/**
+ * Numeric string or number
+ */
+export type Numeric = string | number;
 
 /**
  * Async callback
