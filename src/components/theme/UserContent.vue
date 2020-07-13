@@ -1,7 +1,7 @@
 <template v-if="$store.state.ready">
     <b-overlay :show="overlay">
         <b-card no-body
-                v-if="checkAccess"
+                v-if="checkAccess === true"
                 style="border-radius: 0"
                 :header="('Вы: ' + $store.state.currentUser.getFullName() + ' (' + $store.state.currentUser.group.groupTitle + ' #' + $store.state.currentUser.userId) + ')'">
             <div class="header">
@@ -30,11 +30,17 @@
                 </small>
             </template>
         </b-card>
-        <b-card style="border-radius: 0" v-else>
+        <b-card style="border-radius: 0" v-else-if="checkAccess === false">
             <b-card-title class="text-danger">
                 Доступ запрещен
             </b-card-title>
             Вы не можете просматривать данную директиву портала!
+        </b-card>
+        <b-card style="border-radius: 0" v-else>
+            <b-card-title class="text-secondary">
+                Загрузка
+            </b-card-title>
+            Пожалуйста, подождите...
         </b-card>
     </b-overlay>
 </template>
@@ -42,6 +48,7 @@
 <script lang="ts">
     import {Component, Mixins, Prop} from "vue-property-decorator";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
+    import {nullable} from "@/ling/types/Common";
 
     /**
      *  The UserContainer component.
@@ -56,11 +63,11 @@
         @Prop({default: "", required: false}) description!: string;
         @Prop({default: false, required: false}) noBody!: boolean;
 
-        private checkAccess = false;
+        private checkAccess = nullable<boolean>();
 
         protected storeLoaded() {
             if (this.minAccess === "") this.checkAccess = true;
-            this.checkAccess = this.$store.state.currentUser.group.hasAccess(this.minAccess);
+            else this.checkAccess = this.$store.state.currentUser.group.hasAccess(this.minAccess);
         }
     }
 </script>
