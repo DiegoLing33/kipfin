@@ -9,11 +9,11 @@
                 </div>
             </user-finder>
         </template>
-        <div class="users-results">
+        <div class="found-results">
             <div
                     v-for="(user) of items"
                     :key="(`user_${user.userId}`)"
-                    class="user-item"
+                    class="found-item"
                     @click="$router.push('/user/' + user.userId)"
             >
                 <div class="f-cell">
