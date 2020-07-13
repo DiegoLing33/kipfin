@@ -5,7 +5,7 @@
             <router-view/>
         </wrapper-container>
         <li-modal name="apiError" close-button title="Что-то пошло не так...!">
-            <div class="text-center p-2 text-danger">
+            <div class="text-center p-3 text-danger">
                 {{$store.state.apiErrorText}}
             </div>
         </li-modal>

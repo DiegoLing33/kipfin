@@ -1,5 +1,6 @@
 <template>
     <b-modal
+            ok-only
             :class="(text ? 'modal-text' : '')"
             :size="size" scrollable no-enforce-focus :id="(`m_${name}`)">
         <template v-slot:modal-header>
