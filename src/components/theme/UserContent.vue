@@ -1,6 +1,7 @@
 <template v-if="$store.state.ready">
-    <b-overlay  :show="overlay">
+    <b-overlay :show="overlay">
         <b-card no-body
+                v-if="checkAccess"
                 style="border-radius: 0"
                 :header="('Вы: ' + $store.state.currentUser.getFullName() + ' (' + $store.state.currentUser.group.groupTitle + ' #' + $store.state.currentUser.userId) + ')'">
             <div class="header">
@@ -29,11 +30,18 @@
                 </small>
             </template>
         </b-card>
+        <b-card style="border-radius: 0" v-else>
+            <b-card-title class="text-danger">
+                Доступ запрещен
+            </b-card-title>
+            Вы не можете просматривать данную директиву портала!
+        </b-card>
     </b-overlay>
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
+    import {Component, Mixins, Prop} from "vue-property-decorator";
+    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
 
     /**
      *  The UserContainer component.
@@ -41,11 +49,19 @@
      *  @created 07.07.2020 23:21
      */
     @Component
-    export default class UserContent extends Vue {
+    export default class UserContent extends Mixins(StoreLoadedComponent) {
+        @Prop({default: "", required: false}) minAccess!: string;
         @Prop({default: false, required: false}) overlay!: boolean;
         @Prop({default: "", required: false}) title!: string;
         @Prop({default: "", required: false}) description!: string;
         @Prop({default: false, required: false}) noBody!: boolean;
+
+        private checkAccess = false;
+
+        protected storeLoaded() {
+            if (this.minAccess === "") this.checkAccess = true;
+            this.checkAccess = this.$store.state.currentUser.group.hasAccess(this.minAccess);
+        }
     }
 </script>
 

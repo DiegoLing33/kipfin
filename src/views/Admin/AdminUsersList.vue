@@ -1,5 +1,7 @@
 <template>
-    <user-content :no-body="true" v-if="$store.getters.isAdmin">
+    <user-content
+            min-access="7"
+            :no-body="true" v-if="$store.getters.isAdmin">
         <template v-slot:header>
             <user-finder :callback="onSearchChanged">
                 <div class="mt-3 text-muted">

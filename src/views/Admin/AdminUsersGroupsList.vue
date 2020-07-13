@@ -1,5 +1,7 @@
 <template>
-    <user-content :no-body="true" title="Роли пользователей"
+    <user-content
+            min-access="7"
+            :no-body="true" title="Роли пользователей"
                   description="Список доступных ролей пользователей">
         <div class="found-results">
             <div

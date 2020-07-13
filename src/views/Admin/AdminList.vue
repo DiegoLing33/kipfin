@@ -1,5 +1,6 @@
 <template>
     <user-content
+            min-access="10"
             title="Абитуриенты"
             description="Список абитуриентов, которые подали документы"
     >
