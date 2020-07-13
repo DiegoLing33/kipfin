@@ -43,7 +43,7 @@
             placeholder: "Тип файлов",
             options: [
                 {value: "", text: "-- Выберите тип файла --"},
-                {value: "passport", text: "Пасспорт"},
+                {value: "passport", text: "Паспорт"},
                 {value: "attestat", text: "Аттестат"},
                 {value: "student-photo", text: "Фото абитуриента"},
                 {value: "ach", text: "Достижения"},
