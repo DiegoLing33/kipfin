@@ -38,6 +38,7 @@
             const menuItems = [
                 {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
                 {title: "Мои документы", icon: 'files', url: "/user/documents"},
+                {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
             ];
             if(this.$store.getters.isAdmin)
                 return [...menuItems, ...[
@@ -47,12 +48,14 @@
                     {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
                     {title: "Чат с приемной комиссией", icon: "chat", url: "/admin/chats"},
                     {title: "Активность", icon: "clock-history", url: "/admin/fire"},
+                    {nav: "Пользователи"},
+                    {title: "Пользователи", icon: "search", url: "/admin/users"},
+                    {title: "Роли пользователей", icon: "check2-circle\n", url: "/admin/roles"},
                 ]];
             else
                 return [...menuItems, ...[
                     {nav: "Анкета"},
                     {title: "Законные представители", icon: "people-fill", url: "/user/parents"},
-                    {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
                     {title: "Чат с приемной комиссией", icon: "chat", url: "/user/chat"},
                 ]]
         }
