@@ -4,6 +4,7 @@ import API from "@/api/API";
 import {APIFileResult} from "@/api/APIFiles";
 import KFUser from "@/client/KFUser";
 import KFDocument from "@/client/KFDocument";
+import Server from "@/api/Server";
 
 Vue.use(Vuex)
 
@@ -153,6 +154,7 @@ export default new Vuex.Store({
         async updateCurrentUser(context, token?: string) {
             token = token || context.getters.currentToken;
             API.init(token as string);
+            Server.init(token as string);
             const user = new KFUser(await API.users.me());
             context.commit("setCurrentUserData", user);
         },
