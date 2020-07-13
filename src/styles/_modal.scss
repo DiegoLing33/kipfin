@@ -26,7 +26,22 @@
   .modal-body {
     padding: 0;
   }
+
+  .custom-modal-close{
+    opacity: 0.5;
+    transition: all 0.2s;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: 22px;
+
+    &:hover{
+      opacity: 1;
+    }
+  }
 }
+
 //
 //
 //.bounce-enter-active {

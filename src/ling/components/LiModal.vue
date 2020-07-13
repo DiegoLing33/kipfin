@@ -4,6 +4,7 @@
             :size="size" scrollable no-enforce-focus :id="(`m_${name}`)">
         <template v-slot:modal-header>
             <div class="custom-modal-title">{{title}}</div>
+            <div class="custom-modal-close" @click="close">&times;</div>
         </template>
         <slot></slot>
         <template v-slot:modal-footer>
