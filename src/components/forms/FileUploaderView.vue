@@ -1,10 +1,11 @@
 <template>
     <div>
-        <li-modal ref="modal" title="Загрузка файлов">
-
-            <select-field :no-state="true" @change="onTypeChanged" :props="selectionField"></select-field>
-            <file-field :disabled="disableUploading" :no-state="true" @change="onFilesChanged" class="mt-2"
-                        :props="fileField"></file-field>
+        <li-modal name="doc" ref="modal" title="Загрузка файлов">
+            <div class="m-3">
+                <select-field :no-state="true" @change="onTypeChanged" :props="selectionField"></select-field>
+                <file-field :disabled="disableUploading" :no-state="true" @change="onFilesChanged" class="mt-2"
+                            :props="fileField"></file-field>
+            </div>
             <template v-slot:footer>
                 <b-overlay :show="busy">
                     <b-button block :disabled="!ready" variant="primary" @click="send">Загрузить выбранные файлы
