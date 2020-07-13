@@ -9,13 +9,13 @@
                     :key="(`role_${role.groupId}`)"
                     class="found-item"
             >
-                <div class="cell p-3">
+                <div class="f-cell p-3">
                     {{role.groupId}}
                 </div>
-                <div class="cell">
+                <div class="f-cell">
                     {{role.groupTitle}}
                 </div>
-                <div class="cell">
+                <div class="f-cell">
                     <div
                             v-for="r of (role.groupAccess.split('|'))"
                             :key="`(r_${r})`"

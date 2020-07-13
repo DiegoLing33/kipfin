@@ -16,7 +16,7 @@
                     class="user-item"
                     @click="$router.push('/user/' + user.userId)"
             >
-                <div class="cell">
+                <div class="f-cell">
                     <user-avatar-box :user="user"/>
                 </div>
             </div>
