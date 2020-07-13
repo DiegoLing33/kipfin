@@ -73,3 +73,39 @@ html * {
     color: #f1f1f1;
   }
 }
+
+//
+//
+//
+//
+//
+//
+//
+
+.found-results {
+  display: table;
+  width: 100%;
+
+  .found-item {
+    display: table-row;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: all 0.4s;
+
+    .cell {
+      display: table-cell;
+      vertical-align: middle;
+      border-bottom: 1px solid #dbdbdb;
+      margin-bottom: 5px;
+      padding: 5px 10px;
+    }
+
+    &:hover {
+      background-color: #ececec;
+    }
+
+    &:active {
+      background-color: #d6d6d6;
+    }
+  }
+}
