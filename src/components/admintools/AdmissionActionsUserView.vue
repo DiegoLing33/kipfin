@@ -1,7 +1,7 @@
 <template>
     <div>
         <b-overlay :show="busy">
-            <div v-if="all && $store.state.currentUser.group.hasAccess('900')">
+            <div v-if="all && $store.state.currentUser.group.hasAccess('24')">
                 <b-datepicker :value="reformIsos(new Date().toISOString())" v-model="selectedDate"></b-datepicker>
                 <b-table
                         :fields="fields"
@@ -12,18 +12,7 @@
                 </b-table>
             </div>
             <b-row v-if="all">
-                <b-col class="my-3" md="6">
-                    <b-card no-body header="Модерация" border-variant="primary">
-                        <b-card-body style="overflow-y: auto; max-height: 300px">
-                            <admin-action-view
-                                    v-for="action of moderActions"
-                                    :key="action.admissionActionId"
-                                    :action="action"
-                            />
-                        </b-card-body>
-                    </b-card>
-                </b-col>
-                <b-col class="my-3" md="6">
+                <b-col class="my-3" md="12">
                     <b-card no-body header="Статусы" border-variant="primary">
                         <b-card-body style="overflow-y: auto; max-height: 300px">
                             <admin-action-view
