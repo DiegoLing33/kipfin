@@ -15,7 +15,7 @@
             </template>
             <template v-slot:cell(mail)="row">
                 <div style="word-break: break-all">
-                    {{$app.parentName[row.item.mail]}}
+                    {{row.item.mail}}
                 </div>
             </template>
             <template v-slot:cell(utils)="row">
