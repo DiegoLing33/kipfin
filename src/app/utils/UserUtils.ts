@@ -1,4 +1,4 @@
-import {APIUserResults, APIUserShort} from "@/api/APIUsers";
+import {APIUserResults, APIUserShort} from "@/app/api/APIUsers";
 
 /**
  * The user utils

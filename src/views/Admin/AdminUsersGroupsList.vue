@@ -35,8 +35,8 @@
 <script lang="ts">
     import {Component, Mixins} from "vue-property-decorator";
     import UserContent from "@/components/theme/UserContent.vue";
-    import {ServerUserGroupExtended} from "@/api/classes/ServerUsers";
-    import Server from "@/api/Server";
+    import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
+    import Server from "@/app/api/Server";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
 
     /**

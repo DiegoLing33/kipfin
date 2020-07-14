@@ -15,7 +15,7 @@
 <script lang="ts">
 
     import {Component, Vue} from "vue-property-decorator";
-    import NavigationBar from "@/components/navigation/NavigationBar.vue";
+    import NavigationBar from "@/components/theme/navigation/NavigationBar.vue";
     import WrapperContainer from "@/components/theme/WrapperContainer.vue";
     import LiModal from "@/ling/components/LiModal.vue";
 

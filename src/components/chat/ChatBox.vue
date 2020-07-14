@@ -22,9 +22,9 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {APIChatMessageResult} from "@/api/APIChat";
+    import {APIChatMessageResult} from "@/app/api/APIChat";
     import ChatBoxMessage from "@/components/chat/ChatBoxMessage.vue";
-    import {APIUserShort} from "@/api/APIUsers";
+    import {APIUserShort} from "@/app/api/APIUsers";
     @Component({
         components: {ChatBoxMessage}
     })

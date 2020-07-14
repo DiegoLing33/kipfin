@@ -27,7 +27,7 @@
     import {FieldType} from "@/components/fields/Field";
     import FileField from "@/components/fields/FileField.vue";
     import {FileFieldProps} from "@/components/fields/FileFieldI";
-    import API from "@/api/API";
+    import API from "@/app/api/API";
     import LiModal from "@/ling/components/LiModal.vue";
 
     @Component({

@@ -29,7 +29,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage.vue";
     @Component({
         components: {UserAvatarImage}

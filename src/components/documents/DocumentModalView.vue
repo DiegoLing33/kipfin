@@ -76,12 +76,12 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import KFDocument from "@/client/KFDocument";
+    import KFDocument from "@/app/client/KFDocument";
     import StatusSelector from "@/components/admintools/StatusSelector.vue";
     import LiModal from "@/ling/components/LiModal.vue";
     import VueCropper from "vue-cropperjs";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
-    import API from "@/api/API";
+    import API from "@/app/api/API";
 
     /**
      *  The DocumentPreviewModal component.

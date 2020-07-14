@@ -19,7 +19,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {APIUserShort} from "@/api/APIUsers";
+    import {APIUserShort} from "@/app/api/APIUsers";
 
     @Component
     export default class ChatBoxMessage extends Vue {

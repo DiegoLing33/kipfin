@@ -1,6 +1,6 @@
-import {APIUserResults} from "@/api/APIUsers";
-import {APIChatMessageResult} from "@/api/APIChat";
-import API from "@/api/API";
+import {APIUserResults} from "@/app/api/APIUsers";
+import {APIChatMessageResult} from "@/app/api/APIChat";
+import API from "@/app/api/API";
 
 export default class ChatUtils {
 

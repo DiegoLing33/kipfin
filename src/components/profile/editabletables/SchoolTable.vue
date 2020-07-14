@@ -8,7 +8,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
     import InfoTableView from "@/components/profile/editabletables/InfoTableView.vue";
     import {FieldFormatter} from "@/components/fields/Field";
 

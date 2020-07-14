@@ -1,4 +1,4 @@
-import API, {APIResult, NumericString} from "@/api/API";
+import API, {APIResult, NumericString} from "@/app/api/API";
 import {Dict} from "@/app/types";
 
 export interface APIFileResult {

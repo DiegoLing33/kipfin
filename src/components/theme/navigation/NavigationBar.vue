@@ -32,7 +32,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import NavbarLink from "@/components/navigation/NavbarLink.vue";
+    import NavbarLink from "@/components/theme/navigation/NavbarLink.vue";
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
 
     @Component({

@@ -17,7 +17,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
 
     @Component({
         components: {FastInputSwitch}

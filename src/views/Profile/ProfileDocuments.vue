@@ -33,13 +33,13 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import StoreLoader from "@/client/StoreLoader";
+    import StoreLoader from "@/app/client/StoreLoader";
     import SelectField from "@/components/fields/SelectField.vue";
     import FormFileInput from "@/components/form/FormFileInput.vue";
     import FileUploaderView from "@/components/forms/FileUploaderView.vue";
     import UserContent from "@/components/theme/UserContent.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-    import KFDocument from "@/client/KFDocument";
+    import KFDocument from "@/app/client/KFDocument";
     @Component({
         components: {
             DocumentsGridView,

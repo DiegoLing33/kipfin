@@ -31,9 +31,9 @@
 
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
-    import API from "@/api/API";
-    import {APIChatRoomResult} from "@/api/APIChat";
-    import StoreLoader from "@/client/StoreLoader";
+    import API from "@/app/api/API";
+    import {APIChatRoomResult} from "@/app/api/APIChat";
+    import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
 
     @Component({

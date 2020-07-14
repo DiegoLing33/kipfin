@@ -27,9 +27,9 @@
 
 <script lang="ts">
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
-    import KFDocument from "@/client/KFDocument";
+    import KFDocument from "@/app/client/KFDocument";
     import DocumentView from "@/components/documents/DocumentView.vue";
-    import PSPUtils from "@/utils/PSPUtils";
+    import PSPUtils from "@/app/utils/PSPUtils";
     import {NameList} from "@/ling/types/Common";
     import CountedString from "@/ling/support/CountedString";
     import LiModal from "@/ling/components/LiModal.vue";

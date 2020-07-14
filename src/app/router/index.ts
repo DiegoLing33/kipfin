@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../../views/Home.vue'
 import AdminList from "@/views/Admin/AdminList.vue";
 import ProfileParents from "@/views/Profile/ProfileParents.vue";
 import ProfileChat from "@/views/Profile/ProfileChat.vue";

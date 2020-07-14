@@ -1,4 +1,4 @@
-import {APIUserFlags} from "@/api/APIUsers";
+import {APIUserFlags} from "@/app/api/APIUsers";
 
 export default class KFUserFlags {
 

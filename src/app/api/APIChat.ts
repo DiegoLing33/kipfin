@@ -1,5 +1,5 @@
-import API, {APIListResult, APIResult, NumericString} from "@/api/API";
-import {APIUserShort} from "@/api/APIUsers";
+import API, {APIListResult, APIResult, NumericString} from "@/app/api/API";
+import {APIUserShort} from "@/app/api/APIUsers";
 
 export interface APIChatRoomResult {
     roomId: NumericString;

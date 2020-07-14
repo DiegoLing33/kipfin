@@ -80,10 +80,10 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import API from "@/api/API";
-    import {APIUserResults} from "@/api/APIUsers";
+    import API from "@/app/api/API";
+    import {APIUserResults} from "@/app/api/APIUsers";
     import {Dict, sqlDate} from "@/app/types";
-    import StoreLoader from "@/client/StoreLoader";
+    import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
 
     @Component({

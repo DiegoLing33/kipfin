@@ -1,10 +1,10 @@
-import {APIUserResults, APIUserShort} from "@/api/APIUsers";
-import API, {NumericString} from "@/api/API";
-import UserUtils from "@/utils/UserUtils";
-import {APIFileResult} from "@/api/APIFiles";
-import KFUserGroup from "@/client/user/KFUserGroup";
-import KFUserFlags from "@/client/user/KFUserFlags";
-import KFDocument from "@/client/KFDocument";
+import {APIUserResults, APIUserShort} from "@/app/api/APIUsers";
+import API, {NumericString} from "@/app/api/API";
+import UserUtils from "@/app/utils/UserUtils";
+import {APIFileResult} from "@/app/api/APIFiles";
+import KFUserGroup from "@/app/client/user/KFUserGroup";
+import KFUserFlags from "@/app/client/user/KFUserFlags";
+import KFDocument from "@/app/client/KFDocument";
 
 export default class KFUser {
 

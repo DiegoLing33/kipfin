@@ -35,8 +35,8 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import API from "@/api/API";
-    import KFUser from "@/client/KFUser";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
 
     @Component
     export default class UserCommentsByAdmission extends Vue {

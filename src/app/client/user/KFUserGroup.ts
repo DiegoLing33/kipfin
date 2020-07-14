@@ -1,4 +1,4 @@
-import {NumericString} from "@/api/API";
+import {NumericString} from "@/app/api/API";
 
 /**
  * The group entity

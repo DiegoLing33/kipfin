@@ -20,8 +20,8 @@
     import {FieldType} from "@/components/fields/Field";
     import FileField from "@/components/fields/FileField.vue";
     import {FileFieldProps} from "@/components/fields/FileFieldI";
-    import API from "@/api/API";
-    import KFUser from "@/client/KFUser";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
 
     @Component({
         components: {FileField, SelectField}

@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
     import SchoolTable from "@/components/profile/editabletables/SchoolTable.vue";
 
     @Component({

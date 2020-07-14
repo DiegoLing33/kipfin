@@ -85,9 +85,9 @@
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
     import LineChart from "@/components/charts/LineChart.vue";
     import {nameList} from "@/ling/types/Common";
-    import API from "@/api/API";
+    import API from "@/app/api/API";
     import BarChart from "@/components/charts/BarChart.vue";
-    import HeaderLined from "@/components/heading/HeaderLined.vue";
+    import HeaderLined from "@/components/theme/heading/HeaderLined.vue";
 
     @Component({
         components: {HeaderLined, BarChart, LineChart, UserContent}

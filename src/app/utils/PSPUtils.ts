@@ -1,6 +1,6 @@
-import {APIFileResult} from "@/api/APIFiles";
+import {APIFileResult} from "@/app/api/APIFiles";
 import {Dict} from "@/app/types";
-import KFDocument from "@/client/KFDocument";
+import KFDocument from "@/app/client/KFDocument";
 
 export default class PSPUtils {
 

@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import StoreLoader from "@/client/StoreLoader";
+    import StoreLoader from "@/app/client/StoreLoader";
 
     @Component
     export default class StoreLoadedComponent extends Vue {

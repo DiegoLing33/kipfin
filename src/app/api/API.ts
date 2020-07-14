@@ -1,8 +1,8 @@
-import APIUsers from "@/api/APIUsers";
-import APIFiles from "@/api/APIFiles";
+import APIUsers from "@/app/api/APIUsers";
+import APIFiles from "@/app/api/APIFiles";
 import {Dict} from "@/app/types";
-import APIChat from "@/api/APIChat";
-import APIMission from "@/api/APIMission";
+import APIChat from "@/app/api/APIChat";
+import APIMission from "@/app/api/APIMission";
 
 export interface APITransactionFunc {
     (context: any, func: () => void): unknown;

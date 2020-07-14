@@ -46,10 +46,10 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import HeaderLined from "@/components/heading/HeaderLined.vue";
-    import API from "@/api/API";
-    import KFUser from "@/client/KFUser";
-    import StoreLoader from "@/client/StoreLoader";
+    import HeaderLined from "@/components/theme/heading/HeaderLined.vue";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
+    import StoreLoader from "@/app/client/StoreLoader";
     import ProfileSettingsChangePassword from "@/components/profile/ProfileSettingsChangePassword.vue";
     import {NameList, Nullable} from "@/ling/types/Common";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage.vue";

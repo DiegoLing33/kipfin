@@ -28,8 +28,8 @@
     import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
     import SelectField from "@/components/fields/SelectField.vue";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import {ServerUserGroupExtended} from "@/api/classes/ServerUsers";
-    import Server from "@/api/Server";
+    import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
+    import Server from "@/app/api/Server";
     import {NameList, nameList, nullable, Nullable} from "@/ling/types/Common";
 
     /**

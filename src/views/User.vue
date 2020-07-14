@@ -93,9 +93,9 @@
 
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
-    import API from "@/api/API";
-    import KFUser from "@/client/KFUser";
-    import StoreLoader from "@/client/StoreLoader";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
+    import StoreLoader from "@/app/client/StoreLoader";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
     import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
     import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
@@ -115,7 +115,7 @@
     import LiModal from "@/ling/components/LiModal.vue";
     import OneSUser from "@/components/admintools/ones/OneSUser.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-    import KFDocument from "@/client/KFDocument";
+    import KFDocument from "@/app/client/KFDocument";
     import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
 
     @Component({

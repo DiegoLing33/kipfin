@@ -12,11 +12,11 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import API from "@/api/API";
-    import StoreLoader from "@/client/StoreLoader";
+    import API from "@/app/api/API";
+    import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-    import KFDocument from "@/client/KFDocument";
+    import KFDocument from "@/app/client/KFDocument";
 
     @Component({
         components: {DocumentsGridView, UserContent}

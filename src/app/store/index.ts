@@ -1,10 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import API from "@/api/API";
-import {APIFileResult} from "@/api/APIFiles";
-import KFUser from "@/client/KFUser";
-import KFDocument from "@/client/KFDocument";
-import Server from "@/api/Server";
+import API from "@/app/api/API";
+import {APIFileResult} from "@/app/api/APIFiles";
+import KFUser from "@/app/client/KFUser";
+import KFDocument from "@/app/client/KFDocument";
+import Server from "@/app/api/Server";
 
 Vue.use(Vuex)
 

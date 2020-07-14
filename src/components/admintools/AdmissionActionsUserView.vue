@@ -54,11 +54,11 @@
 
 <script lang="ts">
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
-    import API from "@/api/API";
+    import KFUser from "@/app/client/KFUser";
+    import API from "@/app/api/API";
     import AdminActionView from "@/components/admintools/AdminActionView.vue";
     import {Dict} from "@/app/types";
-    import UserUtils from "@/utils/UserUtils";
+    import UserUtils from "@/app/utils/UserUtils";
 
     interface TableAction {
         name: string;

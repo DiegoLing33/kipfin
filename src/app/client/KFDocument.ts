@@ -1,6 +1,6 @@
-import {APIFileResult} from "@/api/APIFiles";
-import API, {NumericString} from "@/api/API";
-import {APIUserShort} from "@/api/APIUsers";
+import {APIFileResult} from "@/app/api/APIFiles";
+import API, {NumericString} from "@/app/api/API";
+import {APIUserShort} from "@/app/api/APIUsers";
 import {NameList} from "@/ling/types/Common";
 import FileIO from "@/ling/utils/FileIO";
 

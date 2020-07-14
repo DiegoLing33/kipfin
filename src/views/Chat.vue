@@ -26,12 +26,12 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import StoreLoader from "@/client/StoreLoader";
-    import {APIChatMessageResult, APIChatRoomResult} from "@/api/APIChat";
+    import StoreLoader from "@/app/client/StoreLoader";
+    import {APIChatMessageResult, APIChatRoomResult} from "@/app/api/APIChat";
     import ChatBox from "@/components/chat/ChatBox.vue";
-    import API from "@/api/API";
-    import UserUtils from "@/utils/UserUtils";
-    import ChatUtils from "@/utils/ChatUtils";
+    import API from "@/app/api/API";
+    import UserUtils from "@/app/utils/UserUtils";
+    import ChatUtils from "@/app/utils/ChatUtils";
     import UserContent from "@/components/theme/UserContent.vue";
 
     @Component({

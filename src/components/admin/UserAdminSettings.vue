@@ -6,10 +6,10 @@
 
 <script lang="ts">
     import {Component, Mixins, Prop} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
-    import Server from "@/api/Server";
+    import KFUser from "@/app/client/KFUser";
+    import Server from "@/app/api/Server";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import {ServerUserGroupExtended} from "@/api/classes/ServerUsers";
+    import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
     import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
     import {indexList} from "@/ling/types/Common";
 

@@ -34,8 +34,8 @@
     import UserContent from "@/components/theme/UserContent.vue";
     import UserFinder from "@/components/admin/userfinder/UserFinder.vue";
     import {NameList, nameList, Nullable} from "@/ling/types/Common";
-    import {ServerUsersRoot} from "@/api/classes/ServerUsers";
-    import Server from "@/api/Server";
+    import {ServerUsersRoot} from "@/app/api/classes/ServerUsers";
+    import Server from "@/app/api/Server";
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
 

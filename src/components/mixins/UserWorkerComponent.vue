@@ -4,8 +4,8 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import API from "@/api/API";
-    import KFUser from "@/client/KFUser";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
 
     @Component
     export default class UserWorkerComponent extends Vue {

@@ -1,5 +1,5 @@
 import {Dict} from "@/app/types";
-import ServerUsers from "@/api/classes/ServerUsers";
+import ServerUsers from "@/app/api/classes/ServerUsers";
 import {NameList} from "@/ling/types/Common";
 
 /**

@@ -41,8 +41,8 @@
     import FormElementsController from "@/components/form/FormElementsController.vue";
     import {FormElementTye} from "@/app/FormElements";
     import FormTester from "@/app/FormTester";
-    import API from "@/api/API";
-    import StoreLoader from "@/client/StoreLoader";
+    import API from "@/app/api/API";
+    import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
 
     @Component({

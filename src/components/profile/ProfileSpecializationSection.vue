@@ -5,7 +5,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
     import SpecializationTable from "@/components/profile/editabletables/SpecializationTable.vue";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
     @Component({
         components: {SpecializationTable}
     })

@@ -65,7 +65,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
+    import KFUser from "@/app/client/KFUser";
     import OneSUser from "@/components/admintools/ones/OneSUser.vue";
     import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";

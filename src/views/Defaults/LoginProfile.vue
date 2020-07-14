@@ -46,7 +46,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import API from "@/api/API";
+    import API from "@/app/api/API";
 
     @Component
     export default class LoginProfile extends Vue {

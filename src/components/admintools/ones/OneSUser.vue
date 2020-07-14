@@ -69,21 +69,20 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/client/KFUser";
-    import API from "@/api/API";
-    import StoreLoader from "@/client/StoreLoader";
+    import KFUser from "@/app/client/KFUser";
+    import API from "@/app/api/API";
+    import StoreLoader from "@/app/client/StoreLoader";
     import CopyField from "@/components/admintools/ones/CopyField.vue";
     import {Dict} from "@/app/types";
-    import {APIFileResult} from "@/api/APIFiles";
+    import {APIFileResult} from "@/app/api/APIFiles";
     import Zipper from "@/ling/utils/Zipper";
     import FileIO from "@/ling/utils/FileIO";
-    import PSPUtils from "@/utils/PSPUtils";
+    import PSPUtils from "@/app/utils/PSPUtils";
 
     @Component({components: {CopyField}})
     export default class OneSUser extends Vue {
         @Prop({required: true}) user!: KFUser;
         private userFiles: APIFileResult[] = [];
-        private userFilesS: any = [];
         private parents: unknown[] = [];
         private psp: unknown[] = [];
         private busy = false;
@@ -96,7 +95,6 @@
                     .filter((p: any) => String(p['PSP_TYPE']).toUpperCase() !== 'PAYER');
                 this.userFiles = this.user.getFiles();
                 this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
-                await this.update();
             });
         }
 
@@ -164,9 +162,6 @@
             return nStr.join('');
         }
 
-        async update() {
-            this.userFilesS = PSPUtils.groupItems(this.user.getFiles());
-        }
 
         async downloadAgreeAndNotify() {
             this.busy = true;

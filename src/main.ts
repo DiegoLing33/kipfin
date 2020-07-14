@@ -1,12 +1,12 @@
 import Vue from 'vue'
-import App from './App.vue'
+import App from './views/App.vue'
 import './registerServiceWorker'
-import router from './router'
-import store from './store'
+import router from './app/router'
+import store from './app/store'
 import BootstrapVue, {BootstrapVueIcons} from "bootstrap-vue";
 import VueCookie from "vue-cookies-ts";
-import AppPlugin from "@/app/AppPlugin";
-import {APIPlugin} from "@/api/API";
+import AppPlugin from "@/app/plugins/AppPlugin";
+import {APIPlugin} from "@/app/api/API";
 
 
 Vue.use(AppPlugin);

@@ -1,4 +1,4 @@
-import API, {APIResult, NumericString} from "@/api/API";
+import API, {APIResult, NumericString} from "@/app/api/API";
 
 export interface APIUserFlags {
     canEdit: '1'|'0';

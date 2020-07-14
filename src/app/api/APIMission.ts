@@ -1,4 +1,4 @@
-import API, {NumericString} from "@/api/API";
+import API, {NumericString} from "@/app/api/API";
 import {Dict} from "@/app/types";
 
 export default class APIMission {

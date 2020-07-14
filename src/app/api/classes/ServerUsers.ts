@@ -2,7 +2,7 @@
  * Api class usersX
  */
 import {NameList, Numeric} from "@/ling/types/Common";
-import Server, {ServerPaged, ServerResponse} from "@/api/Server";
+import Server, {ServerPaged, ServerResponse} from "@/app/api/Server";
 
 /**
  * Server user group response

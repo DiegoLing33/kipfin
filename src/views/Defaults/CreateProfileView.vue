@@ -109,11 +109,11 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import HeaderLined from "@/components/heading/HeaderLined.vue";
+    import HeaderLined from "@/components/theme/heading/HeaderLined.vue";
     import LiModal from "@/ling/components/LiModal.vue";
     import TextValidation from "@/ling/support/TextValidation";
     import {NameList, Nullable} from "@/ling/types/Common";
-    import API from "@/api/API";
+    import API from "@/app/api/API";
 
     /**
      *  The CreateProfileView component.

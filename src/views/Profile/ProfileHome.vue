@@ -43,7 +43,7 @@
     import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
     import {mixins} from "vue-class-component";
     import UserWorkerComponent from "@/components/mixins/UserWorkerComponent.vue";
-    import StoreLoader from "@/client/StoreLoader";
+    import StoreLoader from "@/app/client/StoreLoader";
     import FiText from "@/ling/components/ficomponents/FiText.vue";
     import UserContent from "@/components/theme/UserContent.vue";
 

@@ -198,17 +198,17 @@
 
 <script lang="ts">
     import {Component, Vue, Watch} from "vue-property-decorator";
-    import {APIUserResults} from "@/api/APIUsers";
-    import API from "@/api/API";
+    import {APIUserResults} from "@/app/api/APIUsers";
+    import API from "@/app/api/API";
     import TextField from "@/components/fields/TextField.vue";
-    import StoreLoader from "@/client/StoreLoader";
+    import StoreLoader from "@/app/client/StoreLoader";
     import SelectField from "@/components/fields/SelectField.vue";
     import RadioField from "@/components/fields/RadioField.vue";
-    import {APIFileResult} from "@/api/APIFiles";
+    import {APIFileResult} from "@/app/api/APIFiles";
     import UserContent from "@/components/theme/UserContent.vue";
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
     import CollapseCard from "@/components/theme/CollapseCard.vue";
-    import Server from "@/api/Server";
+    import Server from "@/app/api/Server";
 
     @Component({
         components: {CollapseCard, UserAvatarBox, UserContent, RadioField, SelectField, TextField}
