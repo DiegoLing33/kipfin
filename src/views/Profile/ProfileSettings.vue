@@ -52,19 +52,19 @@
     import StoreLoader from "@/app/client/StoreLoader";
     import ProfileSettingsChangePassword from "@/components/profile/ProfileSettingsChangePassword.vue";
     import {NameList, Nullable} from "@/ling/types/Common";
-    import UserAvatarImage from "@/components/userbox/UserAvatarImage.vue";
     import FiFileUploader from "@/ling/components/ficomponents/FiFileUploader.vue";
     import UserContent from "@/components/theme/UserContent.vue";
     import LiModal from "@/ling/components/LiModal.vue";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
+    import UserAvatarImage from "@/components/userbox/UserAvatarImage";
 
     @Component({
         components: {
+            UserAvatarImage,
             CropImageToolComponent,
             LiModal,
             UserContent,
             FiFileUploader,
-            UserAvatarImage,
             ProfileSettingsChangePassword, HeaderLined
         }
     })
