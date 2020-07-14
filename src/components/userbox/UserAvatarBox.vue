@@ -28,20 +28,18 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/app/client/KFUser";
-    import UserAvatarImage from "@/components/userbox/UserAvatarImage.vue";
+    import {Component, Mixins, Prop} from "vue-property-decorator";
+    import UserAvatarImage from "@/components/userbox/UserAvatarImage.js";
+    import UserPropComponent from "@/components/mixins/UserPropComponent";
+    
     @Component({
         components: {UserAvatarImage}
     })
-    export default class UserAvatarBox extends Vue {
-        @Prop({required: true}) user!: KFUser;
+    export default class UserAvatarBox extends Mixins(UserPropComponent) {
         @Prop({default: true}) imageFirst!: boolean;
         @Prop({default: false}) light!: boolean;
         @Prop({default: false}) large!: boolean;
         @Prop({default: true}) adaptive!: boolean;
-
-
 
         mounted() {
             // Adaptive screen
@@ -49,41 +47,3 @@
         }
     }
 </script>
-
-<style scoped>
-    .user-avatar-box {
-        display: table-row;
-    }
-
-    .avatar-cell, .name-cell {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    .large-size div{
-        font-size: 16px;
-    }
-
-    .large-size .main-name{
-        font-size: 22px;
-    }
-
-    .avatar-field {
-        height: 40px;
-        width: 40px;
-        border-radius: 50%;
-    }
-
-    .light-box {
-        color: white;
-    }
-
-    .light-box .small {
-        color: #cdcdcd !important;
-    }
-
-    .cell {
-        padding: 7px;
-    }
-
-</style>

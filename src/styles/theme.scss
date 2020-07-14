@@ -109,3 +109,26 @@ html * {
     }
   }
 }
+
+//
+//
+//
+//
+//
+//
+
+
+.view-HeaderLined {
+  margin-bottom: 7px;
+  padding-bottom: 7px;
+  border-bottom: 1px dashed gray;
+
+
+  .title {
+    font-size: 2em;
+  }
+
+  .description {
+    font-size: 1em;
+  }
+}

@@ -1,0 +1,38 @@
+
+//
+//  User avatar box
+//
+.user-avatar-box {
+  display: table-row;
+
+  .avatar-cell, .name-cell {
+    display: table-cell;
+    vertical-align: middle;
+  }
+
+  .large-size div{
+    font-size: 16px;
+  }
+
+  .large-size .main-name{
+    font-size: 22px;
+  }
+
+  .avatar-field {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+
+  .light-box {
+    color: white;
+  }
+
+  .light-box .small {
+    color: #cdcdcd !important;
+  }
+
+  .cell {
+    padding: 7px;
+  }
+}
