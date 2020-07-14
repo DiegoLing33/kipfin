@@ -128,7 +128,7 @@
                 <div>Поиск по имени:</div>
                 <b-row>
                     <b-col md="9">
-                        <b-input @input="find" v-model="findName" placeholder="Введите часть имени абитуриента"
+                        <b-input debounce="300" @input="find" v-model="findName" placeholder="Введите часть имени абитуриента"
                                  class="mb-3"></b-input>
                         <b-button class="mb-3 mr-1" size="sm" @click="showAll">Отобразить всех</b-button>
                         <b-button class="mb-3 mr-1" size="sm" @click="showModer">Я проверяю</b-button>
@@ -168,6 +168,9 @@
                 </div>
                 <div class="f-cell">
                     <user-avatar-box :user="user"/>
+                </div>
+                <div class="f-cell">
+                    {{user.school.schoolValue}}
                 </div>
                 <div class="f-cell">
                     {{$app.short[user.facultyId]}}

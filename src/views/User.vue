@@ -15,12 +15,26 @@
         </template>
         <b-tabs content-class="mt-3" justified>
             <b-tab title="Информация" active>
+                <b-alert variant="warning" :show="true">
+                    <h4>Внимание!</h4>
+                    <p>
+                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и программирования.
+                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную комиссию.
+                    </p>
+                </b-alert>
                 <profile-information-section :user="user" :callback="onSave" />
             </b-tab>
             <b-tab title="Образование">
                 <profile-education-section :user="user"  :callback="onSave"/>
             </b-tab>
             <b-tab title="Специальность">
+                <b-alert variant="warning" :show="true">
+                    <h4>Внимание!</h4>
+                    <p>
+                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и программирования.
+                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную комиссию.
+                    </p>
+                </b-alert>
                 <profile-specialization-section :user="user"  :callback="onSpecializationChange" />
             </b-tab>
             <b-tab v-if="$store.state.currentUser.group.hasAccess('13')">
@@ -31,7 +45,6 @@
             </b-tab>
         </b-tabs>
         <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
-        <profile-progress-view v-if="!$store.getters.isAdmin" :user="user"/>
         <b-card class="mt-3 mb-3 ">
             <template v-slot:header>
                 Состояние абитуриента: {{$app.studentStatus.text[user.raw.studentStatus]}}
@@ -87,8 +100,6 @@
     import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
     import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
     import {Dict} from "@/app/types";
-    import {APIFileResult} from "@/api/APIFiles";
-    import PSPUtils from "@/utils/PSPUtils";
     import UserParents from "@/views/Profile/UserParents.vue";
     import PassportView from "@/components/profile/PassportView.vue";
     import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";

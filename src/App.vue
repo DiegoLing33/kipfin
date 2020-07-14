@@ -48,6 +48,7 @@
                     {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
                     {title: "Чат с приемной комиссией", icon: "chat", url: "/admin/chats"},
                     {title: "Активность", icon: "clock-history", url: "/admin/fire"},
+                    {title: "Статистика", icon: "bar-chart", url: "/admin/stats"},
                     {nav: "Пользователи"},
                     {title: "Пользователи", icon: "search", url: "/admin/users"},
                     {title: "Роли пользователей", icon: "check2-circle\n", url: "/admin/roles"},
