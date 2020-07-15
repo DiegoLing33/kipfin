@@ -26,14 +26,17 @@
     import {APIChatMessageResult} from "@/app/api/APIChat";
     import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
+    import Server from "@/app/api/Server";
+    import {ServerChatMessage} from "@/app/api/classes/ServerChats";
+    import {ChatGroupUtils} from "@/app/Chat";
 
     @Component({
         components: {UserContent, ChatBox}
     })
     export default class ProfileChat extends Vue {
-        private messageText                      = "";
-        private busy                             = false;
-        private messages: APIChatMessageResult[] = [];
+        private messageText = "";
+        private busy = false;
+        private messages: ServerChatMessage[] = [];
 
         private roomId = -1;
 
@@ -43,19 +46,13 @@
         }
 
         async update() {
-            await this.$api.transaction(this, async() => {
+            await this.$api.transaction(this, async () => {
 
-                const rooms = await API.chat.getRooms("admission");
-                if (rooms.list.length > 0) {
-                    const room    = rooms.list[0];
-                    this.messages = (await API.chat.getMessages(room.roomId)).list;
-                }
-
-                for (const m of this.messages) {
-                    if (m.senderId !== this.$store.state.me.user_id && m.messageStatus === '1') {
-                        await API.chat.readMessage(m.messageId);
-                        m.messageStatus = '2';
-                    }
+                const rooms = (await Server.chats.getRooms(0)).items;
+                if (rooms.length > 0) {
+                    const res = await Server.loadAllPages(Server.chats.getMessagesAll, {roomId: rooms[0].roomId});
+                    this.messages = res.items;
+                    ChatGroupUtils.readAllUnreadMessages(this.messages, parseInt(this.$store.state.currentUser.userId)).then();
                 }
             });
             this.busy = false;
@@ -63,13 +60,13 @@
 
         async messageSend() {
             this.busy = false;
-            this.$api.transaction(this, async() => {
+            this.$api.transaction(this, async () => {
                 await API.request("admission.sendChat", {
                     text: this.messageText
                 });
                 await this.update();
                 this.messageText = "";
-                this.busy        = false;
+                this.busy = false;
             });
         }
     }

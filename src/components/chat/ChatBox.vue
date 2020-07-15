@@ -7,12 +7,11 @@
                         v-for="m of messages"
                         :key="m.messageId"
                         :text="m.messageText"
-                        :author-name="getAuthorName(m.sender)"
-                        :avatar="getAvatar(m.sender)"
+                        :author-name="getAuthorName(m.messageSender)"
                         :date="m.messageTime"
                         :incoming="true"
-                        :user="m.sender"
-                        :read="m.messageStatus === '2'"
+                        :user="m.messageSender"
+                        :read="m.messageStatus === 2"
                 ></chat-box-message>
 
             </div>
@@ -22,24 +21,21 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {APIChatMessageResult} from "@/app/api/APIChat";
     import ChatBoxMessage from "@/components/chat/ChatBoxMessage.vue";
     import {ServerUser} from "@/app/api/classes/ServerUsers";
+    import {ServerChatMessage} from "@/app/api/classes/ServerChats";
+
     @Component({
         components: {ChatBoxMessage}
     })
     export default class ChatBox extends Vue {
-        @Prop({default: []}) messages!: APIChatMessageResult[];
+        @Prop({default: []}) messages!: ServerChatMessage[];
 
-        getAuthorName(author: ServerUser){
+        getAuthorName(author: ServerUser) {
+            if (parseInt(this.$store.state.currentUser.group.groupId.toString()) === 1
+            && parseInt(this.$store.state.currentUser.userId) !== author.userId)
+                return author.group.groupTitle + "# " + author.userId;
             return this.$app.userUtils.getFullName(author as any);
-        }
-
-        getAvatar(author: ServerUser){
-            if(parseInt(author.groupId) > 1){
-                return `/img/chat_agent.jpg`;
-            }
-            return `/img/chat_user.png`;
         }
     }
 </script>
@@ -49,7 +45,7 @@
         max-width: 100%;
     }
 
-    .chat-author{
+    .chat-author {
         font-size: 16px;
     }
 

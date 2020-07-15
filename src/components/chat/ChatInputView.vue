@@ -1,21 +1,27 @@
 <template>
     <div class="view-ChatInputView">
-        <b-textarea
-                no-resize
-                :disabled="disabled"
-                v-model="messageText"
-                placeholder="Введите текст сообщения... (Используйте клавишу ↩ [Enter] для переноса строки)"
-        />
-        <b-button
-                :disabled="disabled || messageText === ''"
-                block variant="success" class="mt-3" @click="messageSend">
-            Отправить сообщение
-        </b-button>
+        <b-overlay :show="busy">
+            <b-textarea
+                    no-resize
+                    :disabled="disabled || selectedRoom === null"
+                    v-model="messageText"
+                    placeholder="Введите текст сообщения... (Используйте клавишу ↩ [Enter] для переноса строки)"
+            />
+            <b-button
+                    :disabled="disabled || messageText === ''  || selectedRoom === null"
+                    block variant="success" class="mt-3" @click="messageSend">
+                Отправить сообщение
+            </b-button>
+        </b-overlay>
     </div>
 </template>
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
+    import Server from "@/app/api/Server";
+    import {ServerChatRoom} from "@/app/api/classes/ServerChats";
+    import {Nullable} from "@/ling/types/Common";
+
     /**
      *  The ChatInputView component.
      *  @author diego
@@ -23,14 +29,28 @@
      */
     @Component
     export default class ChatInputView extends Vue {
-        @Prop({default: null}) selectedRoomId!: number;
+        @Prop({default: null}) selectedRoom!: Nullable<ServerChatRoom>;
         @Prop({default: false}) disabled!: boolean;
+        private busy = false;
         private messageText = "";
+
         /**
          * Sends the message
          */
-        private messageSend() {
-            console.log(this.selectedRoomId);
+        private async messageSend() {
+            if (this.selectedRoom !== null) {
+                this.busy = true;
+                try {
+                    const res = await Server.chats.sendMessage(this.selectedRoom.roomId, this.messageText);
+                    const result = res.result;
+                    if (!result) throw Error("Сообщение не отправлено...");
+                    this.busy = false;
+                    this.messageText = "";
+                    this.$emit("sent");
+                } catch (e) {
+                    (this as any).$api.error(this, e);
+                }
+            }
         }
     }
 </script>

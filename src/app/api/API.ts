@@ -13,13 +13,6 @@ export interface APIPluginInterface {
     error(context: any, text: string): void;
 }
 
-declare module 'vue/types/vue' {
-    interface Vue {
-        readonly $api: APIPluginInterface;
-        readonly $transaction: APITransactionFunc;
-    }
-}
-
 /**
  * The API plugin
  * @param vue

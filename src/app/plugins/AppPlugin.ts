@@ -2,6 +2,7 @@ import KIPD from "@/app/KIPD";
 import {FieldFormatter, FieldTester} from "@/components/fields/Field";
 import UserUtils from "@/app/utils/UserUtils";
 import {TextFormatter} from "@/ling/support/TextValidation";
+import {APIPluginInterface, APITransactionFunc} from "@/app/api/API";
 
 export interface AppPluginApp {
     infoStatus: typeof KIPD.infoStatus;
@@ -30,9 +31,10 @@ export interface AppPluginApp {
 declare module 'vue/types/vue' {
     interface Vue {
         readonly $app: AppPluginApp;
+        readonly $api: APIPluginInterface;
+        readonly $transaction: APITransactionFunc;
     }
 }
-
 export default function AppPlugin(vue: any): void {
     vue.prototype.$app = {
         textFormatter: TextFormatter,

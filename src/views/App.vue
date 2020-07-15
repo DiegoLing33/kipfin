@@ -42,11 +42,11 @@
             ];
             if(this.$store.getters.isAdmin)
                 return [...menuItems, ...[
+                    {title: "Чаты", icon: "chat", url: "/chat"},
                     {nav: "Прием"},
                     {title: "Панель управления", icon: "house", url: "/admin"},
                     {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},
                     {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
-                    {title: "Чат с приемной комиссией", icon: "chat", url: "/admin/chats"},
                     {title: "Активность", icon: "clock-history", url: "/admin/fire"},
                     {title: "Статистика", icon: "bar-chart", url: "/admin/stats"},
                     {nav: "Пользователи"},

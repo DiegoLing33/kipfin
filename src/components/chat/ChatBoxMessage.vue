@@ -1,7 +1,8 @@
 <template>
     <div class="incoming_msg mb-3">
         <div class="incoming_msg_img">
-            <img :src="avatar"/>
+            <user-avatar-image
+                    :user="user" border-radius="50%" />
         </div>
         <div class="received_msg">
             <div class="received_withd_msg">
@@ -20,14 +21,15 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
     import {APIUserShort} from "@/app/api/APIUsers";
-
-    @Component
+    import UserAvatarImage from "@/components/userbox/UserAvatarImage";
+    @Component({
+        components: {UserAvatarImage}
+    })
     export default class ChatBoxMessage extends Vue {
         @Prop({required: true}) authorName!: string;
         @Prop({required: true}) date!: string;
         @Prop({required: true}) text!: string;
         @Prop({required: true}) read!: boolean;
-        @Prop({required: true}) avatar!: string;
         @Prop({required: true}) user!: APIUserShort;
     }
 </script>

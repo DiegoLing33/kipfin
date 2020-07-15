@@ -1,15 +1,18 @@
 <template>
     <div class="rooms">
-        <div
-                v-for="room of rooms"
+        <chat-room-item
+                v-for="room of roomsList"
                 :key="room.roomId"
                 class="room-item"
-                @click="$emit('select', room)"
-                :data-selected="selectedRoom !== null &&
-                selectedRoom.roomId === room.roomId ? 1 :0"
-        >
-            <user-avatar-box :user="displayOwner(room)"/>
-        </div>
+                :room="room"
+                @click="$emit('selected', room)"
+                :selected="selectedRoom && (selectedRoom.roomId === room.roomId)"
+                :data-selected="selectedRoom && (selectedRoom.roomId === room.roomId ? '1' : '0')"
+        />
+        <b-button
+                @click="$emit('more')"
+                v-if="(totalCount - loadedCount) > 0"
+                variant="primary" squared block>Загрузить еще ({{(totalCount - loadedCount)}})</b-button>
     </div>
 </template>
 
@@ -17,6 +20,7 @@
     import {Component, Prop, Vue} from "vue-property-decorator";
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
     import {ServerChatRoom} from "@/app/api/classes/ServerChats";
+    import ChatRoomItem from "@/components/chat/ChatRoomItem";
 
     /**
      *  The ChatRoomsList component.
@@ -24,30 +28,16 @@
      *  @created 08.07.2020 19:41
      */
     @Component({
-        components: {UserAvatarBox}
+        components: {ChatRoomItem, UserAvatarBox}
     })
     export default class ChatRoomsList extends Vue {
         @Prop({default: []}) rooms!: ServerChatRoom[];
         @Prop({default: null}) selectedRoom!: ServerChatRoom | null;
+        @Prop({default: 0}) totalCount!: number;
+        @Prop({default: 0}) loadedCount!: number;
 
-
-        private displayOwner(room: ServerChatRoom) {
-            if (room.roomChatGroupId > 0){
-                return {
-                    lastname: '',
-                    surname:'',
-                    name: room.roomChatGroup.chatGroupTitle,
-                    userId: room.roomId,
-                    group: {
-                        groupTitle: "Комната",
-                        groupId: 0,
-                    }
-                }
-            }
-            return room.roomReceiver;
+        get roomsList(){
+            return this.rooms.filter(v => v.roomStatus < 3);
         }
     }
 </script>
-
-<style scoped>
-</style>
