@@ -1,6 +1,7 @@
 import {Dict} from "@/app/types";
 import ServerUsers from "@/app/api/classes/ServerUsers";
 import {NameList} from "@/ling/types/Common";
+import ServerChats from "@/app/api/classes/ServerChats";
 
 /**
  * Server response
@@ -38,6 +39,11 @@ export default class Server {
      * Server users class
      */
     public static users = new ServerUsers();
+
+    /**
+     * Server chats class
+     */
+    public static chats = new ServerChats();
 
     /**
      * Inits the api

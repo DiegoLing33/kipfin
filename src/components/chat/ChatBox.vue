@@ -24,21 +24,18 @@
     import {Component, Prop, Vue} from "vue-property-decorator";
     import {APIChatMessageResult} from "@/app/api/APIChat";
     import ChatBoxMessage from "@/components/chat/ChatBoxMessage.vue";
-    import {APIUserShort} from "@/app/api/APIUsers";
+    import {ServerUser} from "@/app/api/classes/ServerUsers";
     @Component({
         components: {ChatBoxMessage}
     })
     export default class ChatBox extends Vue {
         @Prop({default: []}) messages!: APIChatMessageResult[];
 
-        getAuthorName(author: APIUserShort){
-            if(parseInt(author.groupId) > 1){
-                return `${author.groupTitle} #${author.userId}`;
-            }
-            return `${author.lastname} ${author.name}`;
+        getAuthorName(author: ServerUser){
+            return this.$app.userUtils.getFullName(author as any);
         }
 
-        getAvatar(author: APIUserShort){
+        getAvatar(author: ServerUser){
             if(parseInt(author.groupId) > 1){
                 return `/img/chat_agent.jpg`;
             }
