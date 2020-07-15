@@ -40,13 +40,17 @@
                         Разрешения
                     </b-button>
                     <b-collapse accordion="help-accordion" id="allows">
-                        <user-rules-control :callback="onRuleSet" :user="user" />
+                        <user-rules-control :callback="onRuleSet" :user="user"/>
                     </b-collapse>
-
+                    <b-button variant="info" squared @click="sendOriginal" style="width: 100%">
+                        <b-icon-house-door class="float-left"/>
+                        Отдал оригинал (Очно)
+                    </b-button>
                     <b-button variant="info" squared @click="printCard" block>
                         <b-icon-card-image class="float-left"/>
                         Карточка абитуриента
                     </b-button>
+
                     <file-uploader-admin-view :user="user"/>
                     <b-button variant="success" squared block v-b-toggle:stat>Статус абитуриента</b-button>
                     <b-collapse visible accordion="help-accordion" id="stat">
@@ -73,11 +77,13 @@
     import FileIO from "@/ling/utils/FileIO";
     import SchoolValueCalculator from "@/components/admintools/adminhelper/SchoolValueCalculator.vue";
     import UserRulesControl from "@/components/admintools/usercontrols/UserRulesControl.vue";
+    import API from "@/app/api/API";
 
     @Component({
         components: {
             UserRulesControl,
-            SchoolValueCalculator, FileUploaderAdminView, FastInputSwitch, UserStatusToolbox, OneSUser}
+            SchoolValueCalculator, FileUploaderAdminView, FastInputSwitch, UserStatusToolbox, OneSUser
+        }
     })
     export default class AdminHelper extends Vue {
 
@@ -102,6 +108,14 @@
 
         private hide() {
             this.visible = false;
+        }
+
+        private sendOriginal() {
+            this.$transaction(this, async () => {
+                await API.request("mission.notify", {userId: this.user.userId});
+                window.location.reload();
+
+            });
         }
     }
 </script>
