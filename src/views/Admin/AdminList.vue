@@ -135,6 +135,7 @@
                         <b-button class="mb-3 mr-1" size="sm" @click="showModerEN">Я проверяю инстр.</b-button>
                         <b-button class="mb-3 mr-1" size="sm" @click="showOneS">Я переношу</b-button>
                         <b-button class="mb-3 mr-1" size="sm" @click="showAdmin">Я директор</b-button>
+                        <b-button class="mb-3 mr-1" size="sm" @click="showPay">Я проверяю оплату</b-button>
                     </b-col>
                     <b-col md="3">
                         <b-input
@@ -158,7 +159,7 @@
         </template>
         <div class="found-results">
             <div
-                    @click="$router.push('/user/' + user.user_id)"
+                    @click="e => userClick(e, user)"
                     class="found-item"
                     v-for="user of result"
                     :key="`u_(${user.user_id})`"
@@ -186,6 +187,9 @@
                     <b-badge class="m-1" v-if="user['hasNotification']" variant="success">
                         Есть уведомление
                     </b-badge>
+                    <b-badge class="m-1" v-if="user['hasCheck']" variant="success">
+                        Есть чек
+                    </b-badge>
                 </div>
             </div>
         </div>
@@ -209,6 +213,7 @@
     import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
     import CollapseCard from "@/components/theme/CollapseCard.vue";
     import Server from "@/app/api/Server";
+    import KFUser from "@/app/client/KFUser";
 
     @Component({
         components: {CollapseCard, UserAvatarBox, UserContent, RadioField, SelectField, TextField}
@@ -251,6 +256,14 @@
         private selectedSpec = "0";
         private selectedBase = "0";
 
+        private userClick(e: MouseEvent, user: {user_id: string}){
+            if(e.metaKey || e.ctrlKey){
+                window.open('/user/' + user.user_id, '_blank');
+            }else{
+                this.$router.push('/user/' + user.user_id);
+            }
+        }
+
         mounted() {
             StoreLoader.wait(this.$store, () => {
                 this.update();
@@ -262,7 +275,9 @@
             const notify = (await Server.request("files.listByType", {
                 type: 'notify'
             })).list;
-            console.log(notify);
+            const checks = (await Server.request("files.listByType", {
+                type: 'check'
+            })).list;
             this.items = users.list.filter(user => parseInt(user.group.group_id) === 1)
                 .map(value => {
                     (value.group as any)['groupTitle'] = value.group.title;
@@ -273,6 +288,13 @@
                     for (const file of notify) {
                         if (file.user_id === value.user_id && file.file_status === '2') {
                             value.hasNotification = true;
+                            break;
+                        }
+                    }
+
+                    for (const file of checks) {
+                        if (file.user_id === value.user_id) {
+                            value.hasCheck = true;
                             break;
                         }
                     }
@@ -292,12 +314,16 @@
             }
         }
 
+        private showPay(){
+            this.setAllFlags("no");
+            this.showAwaitPay = "yes";
+        }
+
         @Watch("showInProgress")
         @Watch("showEmpty")
         @Watch("showInRating")
         @Watch("hideDone")
         @Watch("hideTest")
-        @Watch("hideNoNotify")
         @Watch("showLoading")
         @Watch("showErrors")
         @Watch("showInUploading")
