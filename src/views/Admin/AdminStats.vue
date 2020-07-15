@@ -76,6 +76,20 @@
                 </b-tr>
             </b-tbody>
         </b-table-simple>
+        <b-row>
+            <b-col md="6">
+                <b-card footer="Мест занято" title="ИСИП">
+                    <h1>{{(pos.res[1].length+pos.res[2].length+pos.done[1].length)}}</h1>
+                    <div class="text-muted">из 96</div>
+                </b-card>
+            </b-col>
+            <b-col md="6">
+                <b-card footer="Мест занято" title="ОИБАС">
+                    <h1>{{(pos.res[3].length+pos.done[3].length)}}</h1>
+                    <div class="text-muted">из 55</div>
+                </b-card>
+            </b-col>
+        </b-row>
     </user-content>
 </template>
 
