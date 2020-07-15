@@ -24,11 +24,11 @@
     border-radius: 50%;
   }
 
-  .light-box {
+  &.light-box {
     color: white;
   }
 
-  .light-box .small {
+  &.light-box .small {
     color: #cdcdcd !important;
   }
 

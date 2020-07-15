@@ -7,10 +7,10 @@ import {VNodeData} from "vue/types/vnode";
 //
 //  Defaults
 //
-export let defaultUserAvatarSize = '40px';
-export let defaultUserAvatarBorderRadius = '0';
-export let defaultUserAvatarsPath = 'http://kipfin.ru/new/files/avatar/';
-export let defaultUserAvatarNoPath = '/img/no-image.png';
+export const defaultUserAvatarSize = '40px';
+export const defaultUserAvatarBorderRadius = '0';
+export const defaultUserAvatarsPath = 'http://kipfin.ru/new/files/avatar/';
+export const defaultUserAvatarNoPath = '/img/no-image.png';
 
 /**
  * User avatar image component
@@ -23,14 +23,13 @@ export default class UserAvatarImage extends Mixins(UserPropComponent) {
     /**
      * Renders the element
      * @param h
-     * @param context
      */
-    render(h: CreateElement, context: RenderContext) {
+    render(h: CreateElement) {
         const node: VNodeData = {
             staticClass: "user-avatar-image",
             style: this.avatarStyle
         };
-        return h("div", mergeData(context.data, node), context.children);
+        return h("div", node);
     }
 
     /**

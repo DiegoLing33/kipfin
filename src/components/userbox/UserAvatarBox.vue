@@ -29,7 +29,7 @@
 
 <script lang="ts">
     import {Component, Mixins, Prop} from "vue-property-decorator";
-    import UserAvatarImage from "@/components/userbox/UserAvatarImage.js";
+    import UserAvatarImage from "@/components/userbox/UserAvatarImage";
     import UserPropComponent from "@/components/mixins/UserPropComponent";
     
     @Component({

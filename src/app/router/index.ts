@@ -43,6 +43,8 @@ Vue.use(VueRouter)
       {path: '/user/settings', name: 'User Documents', component: ProfileSettings},
       {path: '/user', name: "User Me Page", component: UserView},
       {path: '/user/:id', name: "User Page", component: UserView},
+
+      {path: '/chat', name: "Chats Page", component: Chat},
 ];
 
 const router = new VueRouter({

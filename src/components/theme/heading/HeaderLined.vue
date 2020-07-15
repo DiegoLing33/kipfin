@@ -1,8 +1,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {CreateElement, RenderContext} from "vue";
+    import {CreateElement} from "vue";
     import {VNodeData} from "vue/types/vnode";
-    import {mergeData} from "vue-functional-data-merge";
 
     @Component
     export default class HeaderLined extends Vue {
@@ -12,10 +11,8 @@
         /**
          * Renders the view
          * @param h
-         * @param context
          */
-        render(h: CreateElement, context: RenderContext) {
-            const $slots = context.slots();
+        render(h: CreateElement) {
             const rootNode: VNodeData = {
                 staticClass: "view-HeaderLined"
             }
@@ -25,9 +22,9 @@
             const $descriptionNode: VNodeData = {
                 staticClass: "description text-muted",
             };
-            return h("div", mergeData(context.data, rootNode), [
-                h("div", $titleNode, [this.title, $slots["default"] || null]),
-                h("div", $descriptionNode, [this.description, $slots["description"] || null]),
+            return h("div", rootNode, [
+                h("div", $titleNode, [this.title, this.$slots['default'] || null]),
+                h("div", $descriptionNode, [this.description, this.$slots["description"] || null]),
             ]);
         }
     }
