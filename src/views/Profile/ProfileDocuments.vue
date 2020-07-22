@@ -55,8 +55,8 @@
         }
 
         async update() {
-            await this.$store.state.currentUser.updateFiles();
-            this.documents = KFDocument.fromList(this.$store.state.currentUser.getFiles());
+            await this.$store.getters.user.updateFiles();
+            this.documents = KFDocument.fromList(this.$store.getters.user.getFiles());
         }
     }
 </script>

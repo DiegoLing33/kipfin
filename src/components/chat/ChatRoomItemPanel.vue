@@ -26,7 +26,7 @@
         @Prop({required: true}) room!: ServerChatRoom;
 
         protected onArchiveRoom() {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 await Server.chats.setRoomStatus(this.room.roomId, 3);
                 this.room.roomStatus = 3;
                 this.$bvToast.toast("Команата убрана в архив", {title: "Успех!"});

@@ -61,7 +61,7 @@
         }
 
         public async update() {
-            this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 this.userGroupsRaw = (await Server.loadAllPages(Server.users.getGroups)).items;
             });
         }

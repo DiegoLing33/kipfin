@@ -46,7 +46,7 @@
         }
 
         async update() {
-            await this.$api.transaction(this, async () => {
+            await this.$transaction(async () => {
 
                 const rooms = (await Server.chats.getRooms(0)).items;
                 if (rooms.length > 0) {
@@ -60,7 +60,7 @@
 
         async messageSend() {
             this.busy = false;
-            this.$api.transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request("admission.sendChat", {
                     text: this.messageText
                 });

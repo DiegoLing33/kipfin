@@ -166,7 +166,7 @@
          */
         private async update() {
             this.busy = true;
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 const result = await API.request("psp.my");
                 this.myPSPs = result.list;
                 // this.$store.commit("setCurrentUser", false);
@@ -178,7 +178,7 @@
             this.busy = true;
             values["PSP_TYPE"] = this.PSP_TYPE;
             values["PSP_G"] = this.PSP_G;
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request("psp.add", values);
                 await this.update();
             });
@@ -187,7 +187,7 @@
 
         private async remove(pspId: unknown) {
             this.busy = true;
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request("psp.remove", {pspId});
                 await this.update();
             });

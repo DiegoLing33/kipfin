@@ -88,7 +88,6 @@
          * File click callback
          */
         private onFileClick(){
-            console.log(3);
             this.$emit('selected', this.document);
         }
     }

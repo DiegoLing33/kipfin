@@ -9,6 +9,7 @@ declare module 'vue/types/vue' {
     interface Vue {
         $ui: typeof UI;
         $modalShow: (name: string) => void;
+        $transaction: typeof UI.transaction;
     }
 }
 
@@ -21,5 +22,6 @@ export default class UIPlugin {
         vue.prototype.$modalShow = (name: string) => {
             UI.eventBus.$emit("m::" + name + "::show");
         };
+        vue.prototype.$transaction = UI.transaction;
     }
 }

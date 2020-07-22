@@ -20,10 +20,10 @@
                             class="mt-3"
                             placeholder="Введите комментарий для абитуриента"></b-textarea>
                 <small class="text-muted my-2 d-block">
-                    Автор комментария [Как Вас будет видеть пользователь] - <b>{{$store.state.currentUser.group.groupTitle}}
-                    # {{$store.state.currentUser.userId}}</b>
+                    Автор комментария [Как Вас будет видеть пользователь] - <b>{{$store.getters.user.group.groupTitle}}
+                    # {{$store.getters.user.userId}}</b>
                     <br/>
-                    Вы: {{$store.state.currentUser.getFullName()}}
+                    Вы: {{$store.getters.user.getFullName()}}
                 </small>
                 <b-button :disabled="inputText === ''" @click="send" class="mt-1" variant="primary">Отправить
                     комментарий
@@ -50,14 +50,14 @@
         }
 
         private update() {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 this.comment = await API.request("mission.getLastComment", {userId: this.user.userId});
             });
         }
 
         private async send() {
             this.adminBusy = true;
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request("mission.addComment", {
                     forUserId: this.user.userId,
                     commentText: this.inputText

@@ -7,7 +7,7 @@
 
         <b-collapse id="nav-collapse" is-nav>
             <b-navbar-nav>
-                <navbar-link v-if="!$store.state.ready" to="/">Главная</navbar-link>
+                <navbar-link v-if="!$store.getters.isLoggedIn" to="/">Главная</navbar-link>
                 <navbar-link v-else to="/user">Профиль</navbar-link>
 
                 <a class="nav-link" href="http://lists4priemka.fa.ru/listabits.aspx?fl=12&tl=спо&le=СПО">Рейтинг
@@ -16,13 +16,13 @@
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">
-                <template v-if="!$store.state.ready">
+                <template v-if="!$store.getters.isLoggedIn">
                     <navbar-link to="/login">Войти в кабинет</navbar-link>
                 </template>
                 <template v-else>
                     <div class="nav-user" @click="$router.push('/user')">
                         <user-avatar-box :light="true" :image-first="false"
-                                         :user="$store.state.currentUser"></user-avatar-box>
+                                         :user="$store.getters.user"></user-avatar-box>
                     </div>
                 </template>
             </b-navbar-nav>

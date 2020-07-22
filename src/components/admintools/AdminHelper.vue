@@ -111,7 +111,7 @@
         }
 
         private sendOriginal() {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 await API.request("mission.notify", {userId: this.user.userId});
                 window.location.reload();
 

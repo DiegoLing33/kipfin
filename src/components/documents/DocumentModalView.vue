@@ -165,7 +165,7 @@
          * @param status
          */
         async setFileStatus(file: KFDocument, status: number) {
-            this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await file.setStatus(status);
                 this.$emit("updated");
                 (this.$refs['modal'] as any).close();
@@ -177,7 +177,7 @@
          * @param blob
          */
         private downloadCroppedImage(blob: Blob) {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 await API.files.uploadX(blob, this.selectedFile.storageName,
                     this.selectedFile.fileUserId, "2");
                 // @fixme - NO RELOAD!

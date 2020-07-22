@@ -98,7 +98,7 @@
 
         private async fileAccessed(blob: Blob) {
             this.loading = true;
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request('profile.uploadAvatar', {}, {file: [blob]});
                 this.$bvToast.toast('Новый аватар вставлен в рамку!', {title: "Успех"});
                 this.$store.commit("setCurrentUser", false);
@@ -111,7 +111,7 @@
 
 
         async passwordChangeHandler(values: NameList<string>) {
-            this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request('profile.changePassword', values);
                 this.$bvToast.toast('Пароль успешно изменен!', {title: "Успех"});
                 setTimeout(() => {

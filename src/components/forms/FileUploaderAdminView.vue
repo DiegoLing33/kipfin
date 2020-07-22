@@ -85,7 +85,7 @@
         }
 
         private async send() {
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.files.uploadX(this.selectedFiles, "agree", this.user.userId);
                 await API.files.uploadX(this.selectedFiles2, "notify", this.user.userId);
                 window.location.reload();

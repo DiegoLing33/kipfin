@@ -196,7 +196,7 @@
                 return this.showErrorModal("Номер телефона должен начинаться с кода города, например: +7 999 849-22-11");
             if (!TextValidation.validationLength(6)(this.values.password || ""))
                 return this.showErrorModal("Пароль должен быть не короче 6-и символов");
-            await this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 await API.request("admission.createProfile", this.values);
                 window.location.href = "/login";
             });

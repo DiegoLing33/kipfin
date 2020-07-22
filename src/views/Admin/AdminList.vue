@@ -309,7 +309,7 @@
                 if (this.findId !== "") {
                     this.$router.push("/user/" + this.findId);
                 } else {
-                    this.$api.error(this, "Нельзя перейти к пустому идентификатору!");
+                    this.$ui.error("Нельзя перейти к пустому идентификатору!");
                 }
             }
         }

@@ -12,11 +12,11 @@
         protected user: KFUser = KFUser.createZeroUser();
 
         protected getUserId(): string | number | null {
-            return this.$store.state.currentUser.userId;
+            return this.$store.getters.user.userId;
         }
 
         protected get isItMe(){
-            return this.user.userId === this.$store.state.currentUser.userId;
+            return this.user.userId === this.$store.getters.user.userId;
         }
 
         /**
@@ -24,7 +24,7 @@
          */
         protected async update() {
             if (this.getUserId() === null) {
-                this.user = this.$store.state.currentUser;
+                this.user = this.$store.getters.user;
             } else {
                 this.user = new KFUser(await API.users.get(this.getUserId() as any));
             }

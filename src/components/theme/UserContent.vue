@@ -1,9 +1,9 @@
-<template v-if="$store.state.ready">
+<template v-if="$store.getters.isLoggedIn">
     <b-overlay :show="overlay">
         <b-card no-body
                 v-if="checkAccess === true"
                 style="border-radius: 0"
-                :header="('Вы: ' + $store.state.currentUser.getFullName() + ' (' + $store.state.currentUser.group.groupTitle + ' #' + $store.state.currentUser.userId) + ')'">
+                :header="('Вы: ' + $store.getters.user.getFullName() + ' (' + $store.getters.user.group.groupTitle + ' #' + $store.getters.user.userId) + ')'">
             <div class="header">
                 <b-card-header>
                     <h2 v-if="title !== ''">{{title}}</h2>
@@ -67,7 +67,7 @@
 
         protected storeLoaded() {
             if (this.minAccess === "") this.checkAccess = true;
-            else this.checkAccess = this.$store.state.currentUser.group.hasAccess(this.minAccess);
+            else this.checkAccess = this.$store.getters.user.group.hasAccess(this.minAccess);
         }
     }
 </script>

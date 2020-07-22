@@ -39,7 +39,7 @@
 
         protected onRoleChanged(roleId: number) {
             return new Promise(resolve => {
-                this.$transaction(this, async () => {
+                this.$transaction(async () => {
                     await Server.users.setGroup(roleId, this.user.userId);
                     resolve(true);
                     window.location.reload();
@@ -48,7 +48,7 @@
         }
 
         public async update() {
-            this.$transaction(this, async () => {
+            await this.$transaction(async () => {
                 this.userGroupsRaw = (await Server.loadAllPages(Server.users.getGroups)).items;
             });
         }

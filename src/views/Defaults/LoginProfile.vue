@@ -68,9 +68,7 @@
             e.preventDefault();
             try {
                 const response = await API.users.login(this.form.login, this.form.password);
-                this.$store.commit("setCurrentUser", response.token);
-                const saveTime = (this.form.remember.includes("1") ? 90 : 1) * 24 * 60 * 60 * 1000;
-                this.$cookies.set("token", response.token, {expires: saveTime + new Date().getTime()});
+                this.$account.authorization.setToken(response.token);
                 if (this.$store.state.currentUser.group.hasAccess('7')) await this.$router.push('/admin');
                 else await this.$router.push('/user');
 

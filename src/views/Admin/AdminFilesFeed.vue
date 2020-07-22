@@ -31,7 +31,7 @@
         }
 
         update() {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 const list = (await API.request("files.listByType", {
                     type: 'agree'
                 })).list;

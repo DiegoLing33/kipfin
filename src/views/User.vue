@@ -1,7 +1,5 @@
 <template>
-    <user-content
-            v-if="user.raw.ok"
-    >
+    <user-content v-if="user.userId.toString() !== '-1'">
         <template v-slot:header>
             <user-avatar-box :large="true" :image-first="true" :user="user"></user-avatar-box>
             <div class="mt-3">
@@ -37,7 +35,7 @@
                 </b-alert>
                 <profile-specialization-section :user="user"  :callback="onSpecializationChange" />
             </b-tab>
-            <b-tab v-if="$store.state.currentUser.group.hasAccess('13')">
+            <b-tab v-if="$store.getters.hasAccess(13)">
                 <template v-slot:title>
                     <b-icon-gear /> Управление
                 </template>
@@ -92,10 +90,9 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue, Watch} from "vue-property-decorator";
+    import {Component, Mixins, Watch} from "vue-property-decorator";
     import API from "@/app/api/API";
     import KFUser from "@/app/client/KFUser";
-    import StoreLoader from "@/app/client/StoreLoader";
     import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
     import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
     import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
@@ -117,6 +114,8 @@
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
     import KFDocument from "@/app/client/KFDocument";
     import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
+    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
+    import UI from "@/app/plugins/ui/UI";
 
     @Component({
         components: {
@@ -141,17 +140,15 @@
             FastInputSwitch,
         }
     })
-    export default class UserView extends Vue {
+    export default class UserView extends Mixins(StoreLoadedComponent) {
 
         private documents: KFDocument[] = [];
         private user: KFUser = KFUser.createZeroUser();
         private parents: unknown[] = [];
         private psp: unknown[] = [];
 
-        async mounted() {
-            StoreLoader.wait(this.$store, () => {
-                this.update();
-            });
+        protected storeLoaded() {
+            this.update();
         }
 
         private showOneSModel(){
@@ -163,8 +160,7 @@
             if (this.$route.params.id) {
                 this.user = new KFUser(await API.users.get(this.$route.params.id));
             } else {
-                await this.$store.dispatch("updateCurrentUser")
-                this.user = this.$store.state.currentUser;
+                this.user = this.$store.getters.user;
             }
             if (this.$store.getters.isAdmin) {
                 await this.user.updateFiles();
@@ -184,7 +180,7 @@
                         this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
                     })
                     .catch(reason => {
-                        this.$api.error(this, reason);
+                        this.$ui.error(reason);
                         resolve(false);
                     });
             });
@@ -201,7 +197,7 @@
                     if (field === 'facultyId') window.location.reload();
                     else await this.update();
                 }).catch(reason => {
-                    this.$api.error(this, reason);
+                    this.$ui.error(reason);
                     resolve(false);
                 });
             });
@@ -228,7 +224,7 @@
                             this.$bvToast.toast("Разрешение [" + rule + "] изменено!", {title: "Успех"});
                             window.location.reload();
                         }).catch(reason => {
-                        this.$api.error(this, reason);
+                        this.$ui.error(reason);
                         resolve(false);
                     });
                 });
@@ -245,14 +241,14 @@
                         resolve(true);
                         await this.update();
                     }).catch(reason => {
-                    this.$api.error(this, reason);
+                    this.$ui.error(reason);
                     resolve(false);
                 });
             });
         }
 
         sendTest() {
-            this.$transaction(this, async () => {
+            this.$transaction(async () => {
                 await API.request("mission.sendTest");
                 window.location.reload();
             });
@@ -263,10 +259,10 @@
             return new Promise(resolve => {
                 API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
                     .then(() => {
+                        this.$store.dispatch("login", this.$account.authorization.getToken());
                         resolve(true);
-                        window.location.reload();
                     }).catch(reason => {
-                    this.$api.error(this, reason);
+                    this.$store.commit("error", reason);
                     resolve(false);
                 })
             });
