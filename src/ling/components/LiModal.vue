@@ -32,6 +32,12 @@
         @Prop({default: false}) busy!: boolean;
         @Prop({default: true}) text!: boolean;
 
+        mounted() {
+            this.$ui.eventBus.$on("m::" + this.name + "::show", () => {
+                this.show();
+            });
+        }
+
         /**
          * Shows the modal
          */
