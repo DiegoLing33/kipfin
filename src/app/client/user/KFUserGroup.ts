@@ -1,4 +1,5 @@
 import {NumericString} from "@/app/api/API";
+import {Numeric} from "@/ling/types/Common";
 
 /**
  * The group entity
@@ -19,7 +20,7 @@ export default class KFUserGroup {
      * Returns true, if user contains access index
      * @param accessIndex
      */
-    public hasAccess(accessIndex: NumericString){
-        return this.groupAccess.includes(accessIndex);
+    public hasAccess(accessIndex: Numeric){
+        return this.groupAccess.includes(accessIndex.toString());
     }
 }

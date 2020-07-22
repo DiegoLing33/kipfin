@@ -44,7 +44,7 @@ Vue.use(VueRouter)
       {path: '/user', name: "User Me Page", component: UserView},
       {path: '/user/:id', name: "User Page", component: UserView},
 
-      {path: '/chat', name: "Chats Page", component: Chat},
+      // {path: '/chat', name: "Chats Page", component: Chat},
 ];
 
 const router = new VueRouter({
