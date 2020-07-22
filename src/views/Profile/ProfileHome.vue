@@ -1,30 +1,33 @@
 <template>
-    <user-content v-if="user.userId !== '-1'">
+    <user-content>
         <template v-slot:header>
             <user-avatar-box :large="true" :image-first="true" :user="user"></user-avatar-box>
             <div class="mt-3">
-            <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/profile/settings')">
-                <b-icon-gear-fill /> Настройки
-            </b-button>
-            <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/profile/chat')">
-                <b-icon-chat /> Сообщения
-            </b-button>
-            <b-button v-if="!isItMe" class="control mr-2" @click="$router.push('/profile/chat')">
-                <b-icon-chat-dots /> Написать сообщение
-            </b-button>
+                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/profile/settings')">
+                    <b-icon-gear-fill/>
+                    Настройки
+                </b-button>
+                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/profile/chat')">
+                    <b-icon-chat/>
+                    Сообщения
+                </b-button>
+                <b-button v-if="!isItMe" class="control mr-2" @click="$router.push('/profile/chat')">
+                    <b-icon-chat-dots/>
+                    Написать сообщение
+                </b-button>
             </div>
         </template>
 
-        <div v-if="user.userId === $store.state.currentUser.userId || $store.getters.isAdmin">
+        <div v-if="user.userId === $store.getters.user.userId || $store.getters.hasAccess(7)">
             <b-tabs content-class="mt-3" justified>
                 <b-tab title="Информация" active>
-                    <profile-information-section :user="user" :callback="userSaveCallback" />
+                    <profile-information-section :user="user" :callback="userSaveCallback"/>
                 </b-tab>
                 <b-tab title="Образование">
-                    <profile-education-section :user="user"  :callback="userSaveCallback"/>
+                    <profile-education-section :user="user" :callback="userSaveCallback"/>
                 </b-tab>
                 <b-tab title="Специальность">
-                    <profile-specialization-section :user="user"  :callback="userSaveCallback" />
+                    <profile-specialization-section :user="user" :callback="userSaveCallback"/>
                 </b-tab>
             </b-tabs>
         </div>
@@ -52,22 +55,27 @@
             UserContent,
             FiText,
             ProfileInformationSection,
-            ProfileSpecializationSection, UserAvatarBox, UserTable, ProfileEducationSection}
+            ProfileSpecializationSection, UserAvatarBox, UserTable, ProfileEducationSection
+        }
     })
     export default class ProfileHome extends mixins<UserWorkerComponent>(UserWorkerComponent) {
-        getUserId(){
-            const id = this.$route.params['id'];
-            if(!id) return null;
-            return id === this.$store.state.currentUser.userId ? null : id;
+        update() {/* Noting is done */
         }
-        mounted(){
-            StoreLoader.wait(this.$store, ()=>{
+
+        getUserId() {
+            const id = this.$route.params['id'];
+            if (!id) return null;
+            return id === this.$store.getters.user.userId ? null : id;
+        }
+
+        mounted() {
+            StoreLoader.wait(this.$store, () => {
                 this.update();
             });
         }
 
         @Watch("$route")
-        onRoute(){
+        onRoute() {
             window.location.reload();
         }
     }

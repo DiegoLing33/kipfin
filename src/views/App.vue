@@ -4,9 +4,9 @@
         <wrapper-container :menu="menu">
             <router-view/>
         </wrapper-container>
-        <li-modal name="apiError" close-button title="Что-то пошло не так...!">
+        <li-modal ref="globalErrorModal" name="globalErrorModal" close-button title="Ошибка">
             <div class="text-center p-3 text-danger">
-                {{$store.state.apiErrorText}}
+                {{errorMessage}}
             </div>
         </li-modal>
     </div>
@@ -14,33 +14,45 @@
 
 <script lang="ts">
 
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component, Vue, Watch} from "vue-property-decorator";
     import NavigationBar from "@/components/theme/navigation/NavigationBar.vue";
     import WrapperContainer from "@/components/theme/WrapperContainer.vue";
     import LiModal from "@/ling/components/LiModal.vue";
+    import {mapState} from "vuex";
 
+    /**
+     * Main application class
+     */
     @Component({
-        components: {LiModal, WrapperContainer, NavigationBar}
+        components: {LiModal, WrapperContainer, NavigationBar},
+        computed: mapState(["errorMessage"]),
     })
     export default class App extends Vue {
+        private errorMessage!: string;
 
         async mounted() {
-            this.$transaction(this, async () => {
-                await this.$store.dispatch("updateCurrentUserToken", this.$cookies);
-                if(this.$store.getters.isUserCanBeLoggedIn){
-                    await this.$store.dispatch("updateCurrentUser");
-                    await this.$store.dispatch("updateCurrentUserFiles"); // 4what?
-                }
-            });
+            // Simple and clean
+            const token = this.$account.authorization.getToken();
+            if (token) await this.$store.dispatch("login", token);
         }
 
-        get menu(){
+        /**
+         * Error message handler
+         *
+         * Handles when this.commit("error", reason);
+         */
+        @Watch("errorMessage")
+        onErrorMessageChanged() {
+            this.$modalShow("globalErrorModal");
+        }
+
+        get menu() {
             const menuItems = [
                 {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
                 {title: "Мои документы", icon: 'files', url: "/user/documents"},
                 {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
             ];
-            if(this.$store.getters.isAdmin)
+            if (this.$store.getters.isAdmin)
                 return [...menuItems, ...[
                     {nav: "Прием"},
                     {title: "Панель управления", icon: "house", url: "/admin"},
@@ -70,7 +82,7 @@
     }
 
     #app {
-        font-family: PT-Sans, sans-serif;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, '.SFNSText-Regular', sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         color: #2c3e50;
