@@ -3,7 +3,7 @@
         title="Последняя активность"
         description="Здесь можно просмотреть последнюю активность приемной комиссии"
     >
-        <admission-actions-user-view v-if="$store.state.ready" :all="true" />
+        <admission-actions-user-view v-if="$store.getters.isLoggedIn" :all="true" />
     </user-content>
 </template>
 

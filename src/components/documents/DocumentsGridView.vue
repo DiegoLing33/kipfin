@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <b-overlay :show="busy">
         <div v-for="(item,name) of groups" :key="name" class="mb-1">
             <b-button block @click.prevent="" v-b-toggle :href="(`#cat-${name}`)" variant="info" class="text-left">
                 Файлы: {{getCategoryName(name)}}
@@ -22,7 +22,7 @@
             Файлы еще не были загружены
         </div>
         <document-modal-view @updated="update" ref="modal"/>
-    </div>
+    </b-overlay>
 </template>
 
 <script lang="ts">
@@ -48,6 +48,7 @@
     export default class DocumentsGridView extends Vue {
         @Prop({required: true}) documents!: KFDocument[];
         @Prop({default: false}) goUserByClick!: boolean;
+        @Prop({default: false}) busy!: boolean;
 
         private visibility: NameList<boolean> = {};
         private groups: NameList<KFDocument[]> = {};

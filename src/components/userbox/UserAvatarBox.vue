@@ -12,7 +12,10 @@
         <div class="name-cell cell">
             <div class="main-name">{{$app.userUtils.getFullName(user)}}</div>
             <div :class="('text-muted small ' + (!imageFirst ? 'text-right' : ''))">
-                {{user.group.groupTitle}} #{{user.userId}}
+                <template v-if="subText !== ''">
+                    <div>{{subText}}</div>
+                </template>
+                    {{user.group.groupTitle}} #{{user.userId}}
             </div>
         </div>
         <template v-if="!imageFirst">
@@ -31,7 +34,7 @@
     import {Component, Mixins, Prop} from "vue-property-decorator";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage";
     import UserPropComponent from "@/components/mixins/UserPropComponent";
-    
+
     @Component({
         components: {UserAvatarImage}
     })
@@ -40,6 +43,7 @@
         @Prop({default: false}) light!: boolean;
         @Prop({default: false}) large!: boolean;
         @Prop({default: true}) adaptive!: boolean;
+        @Prop({default: ""}) subText!: string;
 
         mounted() {
             // Adaptive screen

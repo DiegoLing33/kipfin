@@ -77,7 +77,6 @@
     import {APIFileResult} from "@/app/api/APIFiles";
     import Zipper from "@/ling/utils/Zipper";
     import FileIO from "@/ling/utils/FileIO";
-    import PSPUtils from "@/app/utils/PSPUtils";
 
     @Component({components: {CopyField}})
     export default class OneSUser extends Vue {
@@ -90,7 +89,6 @@
 
         async mounted() {
             StoreLoader.wait(this.$store, async () => {
-                await this.user.updateFiles();
                 this.psp = (await API.request("psp.user", {userId: this.user.userId})).list
                     .filter((p: any) => String(p['PSP_TYPE']).toUpperCase() !== 'PAYER');
                 this.userFiles = this.user.getFiles();
@@ -165,6 +163,7 @@
 
         async downloadAgreeAndNotify() {
             this.busy = true;
+            this.userFiles = await this.user.updateFiles();
             this.$bvToast.toast("Упаковка файлов...");
             const zip = Zipper.createZip('');
             for (const file of this.userFiles) {
@@ -196,8 +195,8 @@
         }
 
         async getFilesZip() {
-
             this.busy = true;
+            this.userFiles = await this.user.updateFiles();
             this.$bvToast.toast("Упаковка файлов...");
             const zip = Zipper.createZip('');
 

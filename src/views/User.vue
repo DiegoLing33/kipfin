@@ -1,14 +1,20 @@
 <template>
-    <user-content v-if="user.userId.toString() !== '-1'">
+    <user-content :sticky="!isItMe" v-if="user.userId.toString() !== '-1'">
         <template v-slot:header>
-            <user-avatar-box :large="true" :image-first="true" :user="user"></user-avatar-box>
-            <div class="mt-3">
-                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
-                    <b-icon-gear-fill /> Настройки
-                </b-button>
-                <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
-                    <b-icon-chat /> Сообщения
-                </b-button>
+            <div>
+                <user-avatar-box
+                        :sub-text="user.group.groupId < 3 ? $app.specializationNoCode[user.raw.facultyId]: ''"
+                        :large="true" :image-first="true" :user="user"></user-avatar-box>
+                <div class="mt-3">
+                    <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
+                        <b-icon-gear-fill/>
+                        Настройки
+                    </b-button>
+                    <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
+                        <b-icon-chat/>
+                        Сообщения
+                    </b-button>
+                </div>
             </div>
         </template>
         <b-tabs content-class="mt-3" justified>
@@ -16,30 +22,37 @@
                 <b-alert variant="warning" :show="true">
                     <h4>Внимание!</h4>
                     <p>
-                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и программирования.
-                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную комиссию.
+                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам
+                        место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и
+                        программирования.
+                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную
+                        комиссию.
                     </p>
                 </b-alert>
-                <profile-information-section :user="user" :callback="onSave" />
+                <profile-information-section :user="user" :callback="onSave"/>
             </b-tab>
             <b-tab title="Образование">
-                <profile-education-section :user="user"  :callback="onSave"/>
+                <profile-education-section :user="user" :callback="onSave"/>
             </b-tab>
             <b-tab title="Специальность">
                 <b-alert variant="warning" :show="true">
                     <h4>Внимание!</h4>
                     <p>
-                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и программирования.
-                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную комиссию.
+                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам
+                        место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и
+                        программирования.
+                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную
+                        комиссию.
                     </p>
                 </b-alert>
-                <profile-specialization-section :user="user"  :callback="onSpecializationChange" />
+                <profile-specialization-section :user="user" :callback="onSpecializationChange"/>
             </b-tab>
-            <b-tab v-if="$store.getters.hasAccess(13)">
+            <b-tab lazy v-if="$store.getters.hasAccess(13)">
                 <template v-slot:title>
-                    <b-icon-gear /> Управление
+                    <b-icon-gear/>
+                    Управление
                 </template>
-                <user-admin-settings :user="user" />
+                <user-admin-settings :user="user"/>
             </b-tab>
         </b-tabs>
         <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
@@ -60,32 +73,26 @@
                                :pre="user.raw.motherCapital === '1'">
                 Материнский капитал
             </fast-input-switch>
-            <div class="text-muted small mt-1">
-                <b>Когда я смогу отправить уведомление?</b> - сначала Ваша анкета будет находиться в обработке. После
-                успешного прохождения
-                данного этапа анкета перейдет в состояние "Выгрузка данных". Наши специалисты перенсут Ваши данные в
-                Финансовый университет и загрузят в Ваш кабинет
-                два файла - <b>заявление</b> и <b>уведомление</b>.
-               </div>
         </b-card>
 
         <div v-if="$store.getters.isAdmin">
-            <b-card title="Файлы" class="mb-3">
-                <documents-grid-view @updated="update" :documents="documents"/>
-            </b-card>
-            <b-card title="Законные представители" class="mb-3">
+            <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
+                <documents-grid-view
+                        :busy="busyFilesLoading"
+                        @updated="update" :documents="documents"/>
+            </collapse-card>
+            <collapse-card title="Законные представители" class="mb-3">
                 <user-parents :parents="parents"></user-parents>
-            </b-card>
-            <b-card title="Паспортные данные" class="mb-3">
-                <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item">
-                </passport-view>
-            </b-card>
+            </collapse-card>
+            <collapse-card title="Паспортные данные" class="mb-3">
+                <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item"/>
+            </collapse-card>
         </div>
         <admin-helper
                 :on-rule-set="onRuleSet"
                 :on-send-set="onSendSet"
                 :set-student-status="setStudentStatus"
-                ref="adminHelper" :user="user" v-if="$store.getters.isAdmin" />
+                ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
     </user-content>
 </template>
 
@@ -115,10 +122,11 @@
     import KFDocument from "@/app/client/KFDocument";
     import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import UI from "@/app/plugins/ui/UI";
+    import CollapseCard from "@/components/theme/CollapseCard.vue";
 
     @Component({
         components: {
+            CollapseCard,
             UserAdminSettings,
             DocumentsGridView,
             OneSUser,
@@ -147,11 +155,13 @@
         private parents: unknown[] = [];
         private psp: unknown[] = [];
 
+        private busyFilesLoading = false;
+
         protected storeLoaded() {
             this.update();
         }
 
-        private showOneSModel(){
+        private showOneSModel() {
             (this.$refs['adminHelper'] as any).hide();
             (this.$refs['oneSModel'] as any).show();
         }
@@ -163,12 +173,32 @@
                 this.user = this.$store.getters.user;
             }
             if (this.$store.getters.isAdmin) {
-                await this.user.updateFiles();
+                // await this.user.updateFiles();
                 await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
-                this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
-                this.documents = await this.user.loadAllUserFiles();
                 this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
             }
+        }
+
+        /**
+         * Handles when files visibility changed
+         * @param state
+         */
+        private async onFilesVisibleChanged(state: boolean) {
+            if (state) await this.$transaction(async () => {
+                this.busyFilesLoading = true;
+                this.documents = await this.user.loadAllUserFiles();
+            });
+            this.busyFilesLoading = false;
+        }
+
+        /**
+         * Handles when passport visibility changed
+         * @param state
+         */
+        private async onPassportVisibleChanged(state: boolean) {
+            if (state) await this.$transaction(async () => {
+                this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
+            });
         }
 
         private onSave(field: string, value: unknown) {
@@ -205,12 +235,12 @@
 
 
         @Watch("$route")
-        onRoute(){
+        onRoute() {
             window.location.reload();
         }
 
-        protected get isItMe(){
-            return this.user.userId === this.$store.state.currentUser.userId;
+        protected get isItMe() {
+            return this.user.userId === this.$store.getters.user.userId;
         }
 
         private onRuleSet(rule: string) {

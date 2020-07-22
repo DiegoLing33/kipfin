@@ -32,6 +32,7 @@
 
         toggle() {
             this.visible = !this.visible;
+            this.$emit("visible", this.visible);
         }
     }
 </script>

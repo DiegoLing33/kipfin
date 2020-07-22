@@ -45,7 +45,7 @@
             DocumentsGridView,
             UserContent, FileUploaderView, FormFileInput, SelectField}
     })
-    export default class ProfileDocuments extends Vue {
+    export default class DocumentsHome extends Vue {
         private documents: KFDocument[] = [];
 
         mounted() {

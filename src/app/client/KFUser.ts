@@ -97,7 +97,9 @@ export default class KFUser {
      * Updates the user files
      */
     public async updateFiles() {
-        this.loadedFiles = (await API.files.list(this.userId)).list;
+        const res = await API.files.list(this.userId);
+        this.loadedFiles = (res).list;
+        return this.loadedFiles;
     }
 
     /**

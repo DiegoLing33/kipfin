@@ -45,7 +45,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+    import {Component} from "vue-property-decorator";
     import HeaderLined from "@/components/theme/heading/HeaderLined.vue";
     import API from "@/app/api/API";
     import KFUser from "@/app/client/KFUser";
@@ -57,6 +57,7 @@
     import LiModal from "@/ling/components/LiModal.vue";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage";
+    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
 
     @Component({
         components: {
@@ -68,17 +69,14 @@
             ProfileSettingsChangePassword, HeaderLined
         }
     })
-    export default class ProfileSettings extends Vue {
+    export default class ProfileSettings extends StoreLoadedComponent {
         private user: KFUser = KFUser.createZeroUser();
         private image = "";
         private file: Nullable<string> = null;
         private loading = false;
 
-
-        mounted() {
-            StoreLoader.wait(this.$store, () => {
-                this.user = this.$store.state.currentUser;
-            });
+        protected storeLoaded() {
+            this.user = this.$store.getters.user;
         }
 
         async logout() {

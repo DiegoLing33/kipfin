@@ -52,7 +52,7 @@
                 if (rooms.length > 0) {
                     const res = await Server.loadAllPages(Server.chats.getMessagesAll, {roomId: rooms[0].roomId});
                     this.messages = res.items;
-                    ChatGroupUtils.readAllUnreadMessages(this.messages, parseInt(this.$store.state.currentUser.userId)).then();
+                    ChatGroupUtils.readAllUnreadMessages(this.messages, parseInt(this.$store.getters.user.userId)).then();
                 }
             });
             this.busy = false;

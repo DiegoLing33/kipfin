@@ -69,6 +69,8 @@
             try {
                 const response = await API.users.login(this.form.login, this.form.password);
                 this.$account.authorization.setToken(response.token);
+                await this.$store.dispatch("login", response.token);
+
                 if (this.$store.state.currentUser.group.hasAccess('7')) await this.$router.push('/admin');
                 else await this.$router.push('/user');
 

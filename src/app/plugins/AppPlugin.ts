@@ -6,6 +6,7 @@ import {TextFormatter} from "@/ling/support/TextValidation";
 export interface AppPluginApp {
     infoStatus: typeof KIPD.infoStatus;
     specialization: typeof KIPD.specializations;
+    specializationNoCode: typeof KIPD.specializationsNoCode;
     short: typeof KIPD.short;
     bases: typeof KIPD.bases;
     studentStatus: typeof KIPD.studentStatus;
@@ -43,6 +44,7 @@ export default function AppPlugin(vue: any): void {
         specialization: KIPD.specializations,
         parentName: KIPD.parentName,
         fileTypes: KIPD.fileTypes,
+        specializationNoCode: KIPD.specializationsNoCode,
         bases: KIPD.bases,
         yesNo: {"0": "Нет", "1": "Да"},
         gender: {"1": "Мужской", "2": "Женский"},

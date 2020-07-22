@@ -1,5 +1,5 @@
 <template>
-    <div class="rooms">
+    <div class="rooms" @scroll="onScroll">
         <chat-room-item
                 v-for="room of roomsList"
                 :key="room.roomId"
@@ -35,9 +35,17 @@
         @Prop({default: null}) selectedRoom!: ServerChatRoom | null;
         @Prop({default: 0}) totalCount!: number;
         @Prop({default: 0}) loadedCount!: number;
+        private lastTryScroll = 0;
 
         get roomsList(){
             return this.rooms.filter(v => v.roomStatus < 3);
+        }
+
+        onScroll ({ target: { scrollTop, clientHeight, scrollHeight }}: any) {
+            if (scrollTop + clientHeight >= scrollHeight && new Date().getTime() - this.lastTryScroll > 2000) {
+                this.lastTryScroll = new Date().getTime();
+                this.$emit("more");
+            }
         }
     }
 </script>

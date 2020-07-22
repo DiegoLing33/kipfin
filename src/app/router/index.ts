@@ -9,7 +9,6 @@ import AdminChats from "@/views/Admin/AdminChats.vue";
 import ProfilePassport from "@/views/Profile/ProfilePassport.vue";
 import Chat from "@/views/Chat.vue";
 import UserView from "@/views/User.vue";
-import ProfileDocuments from "@/views/Profile/ProfileDocuments.vue";
 import AdminLastActions from "@/views/Admin/AdminLastActions.vue";
 import AdminFilesFeed from "@/views/Admin/AdminFilesFeed.vue";
 import CreateProfileView from "@/views/Defaults/CreateProfileView.vue";
@@ -18,6 +17,7 @@ import ProfileSettings from "@/views/Profile/ProfileSettings.vue";
 import AdminUsersList from "@/views/Admin/AdminUsersList.vue";
 import AdminUsersGroupsList from "@/views/Admin/AdminUsersGroupsList.vue";
 import AdminStats from "@/views/Admin/AdminStats.vue";
+import DocumentsHome from "@/views/DocumentsHome.vue";
 
 Vue.use(VueRouter)
 
@@ -29,7 +29,7 @@ Vue.use(VueRouter)
       {path: '/admin', name: 'Admin Home', component: AdminIndex},
       {path: '/admin/list', name: 'Admin List', component: AdminList},
       {path: '/admin/chats', name: 'Admin Chats', component: AdminChats},
-      {path: '/admin/fire', name: 'Admin Chats', component: AdminLastActions},
+      {path: '/admin/fire', name: 'Admin Fire', component: AdminLastActions},
       {path: '/admin/feed', name: 'Admin Feed', component: AdminFilesFeed},
       {path: '/admin/users', name: 'Admin Users List', component: AdminUsersList},
       {path: '/admin/roles', name: 'Admin Users Groups List', component: AdminUsersGroupsList},
@@ -39,12 +39,12 @@ Vue.use(VueRouter)
       {path: '/user/parents', name: 'User Profile parents', component: ProfileParents},
       {path: '/user/chat', name: 'User Profile Chat', component: ProfileChat},
       {path: '/user/passport', name: 'User Profile Passport', component: ProfilePassport},
-      {path: '/user/documents', name: 'User Documents', component: ProfileDocuments},
       {path: '/user/settings', name: 'User Documents', component: ProfileSettings},
       {path: '/user', name: "User Me Page", component: UserView},
       {path: '/user/:id', name: "User Page", component: UserView},
 
       {path: '/chat', name: "Chats Page", component: Chat},
+      {path: '/documents', name: "Documents Page", component: DocumentsHome},
 ];
 
 const router = new VueRouter({

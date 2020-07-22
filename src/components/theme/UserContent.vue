@@ -4,7 +4,19 @@
                 v-if="checkAccess === true"
                 style="border-radius: 0"
                 :header="('Вы: ' + $store.getters.user.getFullName() + ' (' + $store.getters.user.group.groupTitle + ' #' + $store.getters.user.userId) + ')'">
-            <div class="header">
+
+            <div v-if="sticky" class="header sticky-top" style="top: 76px; background-color: rgb(252,252,252)">
+                <b-card-header>
+                    <h2 v-if="title !== ''">{{title}}</h2>
+                    <p v-if="description !== ''">
+                        <b-icon-info-circle/>
+                        {{description}}
+                    </p>
+                    <slot name="header"></slot>
+                    <slot name="sticky"></slot>
+                </b-card-header>
+            </div>
+            <div v-else class="header">
                 <b-card-header>
                     <h2 v-if="title !== ''">{{title}}</h2>
                     <p v-if="description !== ''">
@@ -14,6 +26,7 @@
                     <slot name="header"></slot>
                 </b-card-header>
             </div>
+
             <div v-if="noBody">
                 <slot></slot>
             </div>
@@ -62,6 +75,7 @@
         @Prop({default: "", required: false}) title!: string;
         @Prop({default: "", required: false}) description!: string;
         @Prop({default: false, required: false}) noBody!: boolean;
+        @Prop({default: false, required: false}) sticky!: boolean;
 
         private checkAccess = nullable<boolean>();
 

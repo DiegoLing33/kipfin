@@ -52,12 +52,12 @@
         get menu() {
             const menuItems = [
                 {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
-                {title: "Мои документы", icon: 'files', url: "/user/documents"},
+                {title: "Мои документы", icon: 'files', url: "/documents"},
                 {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
             ];
             if (this.$store.getters.isAdmin)
                 return [...menuItems, ...[
-                    {title: "Чаты", icon: "chat", url: "/chats"},
+                    {title: "Чаты", icon: "chat", url: "/chat"},
                     {nav: "Прием"},
                     {title: "Панель управления", icon: "house", url: "/admin"},
                     {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},

@@ -36,9 +36,9 @@ export class ChatGroupUtils {
      */
     public static async readAllUnreadMessages(messages: ServerChatMessage[], myId: number) {
         const realMessages = messages
-            .filter(value => value.messageStatus === 1 && value.messageSenderId !== myId)
+            .filter(value => value.messageStatus === 1 && value.messageSenderId.toString() !== myId.toString())
             .map(value => value.messageId).join(",");
-        messages.forEach(value => value.messageStatus = 2);
+        messages.forEach(value => value.messageSenderId !== myId ? value.messageStatus = 2 : null);
         return await Server.chats.read(realMessages);
     }
 }

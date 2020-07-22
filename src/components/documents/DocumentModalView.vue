@@ -67,6 +67,15 @@
                     </b-button>
                 </b-button-group>
             </div>
+            <div class="w-100 text-center" v-else>
+                <b-button-group class="m-2">
+                    <b-button
+                            v-b-tooltip.hover title="Скачать"
+                            @click="download(selectedFile)">
+                        <b-icon-download/>
+                    </b-button>
+                </b-button-group>
+            </div>
             <div class="small text-muted text-center">
                 {{$app.userUtils.getFullName(selectedFile.author)}} - {{selectedFile.fileCreated}}
             </div>

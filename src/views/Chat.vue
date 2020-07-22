@@ -96,7 +96,7 @@
         protected async loadMessages(room: ServerChatRoom, page = 0) {
             const res = await Server.chats.getMessages(room.roomId, page);
             ChatGroupUtils.readAllUnreadMessages(res.items,
-                parseInt(this.$store.state.currentUser.userId)).then();
+                parseInt(this.$store.getters.user.userId)).then();
             this.totalMessagesCount = res.count;
             if (page === 0) this.messages = [];
             this.messages.push(...res.items);

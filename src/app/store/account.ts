@@ -3,6 +3,7 @@ import KFUser from "@/app/client/KFUser";
 import API from "@/app/api/API";
 import Vue from "vue";
 import {Numeric} from "@/ling/types/Common";
+import Server from "@/app/api/Server";
 
 const LOGIN_TOKEN_IS_UNDEFINED = "Данные авторизации не найдены или устарели!";
 
@@ -55,6 +56,7 @@ export const account: Module<any, any> = {
         login({commit}, token) {
             return new Promise(resolve => {
                 API.TOKEN = token;
+                Server.TOKEN = token;
                 if (token) {
                     API.users.me().then(result => {
                         commit("login", new KFUser(result));
