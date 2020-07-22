@@ -72,7 +72,7 @@
     export default class ProfileSettings extends StoreLoadedComponent {
         private user: KFUser = KFUser.createZeroUser();
         private image = "";
-        private file: Nullable<string> = null;
+        private file: Nullable<unknown> = null;
         private loading = false;
 
         protected storeLoaded() {
@@ -99,12 +99,12 @@
             await this.$transaction(async () => {
                 await API.request('profile.uploadAvatar', {}, {file: [blob]});
                 this.$bvToast.toast('Новый аватар вставлен в рамку!', {title: "Успех"});
-                this.$store.commit("setCurrentUser", false);
+                await this.$store.dispatch("login", this.$account.authorization.getToken());
                 this.$app.modalClose(this, "modal");
                 this.loading = false;
             });
             this.loading = false;
-            this.file = null;
+            window.location.reload();
         }
 
 

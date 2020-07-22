@@ -306,9 +306,10 @@
 
         private onKeyDownId(e: KeyboardEvent) {
             if (e.key === "Enter") {
-                if (this.findId !== "") {
+                if (this.findId.trim() !== "") {
                     this.$router.push("/user/" + this.findId);
                 } else {
+                    this.findId = "";
                     this.$ui.error("Нельзя перейти к пустому идентификатору!");
                 }
             }

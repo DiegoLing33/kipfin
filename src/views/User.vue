@@ -19,14 +19,14 @@
         </template>
         <b-tabs content-class="mt-3" justified>
             <b-tab title="Информация" active>
-                <b-alert variant="warning" :show="true">
+                <b-alert variant="danger" :show="true">
                     <h4>Внимание!</h4>
                     <p>
-                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам
-                        место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и
-                        программирования.
-                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную
-                        комиссию.
+                        Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления, отправленные после 21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
+                    </p>
+                    <hr />
+                    <p>
+                        Прием документов <b>на бюджетную основу</b> продолжается!
                     </p>
                 </b-alert>
                 <profile-information-section :user="user" :callback="onSave"/>
@@ -35,14 +35,14 @@
                 <profile-education-section :user="user" :callback="onSave"/>
             </b-tab>
             <b-tab title="Специальность">
-                <b-alert variant="warning" :show="true">
+                <b-alert variant="danger" :show="true">
                     <h4>Внимание!</h4>
                     <p>
-                        Если Вы выбираете основу обучения <b>договор</b> или <b>бюджет/договор</b>, мы гарантируем Вам
-                        место <b>только при подаче уведомления или оригинала аттестата</b> в Колледж информатики и
-                        программирования.
-                        Уведомление может быть загружено в личный кабинет. Для подачи оригинала звоните в приемную
-                        комиссию.
+                        Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления, отправленные после 21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
+                    </p>
+                    <hr />
+                    <p>
+                        Прием документов <b>на бюджетную основу</b> продолжается!
                     </p>
                 </b-alert>
                 <profile-specialization-section :user="user" :callback="onSpecializationChange"/>
@@ -84,7 +84,7 @@
             <collapse-card title="Законные представители" class="mb-3">
                 <user-parents :parents="parents"></user-parents>
             </collapse-card>
-            <collapse-card title="Паспортные данные" class="mb-3">
+            <collapse-card @visible="onPassportVisibleChanged" title="Паспортные данные" class="mb-3">
                 <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item"/>
             </collapse-card>
         </div>
