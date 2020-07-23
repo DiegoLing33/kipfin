@@ -1,15 +1,8 @@
 <template>
     <b-container>
-        <b-card header="Приемная комиссия">
-            <div style="font-size: 2em; text-transform: uppercase; text-align: center">
-                Поступи в колледж информатики и программирования <span class="text-primary">онлайн</span>
-            </div>
-            <div class="my-2">
-                В 2020 году, ввиду пандемии коронавируса мы запускаем дистанционную приемную комиссию!
-                <div class="my-2">
-                    <b-badge class="mr-2" variant="primary">#STAYHOME</b-badge>
-                    <b-badge variant="primary">#ДИСТАНТ</b-badge>
-                </div>
+        <b-card no-body>
+            <div>
+                <img alt="Поступи в КИПФИН" src="/img/priem.jpg"/>
             </div>
             <template v-if="!$store.state.ready" v-slot:footer>
                 <b-button @click="$router.push('/create')" block variant="success">
@@ -23,9 +16,11 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import TextField from "@/components/fields/TextField.vue";
+    import LoginProfile from "@/views/Defaults/LoginProfile.vue";
+    import Footer from "@/components/theme/Footer.vue";
 
     @Component({
-        components: {TextField}
+        components: {Footer, LoginProfile, TextField}
     })
     export default class Home extends Vue {
 

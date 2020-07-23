@@ -252,7 +252,7 @@
                             resolve(true);
                             await this.update();
                             this.$bvToast.toast("Разрешение [" + rule + "] изменено!", {title: "Успех"});
-                            window.location.reload();
+                            // window.location.reload();
                         }).catch(reason => {
                         this.$ui.error(reason);
                         resolve(false);
@@ -290,6 +290,8 @@
                 API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
                     .then(() => {
                         this.$store.dispatch("login", this.$account.authorization.getToken());
+                        this.$bvToast.toast("Пользователь переведен в новый статус: " + this.$app.studentStatus.text[status], {title: "Успех!"});
+                        this.user.raw.studentStatus = status;
                         resolve(true);
                     }).catch(reason => {
                     this.$store.commit("error", reason);
