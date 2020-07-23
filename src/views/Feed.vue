@@ -91,7 +91,8 @@
 
         public driveText(text: string) {
             return text.split("\n").slice(1).join("\n")
-                .replace(/([^\n]+)/g, '<p>$1</p>');
+                .replace(/([^\n]+)/g, '<p>$1</p>')
+                .replace(/(#[^ ]+)/g, '<span class="small text-muted">$1</span>');
         }
 
         public title(text: string) {
