@@ -18,6 +18,7 @@ import AdminUsersList from "@/views/Admin/AdminUsersList.vue";
 import AdminUsersGroupsList from "@/views/Admin/AdminUsersGroupsList.vue";
 import AdminStats from "@/views/Admin/AdminStats.vue";
 import DocumentsHome from "@/views/DocumentsHome.vue";
+import Feed from "@/views/Feed.vue";
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,7 @@ Vue.use(VueRouter)
       {path: '/user/:id', name: "User Page", component: UserView},
 
       {path: '/chat', name: "Chats Page", component: Chat},
+      {path: '/feed', name: "Feed Page", component: Feed},
       {path: '/documents', name: "Documents Page", component: DocumentsHome},
 ];
 

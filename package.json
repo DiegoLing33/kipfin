@@ -27,11 +27,11 @@
     "vue-cookie": "^1.1.4",
     "vue-cookies-ts": "^1.5.19",
     "vue-cropperjs": "^4.1.0",
+    "vue-functional-data-merge": "3.1.0",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0",
-    "vuex-smart-module": "^0.3.4",
-    "vue-functional-data-merge": "3.1.0"
+    "vuex-smart-module": "^0.3.4"
   },
   "devDependencies": {
     "@types/bootstrap": "^4.5.0",

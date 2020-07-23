@@ -54,6 +54,9 @@
                 {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
                 {title: "Мои документы", icon: 'files', url: "/documents"},
                 {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
+                {nav: "Новости"},
+                {title: "Новости", icon: "newspaper", url: "/feed"},
+
             ];
             if (this.$store.getters.isAdmin)
                 return [...menuItems, ...[
