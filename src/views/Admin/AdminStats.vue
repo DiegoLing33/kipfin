@@ -30,66 +30,89 @@
                     :chart-data="datacollection"></bar-chart>
         </div>
         <header-lined class="mt-4" title="Подсчеты данных"></header-lined>
-        <b-table-simple bordered>
+        <b-table-simple bordered class="mt-3 text-center stat-table">
             <b-tbody>
-                <b-tr>
-                    <b-td colspan="2">
-                        <b>Уведомления</b>
-                    </b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>Всего уведомлений</b-td>
-                    <b-td>{{pos.notifies}}</b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td colspan="2">
-                        <b>Договор - оплата</b>
-                        <div class="small text-muted">Абитуриенты, которые оплатили договор</div>
-                    </b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>Оплачено ИСИП</b-td>
-                    <b-td>{{pos.done[1].length}}</b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>Оплачено ОИБАС</b-td>
-                    <b-td>{{pos.done[3].length}}</b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td colspan="2">
-                        <b>Договор - бюджет/договор</b>
-                        <div class="small text-muted">Абитуриенты, которые
-                            указали бюджет/договор или договор и при этом <b>сделали уведомление</b></div>
-                    </b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>ИСИП (Договор)</b-td>
-                    <b-td>{{pos.res[1].length}}</b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>ПКС (Бюджет/Договор)</b-td>
-                    <b-td>{{pos.res[2].length}}</b-td>
-                </b-tr>
-                <b-tr>
-                    <b-td>ОИБАС (Бюджет/Договор, Договор)</b-td>
-                    <b-td>{{pos.res[3].length}}</b-td>
-                </b-tr>
+                <tr>
+                    <td class="text-left" style="width: 33%">#</td>
+                    <td colspan="2">ИСИП</td>
+                    <td colspan="2">ОИБАС</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Всего мест
+                        <div class="text-muted small">
+                            Количество мест, доступных для договора
+                        </div>
+                    </td>
+                    <td colspan="2" style="vertical-align: middle">96</td>
+                    <td colspan="2" style="vertical-align: middle">55</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Оплачено
+                        <div class="text-muted small">
+                            Количество полностью готовых <b>оплаченных</b> договоров
+                        </div>
+                    </td>
+                    <td>{{pos.done[1].length}}</td>
+                    <td rowspan="2" style="vertical-align: middle">
+                        {{(pos.done[1].length + pos.paywait[1].length)}}
+                    </td>
+                    <td>{{pos.done[3].length}}</td>
+                    <td rowspan="2" style="vertical-align: middle">
+                        {{(pos.done[3].length + pos.paywait[3].length)}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Ожидаем оплаты
+                        <div class="text-muted small">
+                            Количество абитуриентов, которые заключили договор и должны оплатить его
+                        </div>
+                    </td>
+                    <td>{{pos.paywait[1].length}}</td>
+                    <td>{{pos.paywait[3].length}}</td>
+                </tr>
+
+                <tr>
+                    <td class="text-left">
+                        Ожидаем визита
+                        <div class="text-muted small">
+                            Количество человек, с которыми договорились на заключение договора
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">{{(allGroupsISIP - (pos.reserved[1] + pos.paywait[1].length + pos.done[1].length))}}</td>
+                    <td rowspan="2" style="vertical-align: middle">
+                        {{(allGroupsISIP - (pos.paywait[1].length + pos.done[1].length))}}
+                    </td>
+                    <td style="vertical-align: middle">{{(allGroupsOIBAS - (pos.reserved[3] + pos.paywait[3].length + pos.done[3].length))}}</td>
+                    <td rowspan="2" style="vertical-align: middle">
+                        {{(allGroupsOIBAS - (pos.paywait[3].length + pos.done[3].length))}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Резерв
+                        <div class="text-muted small">
+                            Количество людей, которые отметили, что готовые оплатить договор,
+                            если не пройдут на бюджет
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle">{{pos.reserved[1]}}</td>
+                    <td style="vertical-align: middle">{{pos.reserved[3]}}</td>
+                </tr>
+                <tr>
+                    <td class="text-left">
+                        Всего
+                        <div class="text-muted small">
+                            Количество занятых позиций по специальности
+                        </div>
+                    </td>
+                    <td style="vertical-align: middle" colspan="2">{{allGroupsISIP}}</td>
+                    <td style="vertical-align: middle" colspan="2">{{allGroupsOIBAS}}</td>
+                </tr>
             </b-tbody>
         </b-table-simple>
-        <b-row>
-            <b-col md="6">
-                <b-card footer="Мест занято" title="ИСИП">
-                    <h1>{{(pos.res[1].length+pos.res[2].length+pos.done[1].length)}}</h1>
-                    <div class="text-muted">из 96</div>
-                </b-card>
-            </b-col>
-            <b-col md="6">
-                <b-card footer="Мест занято" title="ОИБАС">
-                    <h1>{{(pos.res[3].length+pos.done[3].length)}}</h1>
-                    <div class="text-muted">из 55</div>
-                </b-card>
-            </b-col>
-        </b-row>
     </user-content>
 </template>
 
@@ -113,18 +136,29 @@
         private notifies = nameList<number>();
         private selectedMonth = String(new Date().getMonth() + 1).padStart(2, '0');
         private selectedType = "lines";
-        private pos = {notifies: 0, done: {1: [], 2: [], 3: []}, res: {1: [], 2: [], 3: []}};
+        private pos = {
+            notifies: 0, paywait: {1: [], 3: []},
+            reserved: {1: [], 3: []},
+            done: {1: [], 2: [], 3: []}, res: {1: [], 2: [], 3: []}
+        };
 
+        get allGroupsISIP() {
+            return this.pos.res[1].length + this.pos.res[2].length + this.pos.done[1].length;
+        }
+
+        get allGroupsOIBAS() {
+            return this.pos.res[3].length + this.pos.done[3].length;
+        }
 
         protected async storeLoaded() {
             const res = await API.request("mission.stats");
             this.pos = await API.request("mission.positions");
-            console.log(this.pos.res);
             this.stats = res.new;
             this.agrees = res.agrees;
             this.notifies = res.notifies;
             this.fillData();
         }
+
 
         protected dateFilter(s: string) {
             if (this.selectedMonth === '*') return true;
@@ -167,5 +201,7 @@
 </script>
 
 <style scoped>
-
+    .stat-table * {
+        vertical-align: middle;
+    }
 </style>
