@@ -50,11 +50,18 @@ export const VKAPI = {
      * Returns the public wall
      * @param page
      */
-    async getPublicWall(page = 0){
+    async getPublicWall(page = 0) {
         const params = nameList();
         params["owner_id"] = -VKAPI.groupId;
         params["offset"] = page * VKAPI.countItemsPerPage;
         params["count"] = VKAPI.countItemsPerPage;
         return await VKAPI.request("wall.get", params);
+    },
+
+    async getVideos(videos: string[]) {
+        const params = nameList();
+        params["owner_id"] = -VKAPI.groupId;
+        params["videos"] = videos.map(value => (-VKAPI.groupId).toString() + "_" + value).join(",");
+        return await VKAPI.request("video.get", params);
     }
 };

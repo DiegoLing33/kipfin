@@ -4,7 +4,7 @@
             <div v-if="item.attachments && item.attachments[0] && item.attachments[0].type === 'photo'">
                 <v-k-feed-photo :post="item"/>
             </div>
-            <div v-if="item.attachments && item.attachments[0] && item.attachments[0].type === 'video'">
+            <div class="text-center" v-if="item.attachments && item.attachments[0] && item.attachments[0].type === 'video'">
                 <img :src="item.attachments[0].video.image[8].url"/>
             </div>
             <b-card-body>
@@ -15,6 +15,11 @@
                     </div>
                 </b-card-title>
                 <div v-html="driveText(item.text)"></div>
+                <div v-if="item.attachments && item.attachments[0] && item.attachments[0].type === 'video'">
+                    <a :href="(`https://vk.com/video${item.attachments[0].video.owner_id}_${item.attachments[0].video.id}`)" target="_blank">
+                        <b-button  block variant="primary">Открыть видео в VK <b-icon-link /></b-button>
+                    </a>
+                </div>
             </b-card-body>
             <template v-slot:footer>
                 <b-row class="text-center">
