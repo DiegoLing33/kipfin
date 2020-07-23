@@ -1,7 +1,7 @@
 /**
  * Named list String:T
  */
-export type NameList<T> = {
+export type NameList<T = any> = {
     [key: string]: T;
 }
 
