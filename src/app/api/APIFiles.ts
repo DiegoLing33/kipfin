@@ -9,6 +9,7 @@ export interface APIFileResult {
     file_status: NumericString;
     user_id: NumericString;
     created: string;
+    [key: string]: any;
 }
 
 export default class APIFiles {

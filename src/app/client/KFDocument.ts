@@ -4,6 +4,7 @@ import {APIUserShort} from "@/app/api/APIUsers";
 import {NameList} from "@/ling/types/Common";
 import FileIO from "@/ling/utils/FileIO";
 
+
 /**
  * The KF document
  */
@@ -18,13 +19,7 @@ export default class KFDocument {
      * Creates zero file
      */
     public static zero() {
-        return new KFDocument({
-            file_id: '-1',
-            file_ext: "*",
-            file_type: 'undefined',
-            file_status: '-1',
-            file_name: 'unnamed',
-            user_id: '-1',
+        const obj: NameList = {
             created: '',
             author: {
                 groupId: '0',
@@ -34,7 +29,16 @@ export default class KFDocument {
                 lastname: "LastName",
                 surname: ""
             }
-        })
+        };
+
+        obj["file_id"] = "-1";
+        obj["file_ext"] = "*";
+        obj["file_type"] = "undefined";
+        obj["file_status"] = "-1";
+        obj["file_name"] = "unnamed";
+        obj["user_id"] = '-1';
+
+        return new KFDocument(obj as any);
     }
 
     /**
@@ -130,7 +134,7 @@ export default class KFDocument {
      */
     async setStatus(newStatus: NumericString | number) {
         const result = await API.files.setStatus(this.fileId, newStatus);
-        if(result.ok) this.fileStatus = parseInt(newStatus.toString());
+        if (result.ok) this.fileStatus = parseInt(newStatus.toString());
         return result;
     }
 
