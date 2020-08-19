@@ -24,12 +24,14 @@
     "vue-chartjs": "^3.5.0",
     "vue-chartjs-typescript": "^3.3.3",
     "vue-class-component": "^7.2.3",
+    "vue-content-placeholders": "^0.2.1",
     "vue-cookie": "^1.1.4",
     "vue-cookies-ts": "^1.5.19",
     "vue-cropperjs": "^4.1.0",
     "vue-functional-data-merge": "3.1.0",
     "vue-property-decorator": "^8.4.2",
     "vue-router": "^3.2.0",
+    "vue-toast-notification": "^0.5.0",
     "vuex": "^3.4.0",
     "vuex-smart-module": "^0.3.4"
   },
@@ -55,34 +57,6 @@
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "vue-template-compiler": "^2.6.11"
-  },
-  "eslintConfig": {
-    "root": true,
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "plugin:vue/essential",
-      "eslint:recommended",
-      "@vue/typescript/recommended"
-    ],
-    "parserOptions": {
-      "ecmaVersion": 2020
-    },
-    "rules": {
-      "camelcase": "off"
-    },
-    "overrides": [
-      {
-        "files": [
-          "**/__tests__/*.{j,t}s?(x)",
-          "**/tests/unit/**/*.spec.{j,t}s?(x)"
-        ],
-        "env": {
-          "jest": true
-        }
-      }
-    ]
   },
   "browserslist": [
     "> 1%",
