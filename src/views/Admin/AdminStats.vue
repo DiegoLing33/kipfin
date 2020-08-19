@@ -44,8 +44,8 @@
                             Количество мест, доступных для договора
                         </div>
                     </td>
-                    <td colspan="2" style="vertical-align: middle">96</td>
-                    <td colspan="2" style="vertical-align: middle">55</td>
+                    <td colspan="2" style="vertical-align: middle">110</td>
+                    <td colspan="2" style="vertical-align: middle">95</td>
                 </tr>
                 <tr>
                     <td class="text-left">
@@ -85,7 +85,12 @@
                     <td rowspan="2" style="vertical-align: middle">
                         {{(allGroupsISIP - (pos.paywait[1].length + pos.done[1].length))}}
                     </td>
-                    <td style="vertical-align: middle">{{(allGroupsOIBAS - (pos.reserved[3] + pos.paywait[3].length + pos.done[3].length))}}</td>
+                    <td style="vertical-align: middle">
+                      <!-- S -->
+<!--                      {{(allGroupsOIBAS - (pos.reserved[3] + pos.paywait[3].length + pos.done[3].length))}}-->
+                      {{(allGroupsOIBAS - (pos.reserved[3] + pos.paywait[3].length + pos.done[3].length))}}
+<!--                      {{(allGroupsOIBAS - pos.reserved[3])}}-->
+                    </td>
                     <td rowspan="2" style="vertical-align: middle">
                         {{(allGroupsOIBAS - (pos.paywait[3].length + pos.done[3].length))}}
                     </td>
@@ -99,7 +104,10 @@
                         </div>
                     </td>
                     <td style="vertical-align: middle">{{pos.reserved[1]}}</td>
-                    <td style="vertical-align: middle">{{pos.reserved[3]}}</td>
+                    <td style="vertical-align: middle">
+                      <!-- S -->
+                      {{pos.reserved[3]}}
+                    </td>
                 </tr>
                 <tr>
                     <td class="text-left">
@@ -156,6 +164,8 @@
             this.stats = res.new;
             this.agrees = res.agrees;
             this.notifies = res.notifies;
+
+            (this.pos.reserved[3] as any) -= 3;
             this.fillData();
         }
 

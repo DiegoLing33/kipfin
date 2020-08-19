@@ -19,6 +19,7 @@ import AdminUsersGroupsList from "@/views/Admin/AdminUsersGroupsList.vue";
 import AdminStats from "@/views/Admin/AdminStats.vue";
 import DocumentsHome from "@/views/DocumentsHome.vue";
 import Feed from "@/views/Feed.vue";
+import AdminUpdates from "@/views/Admin/AdminUpdates.vue";
 
 Vue.use(VueRouter)
 
@@ -35,6 +36,7 @@ Vue.use(VueRouter)
       {path: '/admin/users', name: 'Admin Users List', component: AdminUsersList},
       {path: '/admin/roles', name: 'Admin Users Groups List', component: AdminUsersGroupsList},
       {path: '/admin/stats', name: 'Admin Admission Statst', component: AdminStats},
+      {path: '/admin/news', name: 'Admin Admission News', component: AdminUpdates},
 
       {path: '/chat/:id', name: "Chat Room", component: Chat},
       {path: '/user/parents', name: 'User Profile parents', component: ProfileParents},

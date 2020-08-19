@@ -13,6 +13,9 @@
                 <a class="nav-link" href="http://lists4priemka.fa.ru/listabits.aspx?fl=12&tl=спо&le=СПО">Рейтинг
                     абитуриентов
                 </a>
+                <a class="nav-link" href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">
+                  Предзачисление (Бюджет)
+                </a>
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">

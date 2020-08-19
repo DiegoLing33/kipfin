@@ -3,6 +3,11 @@
             title="Панель управления"
             description="Панель управления приемной комиссией"
     >
+      <b-alert variant="success" show="show">
+        <h4>Метки пользователей</h4>
+        <p>Добавлена система меток пользователей</p>
+        <b-button @click="$router.push('/admin/news')">Подробней</b-button>
+      </b-alert>
         <b-card class="mb-3" title="Детализированный отчет">
             <b-row>
                 <b-col md="6" class="mb-2">

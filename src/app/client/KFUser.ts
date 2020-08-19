@@ -27,6 +27,7 @@ export default class KFUser {
             "studentStatus": "0",
             "studyBase": "0",
             "notified": "0",
+            "tags": "",
             "created": "2020-06-04 16:26:12",
             "school": {
                 "schoolStatus": "0",
@@ -57,6 +58,7 @@ export default class KFUser {
     public group!: KFUserGroup;
     public flags!: KFUserFlags;
     public avatar!: string;
+    public tags!: string[];
 
     public raw!: APIUserResults;
 
@@ -87,6 +89,7 @@ export default class KFUser {
         this.mail = raw.mail;
         this.flags = new KFUserFlags(raw.flags);
         this.avatar = raw.avatar || '';
+        this.tags = (raw.tags || '').split(",").filter((v: string) => v !== '');
 
         this.group = new KFUserGroup(raw.group || {});
 
