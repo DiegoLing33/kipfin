@@ -86,7 +86,7 @@
                 this.busy = true;
                 await this.$transaction(async () => {
                     await API.files.upload(this.selectedFiles, this.selectedType, this.selectedType === "passport");
-                    this.$emit("updated");
+                    this.$emit("updated", this.selectedFiles.length, this.selectedType);
                     (this.$refs['modal'] as any).close();
                 });
                 this.busy = false;

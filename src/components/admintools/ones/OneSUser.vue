@@ -164,7 +164,8 @@
         async downloadAgreeAndNotify() {
             this.busy = true;
             this.userFiles = await this.user.updateFiles();
-            this.$bvToast.toast("Упаковка файлов...");
+            this.$toast.info("Упаковка файлов...");
+            // this.$bvToast.toast("Упаковка файлов...");
             const zip = Zipper.createZip('');
             for (const file of this.userFiles) {
 
@@ -176,12 +177,13 @@
                     const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.'
                         + file.file_name.split('.').pop();
 
-                    this.$bvToast.toast("Упаковка " + name);
+                    // this.$bvToast.toast("Упаковка " + name);
                     zip.add(name, imageUrl);
                 }
             }
+
             if (zip.getFileNames().length === 0) {
-                this.$bvToast.toast('Файлы не найдены...', {title: "Ой-ой"});
+                this.$toast.error('Файлы не найдены...');
                 this.busy = false;
                 return;
             }
@@ -190,14 +192,14 @@
                 this.user.getFullName() + ' (Заявление).zip',
                 window.URL.createObjectURL(content)
             );
-            this.$bvToast.toast("Готово");
+            this.$toast.success("Готово!");
             this.busy = false;
         }
 
         async getFilesZip() {
             this.busy = true;
             this.userFiles = await this.user.updateFiles();
-            this.$bvToast.toast("Упаковка файлов...");
+            this.$toast.info("Упаковка файлов...");
             const zip = Zipper.createZip('');
 
             for (const file of this.userFiles) {
@@ -212,7 +214,7 @@
                 const imageUrl = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=' + imagePath + "&token=" + API.TOKEN;
 
                 const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.' + file.file_name.split('.').pop();
-                this.$bvToast.toast("Упаковка " + name);
+                // this.$bvToast.toast("Упаковка " + name);
                 zip.add(name, imageUrl);
                 if (file.file_ext.includes('pdf')) {
                     this.$bvToast.toast("Конвертация PDF " + name);
@@ -221,12 +223,13 @@
                 }
             }
 
+            this.$toast.info("Убираем лишнее...");
             const content = await zip.pack();
             FileIO.requestDownloadingFile(
                 this.user.getFullName() + '.zip',
                 window.URL.createObjectURL(content)
             );
-            this.$bvToast.toast("Готово");
+            this.$toast.success("Готово!");
             this.busy = false;
         }
     }

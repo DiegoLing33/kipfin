@@ -2,6 +2,14 @@ import Vue from "vue";
 import {NameList} from "@/ling/types/Common";
 import UI from "@/app/plugins/ui/UI";
 
+interface ToastTypeOptions {
+    type?: 'success' | 'info' | 'warning' | 'error';
+    duration?: number;
+    dismissible?: boolean;
+    onClose?: Function;
+    queue?: boolean; // Wait for existing to close before showing new
+}
+
 /**
  * The account interface
  */
@@ -10,6 +18,13 @@ declare module 'vue/types/vue' {
         $ui: typeof UI;
         $modalShow: (name: string) => void;
         $transaction: typeof UI.transaction;
+
+        $toast: {
+            open: (text: string, options?: ToastTypeOptions) => void;
+            error: (text: string, options?: ToastTypeOptions) => void;
+            success: (text: string, options?: ToastTypeOptions) => void;
+            info: (text: string, options?: ToastTypeOptions) => void;
+        };
     }
 }
 

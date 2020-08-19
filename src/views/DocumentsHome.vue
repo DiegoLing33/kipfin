@@ -20,10 +20,11 @@
                     </ol>
                 </li>
                 <li>
-                    <b>Фотография</b>. Фотография должна быть <b>на белом фоне</b>, лицо должно занимать 70% фото. Формат 3:4.
+                    <b>Фотография</b>. Фотография должна быть <b>на белом фоне</b>, лицо должно занимать 70% фото.
+                    Формат 3:4.
                 </li>
             </ol>
-            <hr />
+            <hr/>
             <b>Все файлы должны быть в формате JPG/JPEG!</b>
         </b-alert>
         <file-uploader-view @updated="update" class="mb-2"/>
@@ -40,21 +41,32 @@
     import UserContent from "@/components/theme/UserContent.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
     import KFDocument from "@/app/client/KFDocument";
+    import CountedString from "@/ling/support/CountedString";
+
     @Component({
         components: {
             DocumentsGridView,
-            UserContent, FileUploaderView, FormFileInput, SelectField}
+            UserContent, FileUploaderView, FormFileInput, SelectField
+        }
     })
     export default class DocumentsHome extends Vue {
         private documents: KFDocument[] = [];
 
         mounted() {
             StoreLoader.wait(this.$store, () => {
-                this.update();
+                this.update(null, null);
             });
         }
 
-        async update() {
+        async update(count: number|null, storage: string|null) {
+
+            if (count !== null && storage !== null) {
+                const fileTypeString = this.$app.fileTypes[storage] || storage;
+                const loaded = CountedString.get(count, "загружен", "загружено", "загружено")
+
+                this.$toast.open("Успешно " + loaded + " " + count + " " +
+                    CountedString.get(count, "файл", "файлов", "файла") + ` (${fileTypeString})`);
+            }
             await this.$store.getters.user.updateFiles();
             this.documents = KFDocument.fromList(this.$store.getters.user.getFiles());
         }

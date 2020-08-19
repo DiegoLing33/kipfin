@@ -49,6 +49,7 @@
         @Prop({required: true}) documents!: KFDocument[];
         @Prop({default: false}) goUserByClick!: boolean;
         @Prop({default: false}) busy!: boolean;
+        @Prop({default: false}) hiddenDefault!: boolean;
 
         private visibility: NameList<boolean> = {};
         private groups: NameList<KFDocument[]> = {};
@@ -60,7 +61,7 @@
             this.visibility = {};
             this.messages = {};
             for (const key of Object.keys(groups)) {
-                this.visibility[key] = true;
+                this.visibility[key] = !this.hiddenDefault;
                 const docs = groups[key];
                 let processed = 0;
                 let error = 0;

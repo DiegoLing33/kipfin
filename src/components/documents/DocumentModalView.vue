@@ -177,6 +177,7 @@
             await this.$transaction(async () => {
                 await file.setStatus(status);
                 this.$emit("updated");
+                this.$toast.success("Состояние файла изменено: " + (this.$app.infoStatus.text[status] || "неизвестно"));
                 (this.$refs['modal'] as any).close();
             });
         }

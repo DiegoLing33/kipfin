@@ -1,352 +1,365 @@
 <template>
-  <user-content :sticky="!isItMe" v-if="user.userId.toString() !== '-1'">
-    <template v-slot:header>
-      <div>
-        <user-avatar-box
-            :sub-text="user.group.groupId < 3 ? $app.specializationNoCode[user.raw.facultyId]: ''"
-            :large="true" :image-first="true" :user="user"></user-avatar-box>
-        <div class="mt-3">
-          <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
-            <b-icon-gear-fill/>
-            Настройки
-          </b-button>
-          <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
-            <b-icon-chat/>
-            Сообщения
-          </b-button>
-        </div>
-        <div>
-          <TaggedComponent
-              v-if="$store.getters.isAdmin"
-              :editable="$store.getters.isAdmin"
-              @add="addTag"
-              @remove="addTag"
-              :tags="user.tags"/>
-        </div>
-      </div>
-    </template>
-    <b-tabs content-class="mt-3" justified>
-      <b-tab title="Информация" active>
-        <b-alert variant="warning" :show="true" class="mb-3">
-          <h4>Предзачисление!</h4>
-          <p>
-            Доступен список предзачисления абитуриентов на бюджетную основу, он формируется только среди подавших
-            заявление и уведомление.
-            Если Вы подписали заявление и уведомление, но не увидели себя в данном списке, необходимо незамедлительно
-            связаться с приемной комиссией.
-            Желаем всем удачи!
-          </p>
-          <p>
-            <b-button
-                variant="success"
-                target="_blank"
-                href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
-            </b-button>
-          </p>
-        </b-alert>
-        <b-alert variant="warning" :show="true" class="mb-3">
-          <h4>Уважаемые абитуриенты!</h4>
-          <p>
-            Для зачисления в Колледж информатики и программирования на бюджетную основу обучения Вам необходимо <b>загрузить
-            уведомление в личный кабинет абитуриента</b> (к ранее поданному заявлению) не позднее 17:00 25 августа!
-          </p>
-        </b-alert>
-        <b-alert variant="danger" :show="true">
-          <h4>Внимание!</h4>
-          <p>
-            Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления, отправленные после
-            21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
-          </p>
-          <hr/>
-          <p>
-            Прием документов <b>на бюджетную основу</b> продолжается!
-          </p>
-        </b-alert>
-        <profile-information-section :user="user" :callback="onSave"/>
-      </b-tab>
-      <b-tab title="Образование">
-        <profile-education-section :user="user" :callback="onSave"/>
-      </b-tab>
-      <b-tab title="Специальность">
-        <b-alert variant="danger" :show="true">
-          <h4>Внимание!</h4>
-          <p>
-            Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления, отправленные после
-            21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
-          </p>
-          <hr/>
-          <p>
-            Прием документов <b>на бюджетную основу</b> продолжается!
-          </p>
-        </b-alert>
-        <profile-specialization-section :user="user" :callback="onSpecializationChange"/>
-      </b-tab>
-      <b-tab lazy v-if="$store.getters.hasAccess(13)">
-        <template v-slot:title>
-          <b-icon-gear/>
-          Управление
+    <user-content :sticky="!isItMe" v-if="user.userId.toString() !== '-1'">
+        <template v-slot:header>
+            <div>
+                <user-avatar-box
+                        :sub-text="user.group.groupId < 3 ? $app.specializationNoCode[user.raw.facultyId]: ''"
+                        :large="true" :image-first="true" :user="user"></user-avatar-box>
+                <div class="mt-3">
+                    <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
+                        <b-icon-gear-fill/>
+                        Настройки
+                    </b-button>
+                    <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/chat')">
+                        <b-icon-chat/>
+                        Сообщения
+                    </b-button>
+                </div>
+                <div>
+                    <TaggedComponent
+                            v-if="$store.getters.isAdmin"
+                            :editable="$store.getters.isAdmin"
+                            @add="addTag"
+                            @remove="removeTag"
+                            :tags="user.tags"/>
+                </div>
+            </div>
         </template>
-        <user-admin-settings :user="user"/>
-      </b-tab>
-    </b-tabs>
-    <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
-    <b-card class="mt-3 mb-3 ">
-      <template v-slot:header>
-        Состояние абитуриента: {{ $app.studentStatus.text[user.raw.studentStatus] }}
-      </template>
-      <div v-if="user.raw.studentStatus === '200'">
-        <b-alert :show="true" variant="danger">Если у Вас найдена ошибка, Вы должны снова отправить анкету, нажав на
-          кнопку снизу!
-        </b-alert>
-      </div>
-      <b-button
-          class="mb-3"
-          v-if="user.raw.studentStatus === '0' || user.raw.studentStatus === '200'"
-          @click="sendTest" variant="success" block>Отправить анкету на обработку
-      </b-button>
-      <user-comments-by-admission :user="user"/>
-    </b-card>
+        <b-tabs content-class="mt-3" justified>
+            <b-tab title="Информация" active>
+                <b-alert variant="warning" :show="true" class="mb-3">
+                    <h4>Предзачисление!</h4>
+                    <p>
+                        Доступен список предзачисления абитуриентов на бюджетную основу, он формируется только среди
+                        подавших
+                        заявление и уведомление.
+                        Если Вы подписали заявление и уведомление, но не увидели себя в данном списке, необходимо
+                        незамедлительно
+                        связаться с приемной комиссией.
+                        Желаем всем удачи!
+                    </p>
+                    <p>
+                        <b-button
+                                variant="success"
+                                target="_blank"
+                                href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
+                        </b-button>
+                    </p>
+                </b-alert>
+                <b-alert variant="warning" :show="true" class="mb-3">
+                    <h4>Уважаемые абитуриенты!</h4>
+                    <p>
+                        Для зачисления в Колледж информатики и программирования на бюджетную основу обучения Вам
+                        необходимо <b>загрузить
+                        уведомление в личный кабинет абитуриента</b> (к ранее поданному заявлению) не позднее 17:00 25
+                        августа!
+                    </p>
+                </b-alert>
+                <b-alert variant="danger" :show="true">
+                    <h4>Внимание!</h4>
+                    <p>
+                        Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления,
+                        отправленные после
+                        21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
+                    </p>
+                    <hr/>
+                    <p>
+                        Прием документов <b>на бюджетную основу</b> продолжается!
+                    </p>
+                </b-alert>
+                <profile-information-section :user="user" :callback="onSave"/>
+            </b-tab>
+            <b-tab title="Образование">
+                <profile-education-section :user="user" :callback="onSave"/>
+            </b-tab>
+            <b-tab title="Специальность">
+                <b-alert variant="danger" :show="true">
+                    <h4>Внимание!</h4>
+                    <p>
+                        Места на обучение <b>по договору</b> (включая бюджет/договор) закончились! Уведомления,
+                        отправленные после
+                        21.07.2020 23:59, не будут приняты! Для получение подробностей звоните в приемную комиссию.
+                    </p>
+                    <hr/>
+                    <p>
+                        Прием документов <b>на бюджетную основу</b> продолжается!
+                    </p>
+                </b-alert>
+                <profile-specialization-section :user="user" :callback="onSpecializationChange"/>
+            </b-tab>
+            <b-tab lazy v-if="$store.getters.hasAccess(13)">
+                <template v-slot:title>
+                    <b-icon-gear/>
+                    Управление
+                </template>
+                <user-admin-settings :user="user"/>
+            </b-tab>
+        </b-tabs>
+        <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
+        <b-card class="mt-3 mb-3 ">
+            <template v-slot:header>
+                Состояние абитуриента: {{ $app.studentStatus.text[user.raw.studentStatus] }}
+            </template>
+            <div v-if="user.raw.studentStatus === '200'">
+                <b-alert :show="true" variant="danger">Если у Вас найдена ошибка, Вы должны снова отправить анкету,
+                    нажав на
+                    кнопку снизу!
+                </b-alert>
+            </div>
+            <b-button
+                    class="mb-3"
+                    v-if="user.raw.studentStatus === '0' || user.raw.studentStatus === '200'"
+                    @click="sendTest" variant="success" block>Отправить анкету на обработку
+            </b-button>
+            <user-comments-by-admission :user="user"/>
+        </b-card>
 
-    <b-card title="Дополнительно" class="mb-3">
-      <fast-input-switch :callback="(function(v){return this.onSave('motherCapital', v ? 1: 0)}.bind(this))"
-                         :pre="user.raw.motherCapital === '1'">
-        Материнский капитал
-      </fast-input-switch>
-    </b-card>
+        <b-card title="Дополнительно" class="mb-3">
+            <fast-input-switch :callback="(function(v){return this.onSave('motherCapital', v ? 1: 0)}.bind(this))"
+                               :pre="user.raw.motherCapital === '1'">
+                Материнский капитал
+            </fast-input-switch>
+        </b-card>
 
-    <div v-if="$store.getters.isAdmin">
-      <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
-        <documents-grid-view
-            :busy="busyFilesLoading"
-            @updated="update" :documents="documents"/>
-      </collapse-card>
-      <collapse-card title="Законные представители" class="mb-3">
-        <user-parents :parents="parents"></user-parents>
-      </collapse-card>
-      <collapse-card @visible="onPassportVisibleChanged" title="Паспортные данные" class="mb-3">
-        <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item"/>
-      </collapse-card>
-    </div>
-    <admin-helper
-        :on-rule-set="onRuleSet"
-        :on-send-set="onSendSet"
-        :set-student-status="setStudentStatus"
-        ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
-  </user-content>
+        <div v-if="$store.getters.isAdmin">
+            <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
+                <documents-grid-view
+                        :busy="busyFilesLoading"
+                        @updated="update" :documents="documents"/>
+            </collapse-card>
+            <collapse-card title="Законные представители" class="mb-3">
+                <user-parents :parents="parents"></user-parents>
+            </collapse-card>
+            <collapse-card @visible="onPassportVisibleChanged" title="Паспортные данные" class="mb-3">
+                <passport-view v-for="item of psp" :key="item['PSP_ID']" :psp="item"/>
+            </collapse-card>
+        </div>
+        <admin-helper
+                :on-rule-set="onRuleSet"
+                :on-send-set="onSendSet"
+                :set-student-status="setStudentStatus"
+                ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
+    </user-content>
 </template>
 
 <script lang="ts">
-import {Component, Mixins, Watch} from "vue-property-decorator";
-import API from "@/app/api/API";
-import KFUser from "@/app/client/KFUser";
-import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
-import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
-import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
-import {Dict} from "@/app/types";
-import UserParents from "@/views/Profile/UserParents.vue";
-import PassportView from "@/components/profile/PassportView.vue";
-import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
-import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
-import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
-import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
-import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
-import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
-import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
-import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
-import UserContent from "@/components/theme/UserContent.vue";
-import AdminHelper from "@/components/admintools/AdminHelper.vue";
-import LiModal from "@/ling/components/LiModal.vue";
-import OneSUser from "@/components/admintools/ones/OneSUser.vue";
-import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-import KFDocument from "@/app/client/KFDocument";
-import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
-import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-import CollapseCard from "@/components/theme/CollapseCard.vue";
-import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
+    import {Component, Mixins, Watch} from "vue-property-decorator";
+    import API from "@/app/api/API";
+    import KFUser from "@/app/client/KFUser";
+    import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
+    import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
+    import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
+    import {Dict} from "@/app/types";
+    import UserParents from "@/views/Profile/UserParents.vue";
+    import PassportView from "@/components/profile/PassportView.vue";
+    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
+    import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
+    import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
+    import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
+    import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
+    import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
+    import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
+    import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
+    import UserContent from "@/components/theme/UserContent.vue";
+    import AdminHelper from "@/components/admintools/AdminHelper.vue";
+    import LiModal from "@/ling/components/LiModal.vue";
+    import OneSUser from "@/components/admintools/ones/OneSUser.vue";
+    import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
+    import KFDocument from "@/app/client/KFDocument";
+    import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
+    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
+    import CollapseCard from "@/components/theme/CollapseCard.vue";
+    import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
+    import Vue from "vue";
 
-@Component({
-  components: {
-    TaggedComponent,
-    CollapseCard,
-    UserAdminSettings,
-    DocumentsGridView,
-    OneSUser,
-    LiModal,
-    AdminHelper,
-    UserContent,
-    ProfileSpecializationSection,
-    ProfileEducationSection,
-    ProfileInformationSection,
-    FiSelect,
-    UserAvatarBox,
-    UserStatusToolbox,
-    FileUploaderAdminView,
-    AdmissionActionsUserView,
-    PassportView,
-    UserParents,
-    UserCommentsByAdmission,
-    ProfileProgressView,
-    FastInputSwitch,
-  }
-})
-export default class UserView extends Mixins(StoreLoadedComponent) {
+    @Component({
+        components: {
+            TaggedComponent,
+            CollapseCard,
+            UserAdminSettings,
+            DocumentsGridView,
+            OneSUser,
+            LiModal,
+            AdminHelper,
+            UserContent,
+            ProfileSpecializationSection,
+            ProfileEducationSection,
+            ProfileInformationSection,
+            FiSelect,
+            UserAvatarBox,
+            UserStatusToolbox,
+            FileUploaderAdminView,
+            AdmissionActionsUserView,
+            PassportView,
+            UserParents,
+            UserCommentsByAdmission,
+            ProfileProgressView,
+            FastInputSwitch,
+        }
+    })
+    export default class UserView extends Mixins(StoreLoadedComponent) {
 
-  private documents: KFDocument[] = [];
-  private user: KFUser = KFUser.createZeroUser();
-  private parents: unknown[] = [];
-  private psp: unknown[] = [];
+        private documents: KFDocument[] = [];
+        private user: KFUser = KFUser.createZeroUser();
+        private parents: unknown[] = [];
+        private psp: unknown[] = [];
 
-  private busyFilesLoading = false;
+        private busyFilesLoading = false;
 
-  protected storeLoaded() {
-    this.update();
-  }
+        protected storeLoaded() {
+            this.update();
+        }
 
-  private showOneSModel() {
-    (this.$refs['adminHelper'] as any).hide();
-    (this.$refs['oneSModel'] as any).show();
-  }
+        private showOneSModel() {
+            (this.$refs['adminHelper'] as any).hide();
+            (this.$refs['oneSModel'] as any).show();
+        }
 
-  private async update() {
-    if (this.$route.params.id) {
-      this.user = new KFUser(await API.users.get(this.$route.params.id));
-    } else {
-      this.user = this.$store.getters.user;
+        private async update() {
+            if (this.$route.params.id) {
+                this.user = new KFUser(await API.users.get(this.$route.params.id));
+            } else {
+                this.user = this.$store.getters.user;
+            }
+            if (this.$store.getters.isAdmin) {
+                // await this.user.updateFiles();
+                await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
+                this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
+            }
+        }
+
+        /**
+         * Handles when files visibility changed
+         * @param state
+         */
+        private async onFilesVisibleChanged(state: boolean) {
+            if (state) await this.$transaction(async () => {
+                this.busyFilesLoading = true;
+                this.documents = await this.user.loadAllUserFiles();
+            });
+            this.busyFilesLoading = false;
+        }
+
+        /**
+         * Handles when passport visibility changed
+         * @param state
+         */
+        private async onPassportVisibleChanged(state: boolean) {
+            if (state) await this.$transaction(async () => {
+                this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
+            });
+        }
+
+        private onSave(field: string, value: unknown) {
+            return new Promise(resolve => {
+                API.mission.setField(field, value, this.user.userId, this.$store.getters.isAdmin)
+                    .then(async () => {
+                        resolve(true);
+                        await this.update();
+                        this.$toast.success("Изменения сохранены!");
+                    })
+                    .catch(reason => {
+                        this.$ui.error(reason);
+                        resolve(false);
+                    });
+            });
+        }
+
+        private onSpecializationChange(field: string, value: string) {
+            return new Promise(resolve => {
+                const method = field === "facultyId" ? "mission.setSpecialization" : "mission.setBase";
+                const args: Dict<unknown> = field === "facultyId" ? {specialization: value} : {base: value};
+                if (this.$store.getters.isAdmin) args["userId"] = this.user.userId;
+                API.request(method, args).then(async () => {
+                    resolve(true);
+                    this.$toast.success("Изменения сохранены!");
+                    if (field === 'facultyId') window.location.reload();
+                    else await this.update();
+                }).catch(reason => {
+                    this.$ui.error(reason);
+                    resolve(false);
+                });
+            });
+        }
+
+        addTag(tag: string, tags: string[]) {
+            API.request("mission.setTags", {userId: this.user.userId, tags: tags.join(',')}).then(result => {
+                if (result.ok) this.$toast.open("Метка " + tag + " успешно добавлена!", {type: "success"});
+            });
+        }
+        removeTag(tag: string, tags: string[]) {
+            API.request("mission.setTags", {userId: this.user.userId, tags: tags.join(',')}).then(result => {
+                if (result.ok) this.$toast.open("Метка " + tag + " успешно удалена!", {type: "success"});
+            });
+        }
+
+
+        @Watch("$route")
+        onRoute() {
+            window.location.reload();
+        }
+
+        protected get isItMe() {
+            return this.user.userId === this.$store.getters.user.userId;
+        }
+
+        private onRuleSet(rule: string) {
+            return (value: string) => {
+                value = value ? '1' : '0';
+                return new Promise(resolve => {
+                    API.mission.setFieldAdmin(rule, value, this.user.userId)
+                        .then(async () => {
+                            resolve(true);
+                            await this.update();
+                            this.$toast.success("Разрешение [" + rule + "] изменено!");
+                            // window.location.reload();
+                        }).catch(reason => {
+                        this.$ui.error(reason);
+                        resolve(false);
+                    });
+                });
+            };
+        }
+
+        private onSendSet() {
+            return new Promise(resolve => {
+                let val = this.$store.state.currentUser.userId;
+                if (this.user.raw['worked'] !== '0') val = 0;
+
+                API.mission.setFieldAdmin("worked", val, this.user.userId)
+                    .then(async () => {
+                        resolve(true);
+                        await this.update();
+                    }).catch(reason => {
+                    this.$ui.error(reason);
+                    resolve(false);
+                });
+            });
+        }
+
+        sendTest() {
+            this.$transaction(async () => {
+                await API.request("mission.sendTest");
+                window.location.reload();
+            });
+        }
+
+
+        setStudentStatus(status: string) {
+            return new Promise(resolve => {
+                API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
+                    .then(() => {
+                        this.$store.dispatch("login", this.$account.authorization.getToken());
+                        this.$toast.open("Пользователь переведен в новый статус: " + this.$app.studentStatus.text[status], {type: "success"});
+                        this.user.raw.studentStatus = status;
+                        resolve(true);
+                    }).catch(reason => {
+                    this.$toast.error(reason, {duration: 10000});
+                    resolve(false);
+                })
+            });
+        }
     }
-    if (this.$store.getters.isAdmin) {
-      // await this.user.updateFiles();
-      await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
-      this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
-    }
-  }
-
-  /**
-   * Handles when files visibility changed
-   * @param state
-   */
-  private async onFilesVisibleChanged(state: boolean) {
-    if (state) await this.$transaction(async () => {
-      this.busyFilesLoading = true;
-      this.documents = await this.user.loadAllUserFiles();
-    });
-    this.busyFilesLoading = false;
-  }
-
-  /**
-   * Handles when passport visibility changed
-   * @param state
-   */
-  private async onPassportVisibleChanged(state: boolean) {
-    if (state) await this.$transaction(async () => {
-      this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
-    });
-  }
-
-  private onSave(field: string, value: unknown) {
-    return new Promise(resolve => {
-      API.mission.setField(field, value, this.user.userId, this.$store.getters.isAdmin)
-          .then(async () => {
-            resolve(true);
-            await this.update();
-            this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
-          })
-          .catch(reason => {
-            this.$ui.error(reason);
-            resolve(false);
-          });
-    });
-  }
-
-  private onSpecializationChange(field: string, value: string) {
-    return new Promise(resolve => {
-      const method = field === "facultyId" ? "mission.setSpecialization" : "mission.setBase";
-      const args: Dict<unknown> = field === "facultyId" ? {specialization: value} : {base: value};
-      if (this.$store.getters.isAdmin) args["userId"] = this.user.userId;
-      API.request(method, args).then(async () => {
-        resolve(true);
-        this.$bvToast.toast("Изменения сохранены!", {title: "Успех"});
-        if (field === 'facultyId') window.location.reload();
-        else await this.update();
-      }).catch(reason => {
-        this.$ui.error(reason);
-        resolve(false);
-      });
-    });
-  }
-
-  addTag(tag: string, tags: string[]) {
-    API.request("mission.setTags", {userId: this.user.userId, tags: tags.join(',')}).then(result => {
-      if (result.ok) this.$bvToast.toast("Пометки изменены", {title: "Успех"});
-    });
-  }
-
-
-  @Watch("$route")
-  onRoute() {
-    window.location.reload();
-  }
-
-  protected get isItMe() {
-    return this.user.userId === this.$store.getters.user.userId;
-  }
-
-  private onRuleSet(rule: string) {
-    return (value: string) => {
-      value = value ? '1' : '0';
-      return new Promise(resolve => {
-        API.mission.setFieldAdmin(rule, value, this.user.userId)
-            .then(async () => {
-              resolve(true);
-              await this.update();
-              this.$bvToast.toast("Разрешение [" + rule + "] изменено!", {title: "Успех"});
-              // window.location.reload();
-            }).catch(reason => {
-          this.$ui.error(reason);
-          resolve(false);
-        });
-      });
-    };
-  }
-
-  private onSendSet() {
-    return new Promise(resolve => {
-      let val = this.$store.state.currentUser.userId;
-      if (this.user.raw['worked'] !== '0') val = 0;
-
-      API.mission.setFieldAdmin("worked", val, this.user.userId)
-          .then(async () => {
-            resolve(true);
-            await this.update();
-          }).catch(reason => {
-        this.$ui.error(reason);
-        resolve(false);
-      });
-    });
-  }
-
-  sendTest() {
-    this.$transaction(async () => {
-      await API.request("mission.sendTest");
-      window.location.reload();
-    });
-  }
-
-
-  setStudentStatus(status: string) {
-    return new Promise(resolve => {
-      API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
-          .then(() => {
-            this.$store.dispatch("login", this.$account.authorization.getToken());
-            this.$bvToast.toast("Пользователь переведен в новый статус: " + this.$app.studentStatus.text[status], {title: "Успех!"});
-            this.user.raw.studentStatus = status;
-            resolve(true);
-          }).catch(reason => {
-        this.$store.commit("error", reason);
-        resolve(false);
-      })
-    });
-  }
-}
 </script>
 
 <style scoped>
