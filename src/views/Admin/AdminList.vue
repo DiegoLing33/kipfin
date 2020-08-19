@@ -202,7 +202,16 @@
         </div>
       </div>
     </div>
-    <div v-if="result.length === 0" class="p-3 text-center text-muted">
+    <div v-if="isLoading" style="padding: 15px">
+      <content-placeholders >
+        <content-placeholders-heading :img="true" />
+        <content-placeholders-heading :img="true" />
+        <content-placeholders-heading :img="true" />
+        <content-placeholders-heading :img="true" />
+      </content-placeholders>
+    </div>
+
+    <div v-if="result.length === 0 && !isLoading" class="p-3 text-center text-muted">
       <b-icon-sun font-scale="3"/>
       <div class="mt-1">Ничего не найдено по выставленным критериям</div>
     </div>
@@ -231,6 +240,7 @@ import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
 export default class AdminList extends Vue {
   private items = Array<APIUserResults>();
   private result = Array<APIUserResults>();
+  private isLoading = true;
 
   private tableFields = [
     {label: "#", key: "num"},
@@ -314,6 +324,7 @@ export default class AdminList extends Vue {
           return value;
         });
     this.find();
+    this.isLoading = false;
   }
 
   private onKeyDownId(e: KeyboardEvent) {

@@ -90,12 +90,17 @@ export default class UserAvatarImage extends Mixins(UserPropComponent) {
     }
 
     /**
+     * Returns true, if user has image
+     */
+    get hasImage(){
+        return this.user.avatar && this.user.avatar.length > 7;
+    }
+
+    /**
      * Returns the avatar URL
      */
     get avatarUrl() {
-        if (this.user.avatar && this.user.avatar.length > 7)
-            return defaultUserAvatarsPath +
-                this.user.avatar;
+        if (this.hasImage) return defaultUserAvatarsPath + this.user.avatar;
         return defaultUserAvatarNoPath;
     }
 

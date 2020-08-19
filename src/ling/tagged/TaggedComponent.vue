@@ -37,7 +37,7 @@ export default class TaggedComponent extends Vue {
 
   buttonClick() {
     this.tagItems = [...this.tagItems, this.inputModel];
-    this.$emit("remove", this.inputModel, this.tagItems);
+    this.$emit("add", this.inputModel, this.tagItems);
     this.showAddPopover = false;
     this.inputModel = "";
   }

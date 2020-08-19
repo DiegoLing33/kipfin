@@ -1,6 +1,13 @@
 <template>
     <div>
-        <b-card class="mb-2" style="border-radius: 0" no-body v-for="item of items" :key="item.id">
+        <b-card v-if="isLoading">
+            <content-placeholders>
+                <content-placeholders-img />
+                <content-placeholders-heading />
+                <content-placeholders-text />
+            </content-placeholders>
+        </b-card>
+        <b-card v-else class="mb-2" style="border-radius: 0" no-body v-for="item of items" :key="item.id">
             <div v-if="item.attachments && item.attachments[0] && item.attachments[0].type === 'photo'">
                 <v-k-feed-photo :post="item"/>
             </div>
@@ -69,6 +76,7 @@
         protected toStdDateTime = DateIO.toStdDateTime;
         protected lastPageNumber = 0;
         protected count = 0;
+        private isLoading = true;
 
         /**
          * Store has been loaded
@@ -82,6 +90,7 @@
             this.count = wall.response.count;
             if (this.lastPageNumber === 0) this.items = wall.response.items;
             else this.items.push(...wall.response.items);
+            this.isLoading = false;
         }
 
         public more() {

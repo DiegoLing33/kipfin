@@ -9,7 +9,15 @@
                 </div>
             </user-finder>
         </template>
-        <div class="found-results">
+        <div v-if="isLoading" style="padding: 15px">
+            <content-placeholders >
+                <content-placeholders-heading :img="true" />
+                <content-placeholders-heading :img="true" />
+                <content-placeholders-heading :img="true" />
+                <content-placeholders-heading :img="true" />
+            </content-placeholders>
+        </div>
+        <div v-else class="found-results">
             <div
                     v-for="(user) of items"
                     :key="(`user_${user.userId}`)"
@@ -52,6 +60,7 @@
         protected count = 0;
         protected lastArgs = nameList();
         protected items = Array<ServerUsersRoot>();
+        private isLoading = true;
 
         protected storeLoaded() {
             this.search({}, 0);
@@ -75,6 +84,7 @@
             this.count = results.count;
             if (page === 0) this.items = [];
             this.items.push(...results.items as ServerUsersRoot[]);
+            this.isLoading = false;
         }
 
         /**

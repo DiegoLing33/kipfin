@@ -3,9 +3,14 @@
             title="Лента файлов"
             description="Информация о загрузке файлов абитуриентами"
     >
+        <content-placeholders v-if="isLoading">
+            <content-placeholders-text :lines="3" />
+        </content-placeholders>
+
         <documents-grid-view
-            :documents="source"
-            :go-user-by-click="true"
+                :hidden-default="true"
+                :documents="source"
+                :go-user-by-click="true"
         />
     </user-content>
 </template>
@@ -23,6 +28,7 @@
     })
     export default class AdminFilesFeed extends Vue {
         private source: KFDocument[] = [];
+        private isLoading = true;
 
         mounted() {
             StoreLoader.wait(this.$store, () => {
@@ -32,13 +38,17 @@
 
         update() {
             this.$transaction(async () => {
+                const list3 = (await API.request("files.listByType", {
+                    type: 'check'
+                })).list;
                 const list = (await API.request("files.listByType", {
                     type: 'agree'
                 })).list;
                 const list2 = (await API.request("files.listByType", {
                     type: 'notify'
                 })).list;
-                this.source = KFDocument.fromList([...list, ...list2]);
+                this.isLoading = false;
+                this.source = KFDocument.fromList([...list, ...list2, ...list3]);
             });
         }
     }
