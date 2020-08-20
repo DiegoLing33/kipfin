@@ -4,12 +4,14 @@ import {APIFileResult} from "@/app/api/APIFiles";
 import KFUser from "@/app/client/KFUser";
 import KFDocument from "@/app/client/KFDocument";
 import {account} from "@/app/store/account";
+import {student} from "@/app/store/student";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules:{
         account: account,
+        student: student,
     },
     state: {
         currentToken: "",

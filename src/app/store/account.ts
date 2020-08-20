@@ -36,8 +36,8 @@ export const account: Module<any, any> = {
          * Returns true, if user is admin
          * @param state
          */
-        isAdmin(state): boolean{
-          return state.loggedUser.group.hasAccess(7);
+        isAdmin(state): boolean {
+            return state.loggedUser.group.hasAccess(7);
         },
         /**
          * Returns the current logged in user
