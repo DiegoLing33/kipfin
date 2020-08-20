@@ -9,6 +9,8 @@ export interface AppPluginApp {
     specializationNoCode: typeof KIPD.specializationsNoCode;
     short: typeof KIPD.short;
     bases: typeof KIPD.bases;
+    basesClear: typeof KIPD.basesClear;
+    specializationsClear: typeof KIPD.specializationsClear;
     studentStatus: typeof KIPD.studentStatus;
     parentName: typeof KIPD.parentName;
     fileTypes: typeof KIPD.fileTypes;
@@ -44,6 +46,8 @@ export default function AppPlugin(vue: any): void {
         specialization: KIPD.specializations,
         parentName: KIPD.parentName,
         fileTypes: KIPD.fileTypes,
+        basesClear: KIPD.basesClear,
+        specializationsClear: KIPD.specializationsClear,
         specializationNoCode: KIPD.specializationsNoCode,
         bases: KIPD.bases,
         yesNo: {"0": "Нет", "1": "Да"},

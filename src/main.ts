@@ -13,6 +13,7 @@ import UIPlugin from "@/app/plugins/ui/UIPlugin";
 // Vue toast plugin
 const VueToast = require('vue-toast-notification/dist/index') as any;
 const VueContentPlaceholders = require('vue-content-placeholders') as any;
+const VSelect = require('@alfsnd/vue-bootstrap-select/dist/vue-bootstrap-select.esm').default as any;
 
 Vue.use(AppPlugin);
 Vue.use(BootstrapVue);
@@ -23,6 +24,7 @@ Vue.use(AccountPlugin);
 Vue.use(UIPlugin);
 Vue.use(VueToast, {position: 'top'});
 Vue.use(VueContentPlaceholders)
+Vue.use(VSelect)
 
 Vue.config.productionTip = false
 

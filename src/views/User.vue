@@ -3,8 +3,8 @@
         <template v-slot:header>
             <div>
                 <user-avatar-box
-                        :sub-text="user.group.groupId < 3 ? $app.specializationNoCode[user.raw.facultyId]: ''"
-                        :large="true" :image-first="true" :user="user"></user-avatar-box>
+                    :sub-text="user.group.groupId < 3 ? $app.specializationNoCode[user.raw.facultyId]: ''"
+                    :large="true" :image-first="true" :user="user"></user-avatar-box>
                 <div class="mt-3">
                     <b-button v-if="isItMe" class="control mr-2" @click="$router.push('/user/settings')">
                         <b-icon-gear-fill/>
@@ -17,11 +17,11 @@
                 </div>
                 <div>
                     <TaggedComponent
-                            v-if="$store.getters.isAdmin"
-                            :editable="$store.getters.isAdmin"
-                            @add="addTag"
-                            @remove="removeTag"
-                            :tags="user.tags"/>
+                        v-if="$store.getters.isAdmin"
+                        :editable="$store.getters.isAdmin"
+                        @add="(...args) => addUserTag(user.userId, ...args)"
+                        @remove="(...args) => removeUserTag(user.userId, ...args)"
+                        :tags="user.tags"/>
                 </div>
             </div>
         </template>
@@ -40,9 +40,9 @@
                     </p>
                     <p>
                         <b-button
-                                variant="success"
-                                target="_blank"
-                                href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
+                            variant="success"
+                            target="_blank"
+                            href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
                         </b-button>
                     </p>
                 </b-alert>
@@ -106,9 +106,9 @@
                 </b-alert>
             </div>
             <b-button
-                    class="mb-3"
-                    v-if="user.raw.studentStatus === '0' || user.raw.studentStatus === '200'"
-                    @click="sendTest" variant="success" block>Отправить анкету на обработку
+                class="mb-3"
+                v-if="user.raw.studentStatus === '0' || user.raw.studentStatus === '200'"
+                @click="sendTest" variant="success" block>Отправить анкету на обработку
             </b-button>
             <user-comments-by-admission :user="user"/>
         </b-card>
@@ -123,8 +123,8 @@
         <div v-if="$store.getters.isAdmin">
             <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
                 <documents-grid-view
-                        :busy="busyFilesLoading"
-                        @updated="update" :documents="documents"/>
+                    :busy="busyFilesLoading"
+                    @updated="update" :documents="documents"/>
             </collapse-card>
             <collapse-card title="Законные представители" class="mb-3">
                 <user-parents :parents="parents"></user-parents>
@@ -134,230 +134,208 @@
             </collapse-card>
         </div>
         <admin-helper
-                :on-rule-set="onRuleSet"
-                :on-send-set="onSendSet"
-                :set-student-status="setStudentStatus"
-                ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
+            :on-rule-set="onRuleSet"
+            :on-send-set="onSendSet"
+            :set-student-status="setStudentStatus"
+            ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
     </user-content>
 </template>
 
 <script lang="ts">
-    import {Component, Mixins, Watch} from "vue-property-decorator";
-    import API from "@/app/api/API";
-    import KFUser from "@/app/client/KFUser";
-    import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
-    import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
-    import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
-    import {Dict} from "@/app/types";
-    import UserParents from "@/views/Profile/UserParents.vue";
-    import PassportView from "@/components/profile/PassportView.vue";
-    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
-    import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
-    import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
-    import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
-    import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
-    import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
-    import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
-    import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
-    import UserContent from "@/components/theme/UserContent.vue";
-    import AdminHelper from "@/components/admintools/AdminHelper.vue";
-    import LiModal from "@/ling/components/LiModal.vue";
-    import OneSUser from "@/components/admintools/ones/OneSUser.vue";
-    import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-    import KFDocument from "@/app/client/KFDocument";
-    import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
-    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import CollapseCard from "@/components/theme/CollapseCard.vue";
-    import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
+import {Component, Mixins, Watch} from "vue-property-decorator";
+import API from "@/app/api/API";
+import KFUser from "@/app/client/KFUser";
+import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
+import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
+import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
+import {Dict} from "@/app/types";
+import UserParents from "@/views/Profile/UserParents.vue";
+import PassportView from "@/components/profile/PassportView.vue";
+import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
+import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
+import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
+import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
+import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
+import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
+import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
+import ProfileSpecializationSection from "@/components/profile/ProfileSpecializationSection.vue";
+import UserContent from "@/components/theme/UserContent.vue";
+import AdminHelper from "@/components/admintools/AdminHelper.vue";
+import LiModal from "@/ling/components/LiModal.vue";
+import OneSUser from "@/components/admintools/ones/OneSUser.vue";
+import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
+import KFDocument from "@/app/client/KFDocument";
+import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
+import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
+import CollapseCard from "@/components/theme/CollapseCard.vue";
+import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
+import UserControllerMixin from "@/components/mixins/controllers/UserControllerMixin.vue";
+import UIControllerMixin from "@/components/mixins/controllers/UIControllerMixin.vue";
 
-    @Component({
-        components: {
-            TaggedComponent,
-            CollapseCard,
-            UserAdminSettings,
-            DocumentsGridView,
-            OneSUser,
-            LiModal,
-            AdminHelper,
-            UserContent,
-            ProfileSpecializationSection,
-            ProfileEducationSection,
-            ProfileInformationSection,
-            FiSelect,
-            UserAvatarBox,
-            UserStatusToolbox,
-            FileUploaderAdminView,
-            AdmissionActionsUserView,
-            PassportView,
-            UserParents,
-            UserCommentsByAdmission,
-            ProfileProgressView,
-            FastInputSwitch,
+@Component({
+    components: {
+        TaggedComponent,
+        CollapseCard,
+        UserAdminSettings,
+        DocumentsGridView,
+        OneSUser,
+        LiModal,
+        AdminHelper,
+        UserContent,
+        ProfileSpecializationSection,
+        ProfileEducationSection,
+        ProfileInformationSection,
+        FiSelect,
+        UserAvatarBox,
+        UserStatusToolbox,
+        FileUploaderAdminView,
+        AdmissionActionsUserView,
+        PassportView,
+        UserParents,
+        UserCommentsByAdmission,
+        ProfileProgressView,
+        FastInputSwitch,
+    }
+})
+export default class UserView extends Mixins(StoreLoadedComponent, UserControllerMixin,
+    UIControllerMixin) {
+
+    private documents: KFDocument[] = [];
+    private user: KFUser = KFUser.createZeroUser();
+    private parents: unknown[] = [];
+    private psp: unknown[] = [];
+
+    private busyFilesLoading = false;
+
+    protected storeLoaded() {
+        this.update();
+    }
+
+    private showOneSModel() {
+        (this.$refs['adminHelper'] as any).hide();
+        (this.$refs['oneSModel'] as any).show();
+    }
+
+    private async update() {
+        if (this.$route.params.id) {
+            this.user = new KFUser(await API.users.get(this.$route.params.id));
+        } else {
+            this.user = this.$store.getters.user;
         }
-    })
-    export default class UserView extends Mixins(StoreLoadedComponent) {
-
-        private documents: KFDocument[] = [];
-        private user: KFUser = KFUser.createZeroUser();
-        private parents: unknown[] = [];
-        private psp: unknown[] = [];
-
-        private busyFilesLoading = false;
-
-        protected storeLoaded() {
-            this.update();
-        }
-
-        private showOneSModel() {
-            (this.$refs['adminHelper'] as any).hide();
-            (this.$refs['oneSModel'] as any).show();
-        }
-
-        private async update() {
-            if (this.$route.params.id) {
-                this.user = new KFUser(await API.users.get(this.$route.params.id));
-            } else {
-                this.user = this.$store.getters.user;
-            }
-            if (this.$store.getters.isAdmin) {
-                // await this.user.updateFiles();
-                await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
-                this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
-            }
-        }
-
-        /**
-         * Handles when files visibility changed
-         * @param state
-         */
-        private async onFilesVisibleChanged(state: boolean) {
-            if (state) await this.$transaction(async () => {
-                this.busyFilesLoading = true;
-                this.documents = await this.user.loadAllUserFiles();
-            });
-            this.busyFilesLoading = false;
-        }
-
-        /**
-         * Handles when passport visibility changed
-         * @param state
-         */
-        private async onPassportVisibleChanged(state: boolean) {
-            if (state) await this.$transaction(async () => {
-                this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
-            });
-        }
-
-        private onSave(field: string, value: unknown) {
-            return new Promise(resolve => {
-                API.mission.setField(field, value, this.user.userId, this.$store.getters.isAdmin)
-                    .then(async () => {
-                        resolve(true);
-                        await this.update();
-                        this.$toast.success("Изменения сохранены!");
-                    })
-                    .catch(reason => {
-                        this.$ui.error(reason);
-                        resolve(false);
-                    });
-            });
-        }
-
-        private onSpecializationChange(field: string, value: string) {
-            return new Promise(resolve => {
-                const method = field === "facultyId" ? "mission.setSpecialization" : "mission.setBase";
-                const args: Dict<unknown> = field === "facultyId" ? {specialization: value} : {base: value};
-                if (this.$store.getters.isAdmin) args["userId"] = this.user.userId;
-                API.request(method, args).then(async () => {
-                    resolve(true);
-                    this.$toast.success("Изменения сохранены!");
-                    if (field === 'facultyId') window.location.reload();
-                    else await this.update();
-                }).catch(reason => {
-                    this.$ui.error(reason);
-                    resolve(false);
-                });
-            });
-        }
-
-        addTag(tag: string, tags: string[]) {
-            API.request("mission.setTags", {userId: this.user.userId, tags: tags.join(',')}).then(result => {
-                if (result.ok) this.$toast.open("Метка " + tag + " успешно добавлена!", {type: "success"});
-            });
-        }
-        removeTag(tag: string, tags: string[]) {
-            API.request("mission.setTags", {userId: this.user.userId, tags: tags.join(',')}).then(result => {
-                if (result.ok) this.$toast.open("Метка " + tag + " успешно удалена!", {type: "success"});
-            });
-        }
-
-
-        @Watch("$route")
-        onRoute() {
-            window.location.reload();
-        }
-
-        protected get isItMe() {
-            return this.user.userId === this.$store.getters.user.userId;
-        }
-
-        private onRuleSet(rule: string) {
-            return (value: string) => {
-                value = value ? '1' : '0';
-                return new Promise(resolve => {
-                    API.mission.setFieldAdmin(rule, value, this.user.userId)
-                        .then(async () => {
-                            resolve(true);
-                            await this.update();
-                            this.$toast.success("Разрешение [" + rule + "] изменено!");
-                            // window.location.reload();
-                        }).catch(reason => {
-                        this.$ui.error(reason);
-                        resolve(false);
-                    });
-                });
-            };
-        }
-
-        private onSendSet() {
-            return new Promise(resolve => {
-                let val = this.$store.state.currentUser.userId;
-                if (this.user.raw['worked'] !== '0') val = 0;
-
-                API.mission.setFieldAdmin("worked", val, this.user.userId)
-                    .then(async () => {
-                        resolve(true);
-                        await this.update();
-                    }).catch(reason => {
-                    this.$ui.error(reason);
-                    resolve(false);
-                });
-            });
-        }
-
-        sendTest() {
-            this.$transaction(async () => {
-                await API.request("mission.sendTest");
-                window.location.reload();
-            });
-        }
-
-
-        setStudentStatus(status: string) {
-            return new Promise(resolve => {
-                API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
-                    .then(() => {
-                        this.$store.dispatch("login", this.$account.authorization.getToken());
-                        this.$toast.open("Пользователь переведен в новый статус: " + this.$app.studentStatus.text[status], {type: "success"});
-                        this.user.raw.studentStatus = status;
-                        resolve(true);
-                    }).catch(reason => {
-                    this.$toast.error(reason, {duration: 10000});
-                    resolve(false);
-                })
-            });
+        if (this.$store.getters.isAdmin) {
+            // await this.user.updateFiles();
+            await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
+            this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
         }
     }
+
+    /**
+     * Handles when files visibility changed
+     * @param state
+     */
+    private async onFilesVisibleChanged(state: boolean) {
+        if (state) await this.$transaction(async () => {
+            this.busyFilesLoading = true;
+            this.documents = await this.user.loadAllUserFiles();
+        });
+        this.busyFilesLoading = false;
+    }
+
+    /**
+     * Handles when passport visibility changed
+     * @param state
+     */
+    private async onPassportVisibleChanged(state: boolean) {
+        if (state) await this.$transaction(async () => {
+            this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
+        });
+    }
+
+    private async onSave(field: string, value: unknown): Promise<boolean> {
+        const results = await this.withToast(
+            this.setUserField(this.user.userId, field, value), "Изменения сохранены!");
+        if (results) await this.update();
+        return Promise.resolve(results);
+    }
+
+    private async onSpecializationChange(field: string, value: string) {
+        const method = field === "facultyId" ? "mission.setSpecialization" : "mission.setBase";
+        const args: Dict<unknown> = field === "facultyId" ? {specialization: value} : {base: value};
+        if (this.$store.getters.isAdmin) args["userId"] = this.user.userId;
+        // Results
+        const results = await API.request(method, args);
+        await this.update();
+
+        return Promise.resolve(results.ok);
+    }
+
+
+    @Watch("$route")
+    onRoute() {
+        window.location.reload();
+    }
+
+    protected get isItMe() {
+        return this.user.userId === this.$store.getters.user.userId;
+    }
+
+    private onRuleSet(rule: string) {
+        return (value: string) => {
+            value = value ? '1' : '0';
+            return new Promise(resolve => {
+                API.mission.setFieldAdmin(rule, value, this.user.userId)
+                    .then(async () => {
+                        resolve(true);
+                        await this.update();
+                        this.$toast.success("Разрешение [" + rule + "] изменено!");
+                        // window.location.reload();
+                    }).catch(reason => {
+                    this.$ui.error(reason);
+                    resolve(false);
+                });
+            });
+        };
+    }
+
+    private onSendSet() {
+        return new Promise(resolve => {
+            let val = this.$store.state.currentUser.userId;
+            if (this.user.raw['worked'] !== '0') val = 0;
+
+            API.mission.setFieldAdmin("worked", val, this.user.userId)
+                .then(async () => {
+                    resolve(true);
+                    await this.update();
+                }).catch(reason => {
+                this.$ui.error(reason);
+                resolve(false);
+            });
+        });
+    }
+
+    sendTest() {
+        this.$transaction(async () => {
+            await API.request("mission.sendTest");
+            window.location.reload();
+        });
+    }
+
+
+    setStudentStatus(status: string) {
+        return new Promise(resolve => {
+            API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
+                .then(() => {
+                    this.$store.dispatch("login", this.$account.authorization.getToken());
+                    this.$toast.open("Пользователь переведен в новый статус: " + this.$app.studentStatus.text[status], {type: "success"});
+                    this.user.raw.studentStatus = status;
+                    resolve(true);
+                }).catch(reason => {
+                this.$toast.error(reason, {duration: 10000});
+                resolve(false);
+            })
+        });
+    }
+}
 </script>
 
 <style scoped>

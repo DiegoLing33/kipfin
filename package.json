@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@alfsnd/vue-bootstrap-select": "^0.4.4",
     "@types/fetch-jsonp": "^1.0.0",
     "@types/jszip": "^3.4.1",
     "bootstrap": "^4.5.0",

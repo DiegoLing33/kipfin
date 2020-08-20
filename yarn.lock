@@ -2,6 +2,13 @@
 # yarn lockfile v1
 
 
+"@alfsnd/vue-bootstrap-select@^0.4.4":
+  version "0.4.4"
+  resolved "https://registry.yarnpkg.com/@alfsnd/vue-bootstrap-select/-/vue-bootstrap-select-0.4.4.tgz#26a2e31c52c855f8f65eb8d37e04141a15c77003"
+  integrity sha512-nF8Fdnw6tKdiaTKonU3P0GQIHz9ok2BQQlrWbQB+cMigd6boqMs+qUhuppVsBMuFp3NnWWsTOWjORet9Er8umA==
+  dependencies:
+    vue-clickaway "^2.2.2"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.1":
   version "7.10.1"
   resolved "https://registry.npm.taobao.org/@babel/code-frame/download/@babel/code-frame-7.10.1.tgz?cache=0&sync_timestamp=1590617283108&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40babel%2Fcode-frame%2Fdownload%2F%40babel%2Fcode-frame-7.10.1.tgz#d5481c5095daa1c57e16e54c6f9198443afb49ff"
@@ -6688,7 +6695,7 @@ loglevel@^1.6.8:
   resolved "https://registry.npm.taobao.org/loglevel/download/loglevel-1.6.8.tgz?cache=0&sync_timestamp=1586860767517&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Floglevel%2Fdownload%2Floglevel-1.6.8.tgz#8a25fb75d092230ecd4457270d80b54e28011171"
   integrity sha1-iiX7ddCSIw7NRFcnDYC1TigBEXE=
 
-loose-envify@^1.0.0:
+loose-envify@^1.0.0, loose-envify@^1.2.0:
   version "1.4.0"
   resolved "https://registry.npm.taobao.org/loose-envify/download/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"
   integrity sha1-ce5R+nvkyuwaY4OffmgtgTLTDK8=
@@ -10369,6 +10376,13 @@ vue-class-component@^7.1.0, vue-class-component@^7.2.3:
   version "7.2.3"
   resolved "https://registry.npm.taobao.org/vue-class-component/download/vue-class-component-7.2.3.tgz#a5b1abd53513a72ad51098752e2dedd499807cca"
   integrity sha1-pbGr1TUTpyrVEJh1Li3t1JmAfMo=
+
+vue-clickaway@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/vue-clickaway/-/vue-clickaway-2.2.2.tgz#cecf6839575e8b2afc5d3edb3efb616d293dbb44"
+  integrity sha512-25SpjXKetL06GLYoLoC8pqAV6Cur9cQ//2g35GRFBV4FgoljbZZjTINR8g2NuVXXDMLSUXaKx5dutgO4PaDE7A==
+  dependencies:
+    loose-envify "^1.2.0"
 
 vue-content-placeholders@^0.2.1:
   version "0.2.1"

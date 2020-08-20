@@ -16,6 +16,7 @@
                                 :default-value="source[key]"
                                 :map="item[4]"
                                 :callback="(value => callback(key, value))"
+                                v-model="values[key]"
                         />
                     </template>
                     <template v-else-if="item[4] instanceof Date">
@@ -23,6 +24,7 @@
                                 :disabled="item[2]"
                                 :default-value="source[key]"
                                 :callback="(value => callback(key, value))"
+                                v-model="values[key]"
                         />
                     </template>
                     <template v-else>
@@ -31,6 +33,7 @@
                             :default-value="source[key]"
                             :formatter="item[1] || ((e) => e)"
                             :callback="(value => callback(key, value))"
+                            v-model="values[key]"
                         />
                     </template>
                 </b-td>
@@ -45,16 +48,24 @@
     import FiText from "@/ling/components/ficomponents/FiText.vue";
     import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
     import FiDatePicker from "@/ling/components/ficomponents/FiDatePicker.vue";
+    import {nameList} from "@/ling/types/Common";
 
     @Component({
         components: {FiDatePicker, FiSelect, FiText}
     })
     export default class InfoTableView extends Vue {
-
         @Prop({required: false, default: ''}) title!: string;
         @Prop({required: true}) source!: any;
         @Prop({required: true}) fields!: Dict<[string, ((e: string) => string)?]>;
         @Prop({default: () => true}) callback!: (name: string, value: unknown) => Promise<boolean>;
+
+        private values = nameList();
+
+        mounted(){
+            Object.keys(this.fields).forEach(key => {
+               this.values[key] = this.source[key];
+            });
+        }
 
     }
 </script>

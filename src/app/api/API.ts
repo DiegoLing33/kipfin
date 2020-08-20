@@ -171,7 +171,7 @@ export default class API {
             if (json.ok) {
                 return Promise.resolve(json);
             } else {
-                return Promise.reject(json.message);
+                return Promise.reject(json.message || "Неизвестная ошибка #1");
             }
         } catch (e) {
             return Promise.reject("Неизвестная ошибка: " + e);
