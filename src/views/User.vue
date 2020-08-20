@@ -87,7 +87,7 @@
                 </b-alert>
                 <profile-specialization-section :user="user" :callback="onSpecializationChange"/>
             </b-tab>
-            <b-tab lazy v-if="$store.getters.hasAccess(13)">
+            <b-tab lazy v-if="$store.getters.hasAccess(7)">
                 <template v-slot:title>
                     <b-icon-gear/>
                     Управление
@@ -95,7 +95,6 @@
                 <user-admin-settings :user="user"/>
             </b-tab>
         </b-tabs>
-        <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
         <b-card class="mt-3 mb-3 ">
             <template v-slot:header>
                 Состояние абитуриента: {{ $app.studentStatus.text[user.raw.studentStatus] }}
@@ -170,7 +169,6 @@
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
     import CollapseCard from "@/components/theme/CollapseCard.vue";
     import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
-    import Vue from "vue";
 
     @Component({
         components: {

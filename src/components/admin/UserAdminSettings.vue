@@ -1,6 +1,7 @@
 <template>
     <div class="view-UserAdminSettings">
-        <fi-select :callback="onRoleChanged" :default-value="user.group.groupId" :map="userGroups"></fi-select>
+        <fi-select v-if="$store.getters.hasAccess(13)" :callback="onRoleChanged" :default-value="user.group.groupId" :map="userGroups"></fi-select>
+        <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
     </div>
 </template>
 
@@ -12,6 +13,8 @@
     import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
     import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
     import {indexList} from "@/ling/types/Common";
+    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
+
 
     /**
      *  The UserAdminSettings component.
@@ -19,7 +22,7 @@
      *  @created 13.07.2020 21:50
      */
     @Component({
-        components: {FiSelect}
+        components: {FiSelect, AdmissionActionsUserView}
     })
     export default class UserAdminSettings extends Mixins(StoreLoadedComponent) {
         @Prop({required: true}) user!: KFUser;

@@ -1,9 +1,34 @@
 <template>
     <div class="view-AdminHelper">
         <transition name="bounce">
-            <b-card border-variant="primary
-" v-show="visible" class="mb-2 win" no-body style="position: relative; width: 400px; border-radius: 0">
+            <b-card border-variant="primary"
+                    v-show="visible" class="mb-2 win" no-body
+                    style="position: relative; width: 400px; border-radius: 0">
                 <div class="helper-scroll">
+                    <b-button variant="success" squared block v-b-toggle:stat>
+                        <b-icon-person-lines-fill class="float-left"/>
+                        Статус абитуриента
+                    </b-button>
+                    <b-collapse accordion="help-accordion" id="stat">
+                        <user-status-toolbox :callback="setStudentStatus" :user="user"/>
+                    </b-collapse>
+                    <b-button squared
+                              variant="primary" block v-b-toggle:overview>
+                        <b-icon-info-square class="float-left"/>
+                        Обзор
+                    </b-button>
+                    <b-collapse visible accordion="help-accordion" id="overview">
+                        <div class="p-3">
+                            <div class="text-center">{{user.getFullName()}}</div>
+                            <div class="text-center text-muted">{{$app.specializationNoCode[user.raw.facultyId]}}</div>
+                            <div class="text-center text-muted">({{$app.bases[user.raw.studyBase]}})</div>
+                            <hr/>
+                            <div>Состояние:</div>
+                            <div class="font-weight-bold">{{$app.studentStatus.text[user.raw.studentStatus]}}</div>
+                            <div class="mt-3">Аттестат:</div>
+                            <div class="font-weight-bold">{{user.raw.school.schoolValue}}</div>
+                        </div>
+                    </b-collapse>
                     <b-button squared
                               variant="primary" block v-b-toggle:calc>
                         <b-icon-app-indicator class="float-left"/>
@@ -52,10 +77,7 @@
                     </b-button>
 
                     <file-uploader-admin-view :user="user"/>
-                    <b-button variant="success" squared block v-b-toggle:stat>Статус абитуриента</b-button>
-                    <b-collapse visible accordion="help-accordion" id="stat">
-                        <user-status-toolbox :callback="setStudentStatus" :user="user"/>
-                    </b-collapse>
+
                     <slot></slot>
                 </div>
             </b-card>
@@ -123,7 +145,7 @@
 <style lang="scss">
 
     .helper-scroll {
-        max-height: 550px;
+        max-height: 580px;
         overflow-y: scroll;
         max-width: 100%;
         overflow-x: hidden;
