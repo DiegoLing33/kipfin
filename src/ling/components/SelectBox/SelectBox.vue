@@ -12,18 +12,11 @@
 </template>
 
 <script lang="ts">
-import {Component, Prop, Vue} from "vue-property-decorator";
-import {NameList} from "@/ling/types/Common";
+    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import {ObjectIO} from "@/ling/utils/LingIO";
+import {SelectBoxOptions, SelectBoxValidOption} from "@/ling/components/SelectBox/SelectBoxCommon";
 
 const VSelect = require('@alfsnd/vue-bootstrap-select/dist/vue-bootstrap-select.esm').default as any;
-
-export interface SelectBoxValidOption {
-    text: string;
-    value: unknown;
-}
-
-export type SelectBoxOptions = NameList | {} | SelectBoxValidOption[] | [];
 
 @Component({components: {VSelect}})
 export default class SelectBox extends Vue {
@@ -56,6 +49,15 @@ export default class SelectBox extends Vue {
 
     public clear() {
         this.model = null;
+    }
+
+    @Watch("defaultValue")
+    onDefaultValueChange(){
+        this.model = this.optionDefault;
+    }
+
+    public setValue(value: unknown){
+        this.model = value;
     }
 }
 </script>

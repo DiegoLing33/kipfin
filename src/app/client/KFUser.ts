@@ -1,10 +1,11 @@
-import {APIUserResults, APIUserShort} from "@/app/api/APIUsers";
+import {APIUserResults} from "@/app/api/APIUsers";
 import API, {NumericString} from "@/app/api/API";
 import UserUtils from "@/app/utils/UserUtils";
 import {APIFileResult} from "@/app/api/APIFiles";
 import KFUserGroup from "@/app/client/user/KFUserGroup";
 import KFUserFlags from "@/app/client/user/KFUserFlags";
 import KFDocument from "@/app/client/KFDocument";
+import {Numeric, optional, Optional} from "@/ling/types/Common";
 
 export default class KFUser {
 
@@ -60,24 +61,34 @@ export default class KFUser {
     public avatar!: string;
     public tags!: string[];
 
+    public specializationId!: Numeric;
+    public baseId!: Numeric;
+
     public raw!: APIUserResults;
 
     public loadedFiles = Array<APIFileResult>();
+    public onDataChanged = optional<(name: keyof KFUser, value: any) => void>();
+
 
     constructor(raw: APIUserResults) {
-        this.set(raw);
+        this.init(raw);
     }
 
-    async byRaw(raw: APIUserResults){
-        this.set(raw);
+    async byRaw(raw: APIUserResults) {
+        this.init(raw);
     }
 
-    async updateUserMe(){
+    async updateUserMe() {
         const user = await API.users.me();
-        this.set(user);
+        this.init(user);
     }
 
-    private set(raw: APIUserResults){
+    public set(name: keyof KFUser, value: any) {
+        this[name] = value;
+        if (this.onDataChanged) this.onDataChanged(name, value);
+    }
+
+    private init(raw: APIUserResults) {
         if ((raw as any)['user_id']) this.userId = (raw as any)['user_id'];
         else if (raw.userId) this.userId = raw.userId;
         else raw.userId = "-1";
@@ -92,6 +103,9 @@ export default class KFUser {
         this.tags = (raw.tags || '').split(",").filter((v: string) => v !== '');
 
         this.group = new KFUserGroup(raw.group || {});
+
+        this.specializationId = raw.facultyId || "0";
+        this.baseId = raw.studyBase || "0";
 
         this.raw = raw;
     }
@@ -108,7 +122,7 @@ export default class KFUser {
     /**
      * Loads all user files (KFDocument 's)
      */
-    public async loadAllUserFiles(){
+    public async loadAllUserFiles() {
         const raw = (await API.files.list(this.userId)).list || [];
         return KFDocument.fromList(raw as any); //@fixme - any case
     }
@@ -142,7 +156,7 @@ export default class KFUser {
      * Creates the reserve
      * @param reserved
      */
-    async createReserve(reserved: string){
+    async createReserve(reserved: string) {
         return await API.request('mission.createReserve', {userId: this.userId, reserved});
     }
 
@@ -150,5 +164,6 @@ export default class KFUser {
 
 export interface WithAvatarAndName {
     avatar: string;
+
     getFullName(): string;
 }

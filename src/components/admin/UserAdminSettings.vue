@@ -1,6 +1,7 @@
 <template>
     <div class="view-UserAdminSettings">
         <fi-select v-if="$store.getters.hasAccess(13)" :callback="onRoleChanged" :default-value="user.group.groupId" :map="userGroups"></fi-select>
+        <admission-comment-form @update="$router.push('#board' + new Date().getTime())" :user="user"  />
         <admission-actions-user-view :user="user" v-if="$store.getters.isAdmin"/>
     </div>
 </template>
@@ -14,6 +15,7 @@
     import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
     import {indexList} from "@/ling/types/Common";
     import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
+    import AdmissionCommentForm from "@/components/profile/admin/AdmissionCommentForm.vue";
 
 
     /**
@@ -22,7 +24,7 @@
      *  @created 13.07.2020 21:50
      */
     @Component({
-        components: {FiSelect, AdmissionActionsUserView}
+        components: {AdmissionCommentForm, FiSelect, AdmissionActionsUserView}
     })
     export default class UserAdminSettings extends Mixins(StoreLoadedComponent) {
         @Prop({required: true}) user!: KFUser;
