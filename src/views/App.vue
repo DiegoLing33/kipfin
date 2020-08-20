@@ -50,16 +50,13 @@
         }
 
         get menu() {
-            const menuItems = [
+            let menuItems: Array<unknown> = [
                 {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
                 {title: "Мои документы", icon: 'files', url: "/documents"},
                 {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
-                {nav: "Новости"},
-                {title: "Новости", icon: "newspaper", url: "/feed"},
-
             ];
             if (this.$store.getters.isAdmin)
-                return [...menuItems, ...[
+                menuItems = [...menuItems, ...[
                     {title: "Чаты", icon: "chat", url: "/chat"},
                     {nav: "Прием"},
                     {title: "Панель управления", icon: "house", url: "/admin"},
@@ -72,11 +69,15 @@
                     {title: "Роли пользователей", icon: "check2-circle\n", url: "/admin/roles"},
                 ]];
             else
-                return [...menuItems, ...[
+                menuItems = [...menuItems, ...[
                     {nav: "Анкета"},
                     {title: "Законные представители", icon: "people-fill", url: "/user/parents"},
                     {title: "Чат с приемной комиссией", icon: "chat", url: "/user/chat"},
-                ]]
+                ]];
+            return [...menuItems, ...[
+                {nav: "Новости"},
+                {title: "Новости", icon: "newspaper", url: "/feed"},
+            ]];
         }
 
     }
