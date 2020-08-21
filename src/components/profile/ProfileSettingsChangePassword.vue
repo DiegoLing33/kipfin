@@ -4,9 +4,9 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import {TextFieldProps} from "@/components/fields/TextFieldI";
-    import FieldsController from "@/components/fields/FieldsController.vue";
-    import {FieldTester} from "@/components/fields/Field";
+    import {TextFieldProps} from "@/components/forms/fields/TextFieldI";
+    import FieldsController from "@/components/forms/fields/FieldsController.vue";
+    import {FieldTester} from "@/components/forms/fields/Field";
 
     @Component({
         components: {FieldsController}

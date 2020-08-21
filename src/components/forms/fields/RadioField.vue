@@ -29,7 +29,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {SelectFieldProps} from "@/components/fields/SelectFieldI";
+    import {SelectFieldProps} from "@/components/forms/fields/SelectFieldI";
 
     /**
      * The text field input component

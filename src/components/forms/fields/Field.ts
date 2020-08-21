@@ -2,8 +2,8 @@
  * The field types
  */
 import {Dict} from "@/app/types";
-import {SelectFieldProps} from "@/components/fields/SelectFieldI";
-import {DateFieldProps} from "@/components/fields/DateFieldI";
+import {SelectFieldProps} from "@/components/forms/fields/SelectFieldI";
+import {DateFieldProps} from "@/components/forms/fields/DateFieldI";
 
 export const FieldType = {
     TEXT: "text",

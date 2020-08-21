@@ -92,13 +92,13 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
     import KFUser from "@/app/client/KFUser";
-    import OneSUser from "@/components/admintools/ones/OneSUser.vue";
-    import UserStatusToolbox from "@/components/admintools/UserStatusToolbox.vue";
-    import FastInputSwitch from "@/components/fastinput/FastInputSwitch.vue";
+    import OneSUser from "@/components/admin/admintools/ones/OneSUser.vue";
+    import UserStatusToolbox from "@/components/admin/admintools/UserStatusToolbox.vue";
+    import FastInputSwitch from "@/components/forms/fastinput/FastInputSwitch.vue";
     import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
     import FileIO from "@/ling/utils/FileIO";
-    import SchoolValueCalculator from "@/components/admintools/adminhelper/SchoolValueCalculator.vue";
-    import UserRulesControl from "@/components/admintools/usercontrols/UserRulesControl.vue";
+    import SchoolValueCalculator from "@/components/admin/admintools/adminhelper/SchoolValueCalculator.vue";
+    import UserRulesControl from "@/components/admin/admintools/usercontrols/UserRulesControl.vue";
     import API from "@/app/api/API";
 
     @Component({

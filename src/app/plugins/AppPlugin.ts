@@ -1,5 +1,5 @@
 import KIPD from "@/app/KIPD";
-import {FieldFormatter, FieldTester} from "@/components/fields/Field";
+import {FieldFormatter, FieldTester} from "@/components/forms/fields/Field";
 import UserUtils from "@/app/utils/UserUtils";
 import {TextFormatter} from "@/ling/support/TextValidation";
 

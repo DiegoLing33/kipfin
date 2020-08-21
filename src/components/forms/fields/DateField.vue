@@ -35,7 +35,7 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {DateFieldProps} from "@/components/fields/DateFieldI";
+    import {DateFieldProps} from "@/components/forms/fields/DateFieldI";
 
     /**
      * The text field input component

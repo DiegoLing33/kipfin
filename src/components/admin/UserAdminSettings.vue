@@ -14,7 +14,7 @@
     import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
     import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
     import {indexList} from "@/ling/types/Common";
-    import AdmissionActionsUserView from "@/components/admintools/AdmissionActionsUserView.vue";
+    import AdmissionActionsUserView from "@/components/admin/admintools/AdmissionActionsUserView.vue";
     import AdmissionCommentForm from "@/components/profile/admin/AdmissionCommentForm.vue";
 
 

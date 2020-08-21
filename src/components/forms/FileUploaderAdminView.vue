@@ -15,11 +15,11 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import SelectField from "@/components/fields/SelectField.vue";
-    import {SelectFieldProps} from "@/components/fields/SelectFieldI";
-    import {FieldType} from "@/components/fields/Field";
-    import FileField from "@/components/fields/FileField.vue";
-    import {FileFieldProps} from "@/components/fields/FileFieldI";
+    import SelectField from "@/components/forms/fields/SelectField.vue";
+    import {SelectFieldProps} from "@/components/forms/fields/SelectFieldI";
+    import {FieldType} from "@/components/forms/fields/Field";
+    import FileField from "@/components/forms/fields/FileField.vue";
+    import {FileFieldProps} from "@/components/forms/fields/FileFieldI";
     import API from "@/app/api/API";
     import KFUser from "@/app/client/KFUser";
 

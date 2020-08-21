@@ -9,7 +9,7 @@
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
     import KFUser from "@/app/client/KFUser";
-    import {FieldFormatter} from "@/components/fields/Field";
+    import {FieldFormatter} from "@/components/forms/fields/Field";
     import InfoTableView from "@/components/profile/editabletables/InfoTableView.vue";
 
     @Component({

@@ -86,7 +86,7 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import KFDocument from "@/app/client/KFDocument";
-    import StatusSelector from "@/components/admintools/StatusSelector.vue";
+    import StatusSelector from "@/components/admin/admintools/StatusSelector.vue";
     import LiModal from "@/ling/components/LiModal.vue";
     import VueCropper from "vue-cropperjs";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";

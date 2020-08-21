@@ -35,8 +35,8 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import StoreLoader from "@/app/client/StoreLoader";
-    import SelectField from "@/components/fields/SelectField.vue";
-    import FormFileInput from "@/components/form/FormFileInput.vue";
+    import SelectField from "@/components/forms/fields/SelectField.vue";
+    import FormFileInput from "@/components/forms/form/FormFileInput.vue";
     import FileUploaderView from "@/components/forms/FileUploaderView.vue";
     import UserContent from "@/components/theme/UserContent.vue";
     import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";

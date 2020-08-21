@@ -15,7 +15,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import TextField from "@/components/fields/TextField.vue";
+    import TextField from "@/components/forms/fields/TextField.vue";
     import LoginProfile from "@/views/Defaults/LoginProfile.vue";
     import Footer from "@/components/theme/Footer.vue";
 

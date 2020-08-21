@@ -72,7 +72,7 @@
     import KFUser from "@/app/client/KFUser";
     import API from "@/app/api/API";
     import StoreLoader from "@/app/client/StoreLoader";
-    import CopyField from "@/components/admintools/ones/CopyField.vue";
+    import CopyField from "@/components/admin/admintools/ones/CopyField.vue";
     import {Dict} from "@/app/types";
     import {APIFileResult} from "@/app/api/APIFiles";
     import Zipper from "@/ling/utils/Zipper";

@@ -38,7 +38,7 @@
 
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
-    import FormElementsController from "@/components/form/FormElementsController.vue";
+    import FormElementsController from "@/components/forms/form/FormElementsController.vue";
     import {FormElementTye} from "@/app/FormElements";
     import FormTester from "@/app/FormTester";
     import API from "@/app/api/API";

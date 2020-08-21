@@ -104,11 +104,11 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import FormMomentControl from "@/components/form/FormMomentControl.vue";
+    import FormMomentControl from "@/components/forms/form/FormMomentControl.vue";
     import {FormElement} from "@/app/FormElements";
-    import FormTextInput from "@/components/form/FormTextInput.vue";
-    import FormSelectionInput from "@/components/form/FormSelectionInput.vue";
-    import FormFileInput from "@/components/form/FormFileInput.vue";
+    import FormTextInput from "@/components/forms/form/FormTextInput.vue";
+    import FormSelectionInput from "@/components/forms/form/FormSelectionInput.vue";
+    import FormFileInput from "@/components/forms/form/FormFileInput.vue";
 
     @Component({
         components: {FormFileInput, FormSelectionInput, FormTextInput, FormMomentControl}

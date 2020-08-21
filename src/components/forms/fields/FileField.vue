@@ -4,24 +4,25 @@
             <label v-if="props.title" :for="(`input-${props.name}`)">{{props.title}}</label>
             <b-input-group
                     :prepend="props.prepend">
-                <b-form-input
+                <b-form-file
+                        :disabled="disabled"
+                        :browse-text="props.multiply ? 'Выбрать файлы' : 'Выбрать файл'"
                         :id="(`input-${props.name}`)"
                         v-model="fieldValue"
-                        :type="props.inputType || 'text'"
-                        :state="fieldState === null ? null : fieldState === true"
+                        :state="noState ? null : (fieldState === null ? null : fieldState === true)"
                         :aria-describedby="(`input-${props.name}-help input-${props.name}-feedback`)"
                         :placeholder="props.placeholder"
-                        :formatter="props.formatter || ((a) => a)"
+                        :accept="props.accept"
+                        :multiple="props.multiply"
                         @input="onChangeValue"
-                        trim
-                ></b-form-input>
+                ></b-form-file>
                 <b-input-group-append v-if="props.own">
                     <b-button @click="handleSave" variant="primary">Сохранить</b-button>
                 </b-input-group-append>
             </b-input-group>
 
             <!-- This will only be shown if the preceding input has an invalid state -->
-            <div class="text-danger" v-if="fieldState !== true" :id="(`input-${props.name}-feedback`)">
+            <div class="text-danger" v-if="fieldState !== true && !noState" :id="(`input-${props.name}-feedback`)">
                 <small>{{this.fieldState}}</small>
             </div>
 
@@ -35,31 +36,27 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {TextFieldProps} from "@/components/fields/TextFieldI";
+    import {FileFieldProps} from "@/components/forms/fields/FileFieldI";
 
     /**
      * The text field input component
      */
     @Component
-    export default class TextField extends Vue {
-        @Prop({required: true}) props!: TextFieldProps;
-        private fieldValue = "";
-        private busy       = false;
+    export default class FileField extends Vue {
+        @Prop({required: true}) props!: FileFieldProps;
+        @Prop({required: false, default: false}) noState!: boolean;
+        @Prop({required: false, default: false}) disabled!: boolean;
+
+        private fieldValue: Blob[] | null = null;
+        private busy = false;
 
         /**
          * LS.F.1 - All Fields Must have fieldState get method
          */
         get fieldState(): boolean | string | null {
-            if (this.fieldValue === "")
+            if (this.fieldValue === null)
                 return this.props.own ? null : "Поле обязательно к заполнению";
-            return this.runTester(this.fieldValue);
-        }
-
-        /**
-         * Runs the tester
-         */
-        private runTester(value: string): boolean | string | null {
-            return this.props.tester ? this.props.tester(value) : true;
+            return this.fieldValue !== null;
         }
 
         /**
@@ -73,16 +70,17 @@
         /**
          * LS.F.3 - All Fields Must have mounted method onChange value to emit v-model
          */
-        private onChangeValue(value: string) {
-            if (this.runTester(value) === true) {
-                this.$emit("change", this.fieldValue);
-            }else{
+        private onChangeValue(value: Blob[] | Blob | null) {
+            if (value !== null) {
+                if (!(value instanceof Array)) value = [value];
+                this.$emit("change", value);
+            } else {
                 this.$emit("change", null);
             }
         }
 
         private handleSave() {
-            if (this.runTester(this.fieldValue) === true) {
+            if (this.fieldValue !== null) {
                 this.busy = true;
                 if (this.props.save) {
                     this.props.save(this.fieldValue, this.props.name)?.finally(

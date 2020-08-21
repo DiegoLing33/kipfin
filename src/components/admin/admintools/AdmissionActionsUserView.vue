@@ -56,7 +56,7 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
     import KFUser from "@/app/client/KFUser";
     import API from "@/app/api/API";
-    import AdminActionView from "@/components/admintools/AdminActionView.vue";
+    import AdminActionView from "@/components/admin/admintools/AdminActionView.vue";
     import {Dict} from "@/app/types";
     import UserUtils from "@/app/utils/UserUtils";
 

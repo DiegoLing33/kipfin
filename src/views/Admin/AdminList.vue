@@ -222,10 +222,10 @@
 import {Component, Vue, Watch} from "vue-property-decorator";
 import {APIUserResults} from "@/app/api/APIUsers";
 import API from "@/app/api/API";
-import TextField from "@/components/fields/TextField.vue";
+import TextField from "@/components/forms/fields/TextField.vue";
 import StoreLoader from "@/app/client/StoreLoader";
-import SelectField from "@/components/fields/SelectField.vue";
-import RadioField from "@/components/fields/RadioField.vue";
+import SelectField from "@/components/forms/fields/SelectField.vue";
+import RadioField from "@/components/forms/fields/RadioField.vue";
 import {APIFileResult} from "@/app/api/APIFiles";
 import UserContent from "@/components/theme/UserContent.vue";
 import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";

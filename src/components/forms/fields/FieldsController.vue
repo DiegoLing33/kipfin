@@ -47,13 +47,13 @@
 
 <script lang="ts">
     import {Component, Prop, Vue} from "vue-property-decorator";
-    import {Field} from "@/components/fields/Field";
-    import TextField from "@/components/fields/TextField.vue";
+    import {Field} from "@/components/forms/fields/Field";
+    import TextField from "@/components/forms/fields/TextField.vue";
     import {Dict} from "@/app/types";
-    import DateField from "@/components/fields/DateField.vue";
-    import RadioField from "@/components/fields/RadioField.vue";
-    import SelectField from "@/components/fields/SelectField.vue";
-    import FileField from "@/components/fields/FileField.vue";
+    import DateField from "@/components/forms/fields/DateField.vue";
+    import RadioField from "@/components/forms/fields/RadioField.vue";
+    import SelectField from "@/components/forms/fields/SelectField.vue";
+    import FileField from "@/components/forms/fields/FileField.vue";
 
     @Component({
         components: {FileField, SelectField, RadioField, DateField, TextField}

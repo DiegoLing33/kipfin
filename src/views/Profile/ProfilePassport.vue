@@ -35,12 +35,12 @@
 <script lang="ts">
     import {Component, Vue} from "vue-property-decorator";
     import API from "@/app/api/API";
-    import FieldsController from "@/components/fields/FieldsController.vue";
-    import {Field, FieldTester, FieldType} from "@/components/fields/Field";
-    import SelectField from "@/components/fields/SelectField.vue";
+    import FieldsController from "@/components/forms/fields/FieldsController.vue";
+    import {Field, FieldTester, FieldType} from "@/components/forms/fields/Field";
+    import SelectField from "@/components/forms/fields/SelectField.vue";
     import {CitizenshipOptions} from "@/app/data/Citizenship";
-    import RadioField from "@/components/fields/RadioField.vue";
-    import {SelectFieldProps} from "@/components/fields/SelectFieldI";
+    import RadioField from "@/components/forms/fields/RadioField.vue";
+    import {SelectFieldProps} from "@/components/forms/fields/SelectFieldI";
     import {Dict} from "@/app/types";
     import PassportView from "@/components/profile/PassportView.vue";
     import StoreLoader from "@/app/client/StoreLoader";

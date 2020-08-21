@@ -26,7 +26,7 @@
 
 <script lang="ts">
     import {Component, Mixins, Prop, Watch} from "vue-property-decorator";
-    import SelectField from "@/components/fields/SelectField.vue";
+    import SelectField from "@/components/forms/fields/SelectField.vue";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
     import {ServerUserGroupExtended} from "@/app/api/classes/ServerUsers";
     import Server from "@/app/api/Server";
