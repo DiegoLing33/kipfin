@@ -238,7 +238,6 @@
             });
         }
 
-
         async update() {
             const users = await API.users.list();
             const notify = (await Server.request("files.listByType", {
@@ -314,35 +313,37 @@
         @Watch("searchTags")
         private find() {
             this.result = this.items.filter(value => {
-                if (value.studentStatus === '333') return false;
-                if (this.hasNotifyOnly && !value.hasNotification) return false;
-                if (this.showOnlyReserve && !value.reserved) return false;
+                let flag = true;
+                if (value.studentStatus === '333') flag = flag && false;
+                if (this.hasNotifyOnly && !value.hasNotification) flag = flag && false;
+                if (this.showOnlyReserve && !value.reserved) flag = flag && false;
 
-                if (!this.showAnotherCounty && value.studentStatus === "120") return false;
-                if (!this.showAggree && value.studentStatus === "60") return false;
-                if (!this.showUploaded && value.studentStatus === "50") return false;
-                if (!this.showInUploading && value.studentStatus === "11") return false;
-                if (!this.showAwaitPay && value.studentStatus === "14") return false;
-                if (!this.showInDone && value.studentStatus === "100") return false;
+                if (!this.showAnotherCounty && value.studentStatus === "120") flag = flag && false;
+                if (!this.showAggree && value.studentStatus === "60") flag = flag && false;
+                if (!this.showUploaded && value.studentStatus === "50") flag = flag && false;
+                if (!this.showInUploading && value.studentStatus === "11") flag = flag && false;
+                if (!this.showAwaitPay && value.studentStatus === "14") flag = flag && false;
+                if (!this.showInDone && value.studentStatus === "100") flag = flag && false;
 
-                if (!this.showInProgress && value.studentStatus === "1") return false;
-                if (!this.showErrors && value.studentStatus === "200") return false;
-                if (!this.showEmpty && value.studentStatus === "0") return false;
-                if (!this.showInRating && value.studentStatus === "80") return false;
+                if (!this.showInProgress && value.studentStatus === "1") flag = flag && false;
+                if (!this.showErrors && value.studentStatus === "200") flag = flag && false;
+                if (!this.showEmpty && value.studentStatus === "0") flag = flag && false;
+                if (!this.showInRating && value.studentStatus === "80") flag = flag && false;
 
                 if (!this.displaySpecializations[value.facultyId]) {
                     if (this.displaySpecializations[value.facultyId] === undefined && this.displaySpecializations['-'])
-                        return true;
-                    return false;
+                        flag = flag && true;
+                    else flag = flag && false;
                 }
                 if (!this.displayBases[value.studyBase]) {
                     if (this.displayBases[value.studyBase] === undefined && this.displayBases['-'])
-                        return true;
-                    return false;
+                        flag = flag && true;
+                    else flag = flag && false;
                 }
 
                 const raw = [value.lastname, value.name, value.surname].join(" ").toLocaleLowerCase();
-                return raw.includes(this.findName.toLocaleLowerCase());
+                flag = flag && raw.includes(this.findName.toLocaleLowerCase());
+                return flag;
             });
 
 
