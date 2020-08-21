@@ -15,6 +15,7 @@
     import {Component, Prop, Vue, Watch} from "vue-property-decorator";
 import {ObjectIO} from "@/ling/utils/LingIO";
 import {SelectBoxOptions, SelectBoxValidOption} from "@/ling/components/SelectBox/SelectBoxCommon";
+    import {Nullable} from "@/ling/types/Common";
 
 const VSelect = require('@alfsnd/vue-bootstrap-select/dist/vue-bootstrap-select.esm').default as any;
 
@@ -26,6 +27,7 @@ export default class SelectBox extends Vue {
     @Prop({required: true}) options!: SelectBoxOptions;
     @Prop({default: null, required: false}) defaultValue!: any;
     @Prop({default: "Ничего не выбрано", required: false}) labelTitle!: string;
+    @Prop({default: null, required: false}) value!: SelectBoxValidOption|null;
 
     private model: unknown = this.optionDefault || null;
     private lastSelected = this.optionDefault || null;
@@ -39,12 +41,19 @@ export default class SelectBox extends Vue {
         return this.optionsList.find(value => value.value === this.defaultValue);
     }
 
+    @Watch("value")
+    protected onValueChange(value: Nullable<SelectBoxValidOption>){
+        this.model = value;
+    }
+
     protected onChange(value: SelectBoxValidOption | null) {
         if (value?.value === this.optionDefault?.value
             || this.lastSelected?.value === value?.value
         ) return;
         this.lastSelected = value;
+        this.model = value;
         this.$emit("change", value);
+        this.$emit("input", value);
     }
 
     public clear() {
