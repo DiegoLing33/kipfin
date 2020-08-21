@@ -50,10 +50,19 @@
                          v-model="displaySpecializations[key]"
                          @input="find"
                 />
+                <li-flag title="Специальность не выбрана"
+                         v-model="displaySpecializations['-']"
+                         @input="find"
+                />
                 <hr class="my-3"/>
                 <li-flag v-for="(base, key) in $app.basesClear" :key="'base_' + key"
                          :title="base"
                          v-model="displayBases[key]"
+                         @input="find"
+                />
+
+                <li-flag title="Основа обучения не выбрана"
+                         v-model="displayBases['-']"
                          @input="find"
                 />
                 <hr class="my-3"/>
@@ -199,8 +208,9 @@
         private sortSpec = false;
         private showAnotherCounty = false;
 
-        private displaySpecializations = nameList();
-        private displayBases = nameList();
+        private displaySpecializations = nameList<boolean>();
+        private displayBases = nameList<boolean>();
+
 
         private userClick(e: MouseEvent, user: { user_id: string }) {
             if (e.metaKey || e.ctrlKey) {
@@ -212,12 +222,12 @@
 
         created() {
             // Reset specializations filter
-            this.displaySpecializations = {};
+            this.displaySpecializations = {'-': true};
             Object.keys(this.$app.specializationsClear)
                 .forEach(key => this.displaySpecializations[key] = true);
 
             // Reset bases filter
-            this.displayBases = {};
+            this.displayBases = {'-': true};
             Object.keys(this.$app.basesClear)
                 .forEach(key => this.displayBases[key] = true);
         }
@@ -283,8 +293,8 @@
             this.showAwaitPay = true;
         }
 
-        @Watch("displaySpecializations", {deep: true})
-        @Watch("displayBases", {deep: true})
+        @Watch("ignoreSpecialization")
+        @Watch("ignoreBase")
         @Watch("showInProgress")
         @Watch("showEmpty")
         @Watch("showInRating")
@@ -320,9 +330,15 @@
                 if (!this.showEmpty && value.studentStatus === "0") return false;
                 if (!this.showInRating && value.studentStatus === "80") return false;
 
-                if(!this.showEmpty) {
-                    if (!this.displaySpecializations[value.facultyId]) return false;
-                    if (!this.displayBases[value.studyBase]) return false;
+                if (!this.displaySpecializations[value.facultyId]) {
+                    if (this.displaySpecializations[value.facultyId] === undefined && this.displaySpecializations['-'])
+                        return true;
+                    return false;
+                }
+                if (!this.displayBases[value.studyBase]) {
+                    if (this.displayBases[value.studyBase] === undefined && this.displayBases['-'])
+                        return true;
+                    return false;
                 }
 
                 const raw = [value.lastname, value.name, value.surname].join(" ").toLocaleLowerCase();
