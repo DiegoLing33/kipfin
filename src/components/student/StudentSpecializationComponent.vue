@@ -39,7 +39,7 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue, Watch} from "vue-property-decorator";
+    import {Component, Prop, Vue} from "vue-property-decorator";
     import TextSmallMuted from "@/components/theme/text/TextSmallMuted.vue";
     import SelectBox from "@/ling/components/SelectBox/SelectBox.vue";
     import {SelectBoxValidOption} from "@/ling/components/SelectBox/SelectBoxCommon";
