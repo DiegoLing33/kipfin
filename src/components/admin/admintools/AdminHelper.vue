@@ -37,13 +37,13 @@
                     <b-collapse accordion="help-accordion" id="calc">
                         <school-value-calculator/>
                     </b-collapse>
-                    <b-button variant="primary" squared block v-b-toggle:oneS>
+                    <b-button  variant="primary" squared block v-b-toggle:oneS>
                         <b-icon-arrow-down-up class="float-left"/>
                         1С Трансфер
                     </b-button>
-                    <b-collapse accordion="help-accordion" id="oneS">
+                    <b-collapse @show="oneSShouldLoadData = true" accordion="help-accordion" id="oneS">
                         <b-card style="border-radius: 0">
-                            <one-s-user style="text-align: left !important;" :user="user"/>
+                            <one-s-user v-if="oneSShouldLoadData" style="text-align: left !important;" :user="user"/>
                         </b-card>
                     </b-collapse>
                     <b-button variant="primary" squared block v-b-toggle:proc>
@@ -116,6 +116,7 @@
         @Prop({required: true}) setStudentStatus!: unknown;
 
         private visible = this.show;
+        private oneSShouldLoadData = false;
 
         private printCard() {
             FileIO.requestPrinting(
