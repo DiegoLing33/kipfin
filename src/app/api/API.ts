@@ -177,4 +177,10 @@ export default class API {
             return Promise.reject("Неизвестная ошибка: " + e);
         }
     }
+
+    public static async supportSendMessage(name: string, mail: string, type: string, text: string){
+        return API.request("support.send", {
+            name, mail, type, text
+        });
+    }
 }
