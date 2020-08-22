@@ -1,3 +1,11 @@
 $blue: #256569;
 $cyan: #006B80;
 $b-toaster-zindex: 1000000 !default;
+
+$toast-colors: (
+        "success": #28a745,
+        "info": #006B80,
+        "warning": #ffc107,
+        "error": #dc3545,
+        "default": #343a40
+);
