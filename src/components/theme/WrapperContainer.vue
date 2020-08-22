@@ -38,6 +38,7 @@
             if (this.$route.path.endsWith("/chat")) return true;
             if (this.$route.path.endsWith("/create")) return true;
             if (this.$route.path.endsWith("/login")) return true;
+            if (this.$route.path.includes("/support")) return true;
             if (this.$route.path.endsWith("/")) return true;
             return false;
         }

@@ -46,6 +46,76 @@
     }
 </script>
 
+<style>
+
+.navigation-bg {
+    background: rgb(37, 101, 105);
+    background: linear-gradient(45deg, rgba(37, 101, 105, 1) 0%, rgba(37, 101, 105, 1) 50%, rgba(28, 77, 80, 1) 50%);
+    animation: move_line 2s ease-out forwards;
+    -webkit-animation: move_line 2s ease-out forwards;
+    -moz-animation: move_line 2s ease-out forwards;
+    background-size: 400% 400%;
+}
+
+.navigation-bg-out:hover{
+    animation: move_line_out 2s ease-out;
+    -webkit-animation: move_line_out 2s ease-out;
+    -moz-animation: move_line_out 2s ease-out;
+
+    background-size: 400% 400%;
+}
+
+@-moz-keyframes move_line {
+    0% {
+        background-position: 0% 50%;
+    }
+    80% {
+        background-position: 51% 50%;
+    }
+    100% {
+        background-position: 50% 50%;
+    }
+}
+
+
+@-moz-keyframes move_line_out {
+    0% {
+        background-position: 50% 50%;
+    }
+    20% {
+        background-position: 51% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+@keyframes move_line {
+    0% {
+        background-position: 0% 50%;
+    }
+    80% {
+        background-position: 51% 50%;
+    }
+    100% {
+        background-position: 50% 50%;
+    }
+}
+
+
+@keyframes move_line_out {
+    0% {
+        background-position: 50% 50%;
+    }
+    20% {
+        background-position: 51% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+</style>
 <style scoped>
     .nav-logo {
         height: 50px;
@@ -68,48 +138,4 @@
         opacity: 0.4;
     }
 
-    .navigation-bg {
-        background: rgb(37, 101, 105);
-        background: linear-gradient(45deg, rgba(37, 101, 105, 1) 0%, rgba(37, 101, 105, 1) 50%, rgba(28, 77, 80, 1) 50%);
-        animation: move_line 2s ease-out forwards;
-        -webkit-animation: move_line 2s ease-out forwards;
-        -moz-animation: move_line 2s ease-out forwards;
-        background-size: 400% 400%;
-    }
-
-    @-moz-keyframes move_line {
-        0% {
-            background-position: 0% 50%;
-        }
-        80% {
-            background-position: 51% 50%;
-        }
-        100% {
-            background-position: 50% 50%;
-        }
-    }
-
-    @-webkit-keyframes move_line {
-        0% {
-            background-position: 0% 50%;
-        }
-        80% {
-            background-position: 51% 50%;
-        }
-        100% {
-            background-position: 50% 50%;
-        }
-    }
-
-    @keyframes move_line {
-        0% {
-            background-position: 0% 50%;
-        }
-        80% {
-            background-position: 51% 50%;
-        }
-        100% {
-            background-position: 50% 50%;
-        }
-    }
 </style>

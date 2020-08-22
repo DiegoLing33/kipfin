@@ -58,6 +58,7 @@
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
+    import {DISPATCH_LOGOUT_REQUEST} from "@/app/store/authentication";
 
     @Component({
         components: {
@@ -79,10 +80,9 @@
             this.user = this.$store.getters.user;
         }
 
-        async logout() {
-            await API.users.logout();
-            this.$cookies.remove("token");
-            window.location.href = '/';
+        logout() {
+            this.$store.dispatch(DISPATCH_LOGOUT_REQUEST).then();
+            window.location.reload();
         }
 
         private saveClick(){

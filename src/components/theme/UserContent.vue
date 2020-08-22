@@ -1,7 +1,6 @@
-<template v-if="$store.getters.isLoggedIn">
+<template>
     <b-overlay :show="overlay">
         <b-card no-body
-                v-if="checkAccess === true"
                 style="border-radius: 0"
                 :header="('Вы: ' + $store.getters.user.getFullName() + ' (' + $store.getters.user.group.groupTitle + ' #' + $store.getters.user.userId) + ')'">
 
@@ -43,18 +42,6 @@
                 </small>
             </template>
         </b-card>
-        <b-card style="border-radius: 0" v-else-if="checkAccess === false">
-            <b-card-title class="text-danger">
-                Доступ запрещен
-            </b-card-title>
-            Вы не можете просматривать данную директиву портала!
-        </b-card>
-        <b-card style="border-radius: 0" v-else>
-            <b-card-title class="text-secondary">
-                Загрузка
-            </b-card-title>
-            Пожалуйста, подождите...
-        </b-card>
     </b-overlay>
 </template>
 
@@ -70,19 +57,12 @@
      */
     @Component
     export default class UserContent extends Mixins(StoreLoadedComponent) {
-        @Prop({default: "", required: false}) minAccess!: string;
         @Prop({default: false, required: false}) overlay!: boolean;
         @Prop({default: "", required: false}) title!: string;
         @Prop({default: "", required: false}) description!: string;
         @Prop({default: false, required: false}) noBody!: boolean;
         @Prop({default: false, required: false}) sticky!: boolean;
 
-        private checkAccess = nullable<boolean>();
-
-        protected storeLoaded() {
-            if (this.minAccess === "") this.checkAccess = true;
-            else this.checkAccess = this.$store.getters.user.group.hasAccess(this.minAccess);
-        }
     }
 </script>
 
