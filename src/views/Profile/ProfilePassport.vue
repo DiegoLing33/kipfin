@@ -5,23 +5,7 @@
             :overlay="busy"
     >
         <passport-view @remove="remove" v-for="psp of myPSPs" :key="psp['PSP_ID']" :psp="psp"></passport-view>
-
-        <b-alert variant="info" show>
-            <b>Что делать если макет не подходит под мое гражданство или у меня нет паспорта?</b>
-            <p>
-                1. Если для Вашего гражданства не подходит макет в форме добавления, заполните его в свободной форме.
-                Обязательные поля, которых нет в Вашем регионе, заполните символом "-" (тире). В разделе
-                <b>Документы</b>, далее, Вам будет
-                необходимо прикрепить скан-копию паспорта.
-            </p>
-            <p>
-                2. Если Ваше гражданство "Украина" или другое, в котором паспорт Выдают в 16 лет, не заполняйте данную
-                страницу. Прикрепите копию
-                свидетельства о рождении в разделе <b>Документы</b> и обазятельно сообщите нам об этом, используя чат с
-                приемной комиссией или
-                номер горячей линии!
-            </p>
-        </b-alert>
+        <guide-admission-passport />
         <fields-controller class="mt-3" :fields="fields" @send="send">
             <template v-slot:header>
                 <h4 class="mt-3">Форма добавления паспорта</h4>
@@ -45,9 +29,10 @@
     import PassportView from "@/components/profile/PassportView.vue";
     import StoreLoader from "@/app/client/StoreLoader";
     import UserContent from "@/components/theme/UserContent.vue";
+    import GuideAdmissionPassport from "@/components/guides/GuideAdmissionPassport.vue";
 
     @Component({
-        components: {UserContent, PassportView, RadioField, SelectField, FieldsController}
+        components: {GuideAdmissionPassport, UserContent, PassportView, RadioField, SelectField, FieldsController}
     })
     export default class ProfilePassport extends Vue {
 
