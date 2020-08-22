@@ -4,27 +4,38 @@
             <div>
                 <img alt="Поступи в КИПФИН" src="/img/priem.jpg"/>
             </div>
-            <template v-if="!$store.state.ready" v-slot:footer>
-                <b-button @click="$router.push('/create')" block variant="success">
-                    Создать кабинет абитуриента
-                </b-button>
+            <template #footer>
+                <b-row>
+                    <b-col class="mb-1">
+                        <button-login-or-create
+                            :is-logged-in="$store.getters.accountIsAuthenticated"
+                            variant="success" :block-size="true"/>
+                    </b-col>
+                    <b-col  class="mb-1" v-if="!$store.getters.accountIsAuthenticated">
+                        <b-button block
+                            variant="primary" @click="$router.push('/login')">
+                            <b-icon-shield-lock/>
+                            Войти в личный кабинет
+                        </b-button>
+                    </b-col>
+                </b-row>
+
+
             </template>
         </b-card>
     </b-container>
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
-    import TextField from "@/components/forms/fields/TextField.vue";
-    import LoginProfile from "@/views/Defaults/LoginProfile.vue";
-    import Footer from "@/components/theme/Footer.vue";
+import {Component, Vue} from "vue-property-decorator";
+import ButtonLoginOrCreate from "@/components/app/ButtonLoginOrCreate.vue";
 
-    @Component({
-        components: {Footer, LoginProfile, TextField}
-    })
-    export default class Home extends Vue {
+@Component({
+    components: {ButtonLoginOrCreate}
+})
+export default class Home extends Vue {
 
-    }
+}
 </script>
 
 <style scoped>
