@@ -93,15 +93,13 @@
                 <user-admin-settings :user="user"/>
             </profile-tab>
         </b-tabs>
-
-
         <div v-if="$store.getters.isAdmin">
             <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
                 <documents-grid-view
                         :busy="busyFilesLoading"
                         @updated="update" :documents="documents"/>
             </collapse-card>
-            <collapse-card title="Законные представители" class="mb-3">
+            <collapse-card @visible="onParentsVisibleChanged" title="Законные представители" class="mb-3">
                 <user-parents :parents="parents"></user-parents>
             </collapse-card>
             <collapse-card @visible="onPassportVisibleChanged" title="Паспортные данные" class="mb-3">
@@ -218,12 +216,6 @@
                     this.$store.getters.user[name] = value;
                 };
             }
-
-            if (this.$store.getters.isAdmin) {
-                // await this.user.updateFiles();
-                await API.request("mission.addAction", {forUserId: this.user.userId, actionName: 'open'});
-                this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
-            }
         }
 
         /**
@@ -245,6 +237,16 @@
         private async onPassportVisibleChanged(state: boolean) {
             if (state) await this.$transaction(async () => {
                 this.psp = (await API.request("psp.user", {userId: this.user.userId})).list;
+            });
+        }
+
+        /**
+         * Handles when parents visibility changed
+         * @param state
+         */
+        private async onParentsVisibleChanged(state: boolean) {
+            if (state) await this.$transaction(async () => {
+                this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
             });
         }
 

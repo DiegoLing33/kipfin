@@ -1,5 +1,8 @@
 <template>
-    <b-overlay :show="busy">
+    <content-placeholders v-if="!isComLoaded">
+        <content-placeholders-heading :img="false"/>
+    </content-placeholders>
+    <b-overlay v-else :show="busy">
         <div class="text-uppercase">
             <b-button class="mb-3" block @click="getFilesZip">Скачать все файлы</b-button>
             <h4 class="my-4 text-center">Основные данные</h4>
@@ -68,171 +71,173 @@
 </template>
 
 <script lang="ts">
-    import {Component, Prop, Vue} from "vue-property-decorator";
-    import KFUser from "@/app/client/KFUser";
-    import API from "@/app/api/API";
-    import StoreLoader from "@/app/client/StoreLoader";
-    import CopyField from "@/components/admin/admintools/ones/CopyField.vue";
-    import {Dict} from "@/app/types";
-    import {APIFileResult} from "@/app/api/APIFiles";
-    import Zipper from "@/ling/utils/Zipper";
-    import FileIO from "@/ling/utils/FileIO";
+import {Component, Prop, Vue} from "vue-property-decorator";
+import KFUser from "@/app/client/KFUser";
+import API from "@/app/api/API";
+import CopyField from "@/components/admin/admintools/ones/CopyField.vue";
+import {Dict} from "@/app/types";
+import {APIFileResult} from "@/app/api/APIFiles";
+import Zipper from "@/ling/utils/Zipper";
+import FileIO from "@/ling/utils/FileIO";
 
-    @Component({components: {CopyField}})
-    export default class OneSUser extends Vue {
-        @Prop({required: true}) user!: KFUser;
-        private userFiles: APIFileResult[] = [];
-        private parents: unknown[] = [];
-        private psp: unknown[] = [];
-        private busy = false;
+@Component({components: {CopyField}})
+export default class OneSUser extends Vue {
+    @Prop({required: true}) user!: KFUser;
+    private userFiles: APIFileResult[] = [];
+    private parents: unknown[] = [];
+    private psp: unknown[] = [];
+    private busy = false;
+    private isComLoaded = false;
 
 
-        async mounted() {
-            StoreLoader.wait(this.$store, async () => {
+    async mounted() {
+        if (this.isComLoaded === false) {
+            (async () => {
                 this.psp = (await API.request("psp.user", {userId: this.user.userId})).list
                     .filter((p: any) => String(p['PSP_TYPE']).toUpperCase() !== 'PAYER');
                 this.userFiles = this.user.getFiles();
                 this.parents = (await API.request("parents.getByUserId", {userId: this.user.userId})).list;
-            });
-        }
-
-        phpts(p: string) {
-            p = p.replace('+', '');
-            const code = p.substr(0, 1);
-            const phone = p.substr(1, 3);
-            const res = `${this.plp(p.substr(4))}`;
-            return [code, phone, res];
-        }
-
-        plp(s: string) {
-            return `${s.substr(0, 3)}-${s.substr(3, 2)}-${s.substr(5)}`;
-        }
-
-        bd(s: string) {
-            const pts = (s || "").split('-');
-            return `${pts[2]}.${pts[1]}.${pts[0]}`;
-        }
-
-
-        setStudentStatus(status: string) {
-            return new Promise(resolve => {
-                API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
-                    .then(() => {
-                        resolve(true);
-                        window.location.reload();
-                    }).catch(reason => {
-                    this.$bvToast.toast(reason, {title: "Ошибка"});
-                    resolve(false);
-                })
-            });
-        }
-
-        lpsp() {
-            if (this.psp.length === 0) return {};
-            const a = this.psp[this.psp.length - 1] as any;
-            a['PSP_A'] = a['PSP_A'].replace(/ /g, '');
-            a['PSP_C'] = a['PSP_C'].replace(/-/g, '');
-            return a;
-        }
-
-        rusToLat(str: string) {
-            const ruData: Dict<string> = {
-                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
-                'е': 'e', 'ё': 'e', 'ж': 'j', 'з': 'z', 'и': 'i',
-                'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
-                'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
-                'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch', 'ш': 'sh',
-                'щ': 'shch', 'ы': 'y', 'э': 'e', 'ю': 'u', 'я': 'ya'
-            }
-            const nStr: Array<unknown> = [];
-            str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
-
-            for (let i = 0; i < str.length; ++i) {
-                nStr.push(
-                    ruData[str[i]]
-                    || ruData[str[i].toLowerCase()] == undefined && str[i]
-                    || ruData[str[i].toLowerCase()].replace(/^(.)/, function (match: string) {
-                        return match.toUpperCase()
-                    })
-                );
-            }
-
-            return nStr.join('');
-        }
-
-
-        async downloadAgreeAndNotify() {
-            this.busy = true;
-            this.userFiles = await this.user.updateFiles();
-            this.$toast.info("Упаковка файлов...");
-            // this.$bvToast.toast("Упаковка файлов...");
-            const zip = Zipper.createZip('');
-            for (const file of this.userFiles) {
-
-                if ((file.file_type === "agree" || file.file_type === "notify")
-                    && file.file_status !== '1000') {
-
-                    const imagePath = file['file_id'];
-                    const imageUrl = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=' + imagePath + "&token=" + API.TOKEN;
-                    const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.'
-                        + file.file_name.split('.').pop();
-
-                    // this.$bvToast.toast("Упаковка " + name);
-                    zip.add(name, imageUrl);
-                }
-            }
-
-            if (zip.getFileNames().length === 0) {
-                this.$toast.error('Файлы не найдены...');
-                this.busy = false;
-                return;
-            }
-            const content = await zip.pack();
-            FileIO.requestDownloadingFile(
-                this.user.getFullName() + ' (Заявление).zip',
-                window.URL.createObjectURL(content)
-            );
-            this.$toast.success("Готово!");
-            this.busy = false;
-        }
-
-        async getFilesZip() {
-            this.busy = true;
-            this.userFiles = await this.user.updateFiles();
-            this.$toast.info("Упаковка файлов...");
-            const zip = Zipper.createZip('');
-
-            for (const file of this.userFiles) {
-
-                if (file.file_type === "ach") continue;
-                if (file.file_status === "3") continue;
-
-                const imagePath = file['file_id'] +
-                    (file.file_type === 'passport' ? '&encrypted=true' : '') +
-                    (file.file_ext.includes('pdf') ||
-                    file.file_ext.includes('docx') ? '&__pd' : '');
-                const imageUrl = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=' + imagePath + "&token=" + API.TOKEN;
-
-                const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.' + file.file_name.split('.').pop();
-                // this.$bvToast.toast("Упаковка " + name);
-                zip.add(name, imageUrl);
-                if (file.file_ext.includes('pdf')) {
-                    this.$bvToast.toast("Конвертация PDF " + name);
-                    const neUrl = 'http://kipfin.ru/new/index.php?class=files&method=cnv&refile=' + encodeURIComponent(imageUrl);
-                    zip.add(name + '.jpg', neUrl);
-                }
-            }
-
-            this.$toast.info("Убираем лишнее...");
-            const content = await zip.pack();
-            FileIO.requestDownloadingFile(
-                this.user.getFullName() + '.zip',
-                window.URL.createObjectURL(content)
-            );
-            this.$toast.success("Готово!");
-            this.busy = false;
+            })().then(() => this.isComLoaded = true);
         }
     }
+
+    phpts(p: string) {
+        p = p.replace('+', '');
+        const code = p.substr(0, 1);
+        const phone = p.substr(1, 3);
+        const res = `${this.plp(p.substr(4))}`;
+        return [code, phone, res];
+    }
+
+    plp(s: string) {
+        return `${s.substr(0, 3)}-${s.substr(3, 2)}-${s.substr(5)}`;
+    }
+
+    bd(s: string) {
+        const pts = (s || "").split('-');
+        return `${pts[2]}.${pts[1]}.${pts[0]}`;
+    }
+
+
+    setStudentStatus(status: string) {
+        return new Promise(resolve => {
+            API.mission.setFieldAdmin("studentStatus", status, this.user.userId)
+                .then(() => {
+                    resolve(true);
+                    window.location.reload();
+                }).catch(reason => {
+                this.$bvToast.toast(reason, {title: "Ошибка"});
+                resolve(false);
+            })
+        });
+    }
+
+    lpsp() {
+        if (this.psp.length === 0) return {};
+        const a = this.psp[this.psp.length - 1] as any;
+        a['PSP_A'] = a['PSP_A'].replace(/ /g, '');
+        a['PSP_C'] = a['PSP_C'].replace(/-/g, '');
+        return a;
+    }
+
+    rusToLat(str: string) {
+        const ruData: Dict<string> = {
+            'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd',
+            'е': 'e', 'ё': 'e', 'ж': 'j', 'з': 'z', 'и': 'i',
+            'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
+            'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u',
+            'ф': 'f', 'х': 'h', 'ц': 'c', 'ч': 'ch', 'ш': 'sh',
+            'щ': 'shch', 'ы': 'y', 'э': 'e', 'ю': 'u', 'я': 'ya'
+        }
+        const nStr: Array<unknown> = [];
+        str = str.replace(/[ъь]+/g, '').replace(/й/g, 'i');
+
+        for (let i = 0; i < str.length; ++i) {
+            nStr.push(
+                ruData[str[i]]
+                || ruData[str[i].toLowerCase()] == undefined && str[i]
+                || ruData[str[i].toLowerCase()].replace(/^(.)/, function (match: string) {
+                    return match.toUpperCase()
+                })
+            );
+        }
+
+        return nStr.join('');
+    }
+
+
+    async downloadAgreeAndNotify() {
+        this.busy = true;
+        this.userFiles = await this.user.updateFiles();
+        this.$toast.info("Упаковка файлов...");
+        // this.$bvToast.toast("Упаковка файлов...");
+        const zip = Zipper.createZip('');
+        for (const file of this.userFiles) {
+
+            if ((file.file_type === "agree" || file.file_type === "notify")
+                && file.file_status !== '1000') {
+
+                const imagePath = file['file_id'];
+                const imageUrl = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=' + imagePath + "&token=" + API.TOKEN;
+                const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.'
+                    + file.file_name.split('.').pop();
+
+                // this.$bvToast.toast("Упаковка " + name);
+                zip.add(name, imageUrl);
+            }
+        }
+
+        if (zip.getFileNames().length === 0) {
+            this.$toast.error('Файлы не найдены...');
+            this.busy = false;
+            return;
+        }
+        const content = await zip.pack();
+        FileIO.requestDownloadingFile(
+            this.user.getFullName() + ' (Заявление).zip',
+            window.URL.createObjectURL(content)
+        );
+        this.$toast.success("Готово!");
+        this.busy = false;
+    }
+
+    async getFilesZip() {
+        this.busy = true;
+        this.userFiles = await this.user.updateFiles();
+        this.$toast.info("Упаковка файлов...");
+        const zip = Zipper.createZip('');
+
+        for (const file of this.userFiles) {
+
+            if (file.file_type === "ach") continue;
+            if (file.file_status === "3") continue;
+
+            const imagePath = file['file_id'] +
+                (file.file_type === 'passport' ? '&encrypted=true' : '') +
+                (file.file_ext.includes('pdf') ||
+                file.file_ext.includes('docx') ? '&__pd' : '');
+            const imageUrl = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=' + imagePath + "&token=" + API.TOKEN;
+
+            const name = file.file_type + '-' + file.file_name.substr(0, 4) + '.' + file.file_name.split('.').pop();
+            // this.$bvToast.toast("Упаковка " + name);
+            zip.add(name, imageUrl);
+            if (file.file_ext.includes('pdf')) {
+                this.$bvToast.toast("Конвертация PDF " + name);
+                const neUrl = 'http://kipfin.ru/new/index.php?class=files&method=cnv&refile=' + encodeURIComponent(imageUrl);
+                zip.add(name + '.jpg', neUrl);
+            }
+        }
+
+        this.$toast.info("Убираем лишнее...");
+        const content = await zip.pack();
+        FileIO.requestDownloadingFile(
+            this.user.getFullName() + '.zip',
+            window.URL.createObjectURL(content)
+        );
+        this.$toast.success("Готово!");
+        this.busy = false;
+    }
+}
 
 
 </script>

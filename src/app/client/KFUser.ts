@@ -74,6 +74,10 @@ export default class KFUser {
         this.init(raw);
     }
 
+    isZero(){
+        return this.userId === '' || this.userId === '-1';
+    }
+
     async byRaw(raw: APIUserResults) {
         this.init(raw);
     }
