@@ -47,8 +47,11 @@
                 const list2 = (await API.request("files.listByType", {
                     type: 'notify'
                 })).list;
+                const list4 = (await API.request("files.listByType", {
+                    type: 'disagree'
+                })).list;
                 this.isLoading = false;
-                this.source = KFDocument.fromList([...list, ...list2, ...list3]);
+                this.source = KFDocument.fromList([...list, ...list2, ...list3, ...list4]);
             });
         }
     }

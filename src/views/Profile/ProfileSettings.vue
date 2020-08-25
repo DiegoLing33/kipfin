@@ -58,7 +58,7 @@
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
     import UserAvatarImage from "@/components/userbox/UserAvatarImage";
     import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import {DISPATCH_LOGOUT_REQUEST} from "@/app/store/authentication";
+    import {DISPATCH_LOGOUT_REQUEST, DISPATCH_USER_REQUEST} from "@/app/store/authentication";
 
     @Component({
         components: {
@@ -82,7 +82,9 @@
 
         logout() {
             this.$store.dispatch(DISPATCH_LOGOUT_REQUEST).then();
-            window.location.reload();
+            setTimeout(()=>{
+                window.location.reload();
+            }, 1400);
         }
 
         private saveClick(){
@@ -99,12 +101,14 @@
             await this.$transaction(async () => {
                 await API.request('profile.uploadAvatar', {}, {file: [blob]});
                 this.$bvToast.toast('Новый аватар вставлен в рамку!', {title: "Успех"});
-                await this.$store.dispatch("login", this.$account.authorization.getToken());
+                await this.$store.dispatch(DISPATCH_USER_REQUEST, this.$account.authorization.getToken());
                 this.$app.modalClose(this, "modal");
                 this.loading = false;
             });
             this.loading = false;
-            window.location.reload();
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
         }
 
 

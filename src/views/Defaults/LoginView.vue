@@ -26,7 +26,7 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
 import FooterView from "@/components/theme/Footer.vue";
-import {DISPATCH_AUTH_REQUEST} from "@/app/store/authentication";
+import {ACCOUNT_TOKEN_STORAGE, DISPATCH_AUTH_REQUEST} from "@/app/store/authentication";
 
 @Component({
     components: {FooterView}
@@ -35,6 +35,10 @@ export default class LoginView extends Vue {
     private login = "";
     private password = "";
     private isLoading = false;
+
+    mounted(){
+        localStorage.removeItem(ACCOUNT_TOKEN_STORAGE);
+    }
 
     private onSubmit() {
         const {login, password} = this;

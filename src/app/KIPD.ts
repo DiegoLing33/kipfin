@@ -13,6 +13,8 @@ export default class KIPD {
         "mothercapital": "Материнский капитал",
         "notify": "Уведомление",
         "agree": "Заявление",
+        "payment": "Договор",
+        "disagree": "Заявление об отказе",
         "check": "Чек об оплате",
         "other": "Другое",
     };

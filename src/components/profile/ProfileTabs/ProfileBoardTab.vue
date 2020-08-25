@@ -13,9 +13,9 @@
             </p>
             <p>
                 <b-button
-                        variant="success"
-                        target="_blank"
-                        href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
+                    variant="success"
+                    target="_blank"
+                    href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">Перейти к списку
                 </b-button>
             </p>
         </b-alert>
@@ -44,17 +44,17 @@
 </template>
 
 <script lang="ts">
-    import {Component, Vue} from "vue-property-decorator";
+import {Component, Vue} from "vue-property-decorator";
 
-    /**
-     *  The ProfileBoardTab component.
-     *  @author diego
-     *  @created 21.08.2020 00:08
-     */
-    @Component
-    export default class ProfileBoardTab extends Vue {
+/**
+ *  The ProfileBoardTab component.
+ *  @author diego
+ *  @created 21.08.2020 00:08
+ */
+@Component
+export default class ProfileBoardTab extends Vue {
 
-    }
+}
 </script>
 
 <style scoped>

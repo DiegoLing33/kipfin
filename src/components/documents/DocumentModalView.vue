@@ -1,5 +1,14 @@
 <template>
     <li-modal name="fileInfo" size="xl" ref="modal" v-if="selectedFile !== null" :title="selectedFile.getFileName()">
+        <template #header v-if="$store.getters.isAdmin">
+            <select-box
+                class="mr-3"
+                style="max-width: 300px"
+                :options="$app.fileTypes"
+                         :default-value="selectedFile.storageName"
+                        @change="v => typeChanged(selectedFile, v)"
+            />
+        </template>
         <b-embed v-if="selectedFile.fileName.endsWith('.pdf')" controls
                  :src="selectedFile.getFileURL()"
                  style="max-width: 100%;"/>
@@ -55,6 +64,13 @@
                     ></status-selector>
                 </b-button-group>
                 <b-button-group class="m-2">
+<!--                    <status-selector-->
+<!--                            :removable="true"-->
+<!--                            :selected="selectedFile.storageName"-->
+<!--                            @change="((e)=>setFileStorage(selectedFile, e))"-->
+<!--                    ></status-selector>-->
+                </b-button-group>
+                <b-button-group class="m-2">
                     <b-button
                             v-b-tooltip.hover title="Установить как: Принято"
                             variant="success" @click="setFileStatus(selectedFile, 2)">
@@ -91,6 +107,8 @@
     import VueCropper from "vue-cropperjs";
     import CropImageToolComponent from "@/components/toolbox/CropImageToolComponent.vue";
     import API from "@/app/api/API";
+    import SelectBox from "@/ling/components/SelectBox/SelectBox.vue";
+    import {SelectBoxValidOption} from "@/ling/components/SelectBox/SelectBoxCommon";
 
     /**
      *  The DocumentPreviewModal component.
@@ -100,7 +118,7 @@
      *  @todo When file can be cropped? Mb add new button for crop?
      */
     @Component({
-        components: {CropImageToolComponent, LiModal, StatusSelector, VueCropper}
+        components: {SelectBox, CropImageToolComponent, LiModal, StatusSelector, VueCropper}
     })
     export default class DocumentModalView extends Vue {
 
@@ -178,6 +196,24 @@
                 await file.setStatus(status);
                 this.$emit("updated");
                 this.$toast.success("Состояние файла изменено: " + (this.$app.infoStatus.text[status] || "неизвестно"));
+                (this.$refs['modal'] as any).close();
+            });
+        }
+
+        typeChanged(file: any, v: SelectBoxValidOption){
+            this.setFileStorage(file, v.value);
+        }
+
+        /**
+         * Sets the file status
+         * @param file
+         * @param storage
+         */
+        async setFileStorage(file: KFDocument, storage: string) {
+            await this.$transaction(async () => {
+                await file.setStorage(storage);
+                this.$emit("updated");
+                this.$toast.success("Тип файла изменен: " + (this.$app.fileTypes[storage] || "неизвестно"));
                 (this.$refs['modal'] as any).close();
             });
         }

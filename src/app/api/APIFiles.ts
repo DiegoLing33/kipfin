@@ -38,6 +38,16 @@ export default class APIFiles {
     }
 
     /**
+     * The files.setStatus method
+     *
+     * @param fileId
+     * @param storage
+     */
+    public async setStorage(fileId: NumericString | number, storage: string): Promise<APIResult> {
+        return await API.request("files.setStorage", {fileId, storage});
+    }
+
+    /**
      * The files.remove method
      *
      * @param fileId

@@ -45,7 +45,7 @@
                         </div>
                     </td>
                     <td colspan="2" style="vertical-align: middle">110</td>
-                    <td colspan="2" style="vertical-align: middle">95</td>
+                    <td colspan="2" style="vertical-align: middle">100</td>
                 </tr>
                 <tr>
                     <td class="text-left">

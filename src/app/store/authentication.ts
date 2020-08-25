@@ -3,6 +3,7 @@ import Vuex, {Module} from "vuex";
 import API from "@/app/api/API";
 import Server from "@/app/api/Server";
 import KFUser from "@/app/client/KFUser";
+import {setCookie} from "@/app/plugins/account/utils/Cookies";
 
 export const DISPATCH_AUTH_REQUEST = "sendAuthRequest";
 export const DISPATCH_LOGOUT_REQUEST = "sendLogoutRequest";
@@ -80,6 +81,7 @@ export const authentication: Module<any, any> = {
             state.aToken = token;
             API.TOKEN = token;
             Server.TOKEN = token;
+            setCookie("token", token);
         },
         [COMMIT_AUTH_REQUEST_ERROR]: (state) => {
             state.aStatus = AUTH_REQUEST_STATUS_ERROR;

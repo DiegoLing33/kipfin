@@ -32,8 +32,8 @@
         @Prop({default: []}) messages!: ServerChatMessage[];
 
         getAuthorName(author: ServerUser) {
-            if (parseInt(this.$store.state.currentUser.group.groupId.toString()) === 1
-            && parseInt(this.$store.state.currentUser.userId) !== author.userId)
+            if (parseInt(this.$store.getters.user.group.groupId.toString()) === 1
+            && parseInt(this.$store.getters.user.userId) !== author.userId)
                 return author.group.groupTitle + "# " + author.userId;
             return this.$app.userUtils.getFullName(author as any);
         }

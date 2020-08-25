@@ -52,6 +52,8 @@ export default class KFDocument {
         "mothercapital": "Материнский капитал",
         "notify": "Уведомление",
         "agree": "Заявление",
+        "payment": "Договор",
+        "disagree": "Заявление об отказе",
         "check": "Чек об оплате",
         "other": "Другое",
     };
@@ -135,6 +137,12 @@ export default class KFDocument {
     async setStatus(newStatus: NumericString | number) {
         const result = await API.files.setStatus(this.fileId, newStatus);
         if (result.ok) this.fileStatus = parseInt(newStatus.toString());
+        return result;
+    }
+
+    async setStorage(newStorage: string){
+        const result = await API.files.setStorage(this.fileId, newStorage);
+        if (result.ok) this.storageName = newStorage;
         return result;
     }
 
