@@ -13,15 +13,6 @@
                     <b-dropdown-divider />
                     <b-dropdown-item @click="$router.push('/support')">Поддержка</b-dropdown-item>
                 </b-nav-item-dropdown>
-
-                <b-nav-item-dropdown text="Списки поступающих">
-                    <a class="dropdown-item" href="http://lists4priemka.fa.ru/listabits.aspx?fl=12&tl=спо&le=СПО">Рейтинг
-                        абитуриентов
-                    </a>
-                    <a class="dropdown-item" href="http://lists4priemka.fa.ru/enrollment.aspx?fl=12&tl=спо&le=СПО">
-                        Предзачисление (Бюджет)
-                    </a>
-                </b-nav-item-dropdown>
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">

@@ -53,17 +53,19 @@
                 {value: "notify", text: "Уведомление"},
                 {value: "check", text: "Чек об оплате"},
                 {value: "other", text: "Другое"},
+                {value: "disagree", text: "Заявление об отказе"},
             ]
         };
+        private selectedFiles: Blob[] = [];
+        private selectedType = "";
+
         private fileField: FileFieldProps = {
             type: FieldType.FILE,
             name: "files",
             placeholder: "Выберите файлы...",
             multiply: true,
-            accept: this.$store.getters.isAdmin ? "*" : "image/jpeg"
+            accept: "*"
         };
-        private selectedFiles: Blob[] = [];
-        private selectedType = "";
 
         private onTypeChanged(type: string) {
             this.selectedType = type;
