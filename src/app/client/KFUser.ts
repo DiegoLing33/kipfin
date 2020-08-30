@@ -74,7 +74,7 @@ export default class KFUser {
         this.init(raw);
     }
 
-    isZero(){
+    isZero() {
         return this.userId === '' || this.userId === '-1';
     }
 
@@ -89,6 +89,7 @@ export default class KFUser {
 
     public set(name: keyof KFUser, value: any) {
         this[name] = value;
+        this.raw[name] = value;
         if (this.onDataChanged) this.onDataChanged(name, value);
     }
 
