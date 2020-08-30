@@ -9,6 +9,7 @@ import AppPlugin from "@/app/plugins/AppPlugin";
 import {APIPlugin} from "@/app/api/API";
 import AccountPlugin from "@/app/plugins/account/AccountPlugin";
 import UIPlugin from "@/app/plugins/ui/UIPlugin";
+import LingPlugin from "@/ling/LingPlugin";
 
 // Vue toast plugin
 const VueToast = require('vue-toast-notification/dist/index') as any;
@@ -25,6 +26,7 @@ Vue.use(UIPlugin);
 Vue.use(VueToast, {position: 'top'});
 Vue.use(VueContentPlaceholders)
 Vue.use(VSelect)
+Vue.use(LingPlugin);
 
 Vue.config.productionTip = false
 

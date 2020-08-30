@@ -52,60 +52,11 @@
                     @click="sendTest" variant="success" block>Отправить анкету на обработку
             </b-button>
         </b-alert>
-        <b-tabs content-class="mt-3" justified>
-            <profile-tab :active="!shouldInformationTabBeFirst" title="Объявления">
-                <template #icon>
-                    <b-icon-bell/>
-                </template>
-                <b-alert
-                        :show="true"
-                        :variant="$app.studentStatus.variant[user.raw.studentStatus]"
-                >
-                    <h4>{{$app.studentStatus.text[user.raw.studentStatus]}}</h4>
-                    <p>Состояние Вашей анкеты</p>
-                </b-alert>
-                <user-comments-by-admission :user="user"/>
-                <profile-board-tab/>
-            </profile-tab>
-            <profile-tab :active="shouldInformationTabBeFirst" :lazy="true" title="Информация">
-                <template #icon>
-                    <b-icon-card-text/>
-                </template>
-                <profile-information-section :user="user" :callback="onSave"/>
-                <b-card title="Дополнительно" class="mb-3">
-                    <fast-input-switch
-                            :callback="(function(v){return this.onSave('motherCapital', v ? 1: 0)}.bind(this))"
-                            :pre="user.raw.motherCapital === '1'">
-                        Материнский капитал
-                    </fast-input-switch>
-                </b-card>
-            </profile-tab>
-            <profile-tab :lazy="true" title="Образование">
-                <template #icon>
-                    <b-icon-book/>
-                </template>
-                <profile-education-section :user="user" :callback="onSave"/>
-
-            </profile-tab>
-            <profile-tab :active="shouldSpecializationTabBeFirst" :lazy="true" title="Специальность">
-                <template #icon>
-                    <b-icon-diagram3/>
-                </template>
-                <student-specialization-component
-                        :disabled="!user.flags.isCanFacultyEdit()"
-                        :specialization-id="user.specializationId"
-                        :base-id="user.baseId"
-
-                        @changeSpecialization="(value) => studentSetSpecialization(user, value) && $router.push('#sp' + new Date().getTime())"
-                        @changeBase="(value) => studentSetBase(user, value)"/>
-            </profile-tab>
-            <profile-tab v-if="$store.getters.hasAccess(7)" :lazy="true" title="Управление">
-                <template #icon>
-                    <b-icon-gear/>
-                </template>
-                <user-admin-settings :user="user"/>
-            </profile-tab>
-        </b-tabs>
+        <profile-section-tabs
+            :user="user"
+            :on-save="onSave"
+            :active-tab="activeTabName"
+        />
         <div v-if="$store.getters.isAdmin">
             <collapse-card @visible="onFilesVisibleChanged" title="Файлы" class="mb-3">
                 <documents-grid-view
@@ -159,9 +110,11 @@
     import ProfileBoardTab from "@/components/profile/ProfileTabs/ProfileBoardTab.vue";
     import StudentControllerMixin from "@/components/mixins/controllers/StudentControllerMixin.vue";
     import StudentSpecializationComponent from "@/components/student/StudentSpecializationComponent.vue";
+    import ProfileSectionTabs from "@/components/profile/sections/ProfileSectionTabs.vue";
 
     @Component({
         components: {
+            ProfileSectionTabs,
             StudentSpecializationComponent,
             ProfileBoardTab,
             ProfileTab,
@@ -201,21 +154,13 @@
             this.update();
         }
 
-        get shouldSpecializationTabBeFirst() {
-            return window.location.href.includes("#sp");
+        get activeTabName() {
+            if (window.location.href.includes("#sp")) return "specialization";
+            if (window.location.href.includes("#board")) return "board";
+            if (this.user.userId === this.$store.getters.user.userId) return "board";
+            return "information";
         }
 
-        get shouldInformationTabBeFirst() {
-            if (window.location.href.includes("#board")) return false;
-            if (window.location.href.includes("#sp")) return false;
-
-            if (this.user.raw.school.schoolName === "") return true;
-            if (this.user.raw.facultyId === "") return true;
-            if (this.user.raw.facultyId === "0") return true;
-            // Admin
-            if (this.$store.getters.isAdmin) return true;
-            return false;
-        }
 
         private async update() {
             if (this.$route.params.id) {
@@ -263,11 +208,35 @@
             });
         }
 
-        private async onSave(field: string, value: unknown): Promise<boolean> {
-            const results = await this.withToast(this.setUserField(this.user.userId, field, value), "Изменения сохранены!");
-            if (results) await this.update();
-            return Promise.resolve(results);
+
+        private async onSave(field: string, value: unknown, next: (res: boolean, message: string) => void) {
+            try {
+                if(field === 'facultyId' || field === 'studyBase'){
+                    if(field === 'facultyId'){
+                        await API.request("mission.setSpecialization",
+                            {specialization: value, userId: this.user.userId});
+                        this.user.set('facultyId' as never, value);
+                        try {
+                            await API.request("mission.setBase", {baseId: '0', userId: this.user.userId});
+                            this.user.set('studyBase' as never, '0');
+                        }catch (e) {
+                            // Nothing is done
+                        }
+                    }
+                    if(field === 'studyBase'){
+                        await API.request("mission.setBase", {baseId: value, userId: this.user.userId});
+                        this.user.set('studyBase' as never, value);
+                    }
+                }else {
+                    await this.setUserField(this.user.userId, field, value);
+                    this.user.set(field as never, value);
+                }
+                next(true, 'Изменения сохранены!');
+            } catch (e) {
+                next(false, e);
+            }
         }
+
 
 
         @Watch("$route")
