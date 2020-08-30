@@ -44,7 +44,7 @@
                         :value="schoolDate"
                         placeholder="Не определено"
                         :post-reformer="$lp.io.date.fromUTCStringToStd"
-                        :can-edit="editablePrivate"
+                        :can-edit="editable"
                         :callback="(v, n) => callback('schoolDate', v, n)"
                 />
             </row-with-editable-field>

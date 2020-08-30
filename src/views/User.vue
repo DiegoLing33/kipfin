@@ -48,6 +48,7 @@
                 :on-send-set="onSendSet"
                 :set-student-status="setStudentStatus"
                 ref="adminHelper" :user="user" v-if="$store.getters.isAdmin"/>
+<!--        <admin-control-component :user="user" />-->
     </user-content>
 </template>
 
@@ -85,9 +86,11 @@
     import StudentSpecializationComponent from "@/components/student/StudentSpecializationComponent.vue";
     import ProfileSpecializationTab from "@/components/profile/ProfileTabs/ProfileSpecializationTab.vue";
     import ProfileSectionTabs from "@/components/profile/sections/ProfileSectionTabs.vue";
+    import AdminControlComponent from "@/components/profile/adminControl/AdminControlComponent.vue";
 
     @Component({
         components: {
+            AdminControlComponent,
             ProfileSectionTabs,
             ProfileSpecializationTab,
             StudentSpecializationComponent,
@@ -185,11 +188,25 @@
 
         private async onSave(field: string, value: unknown, next: (res: boolean, message: string) => void) {
             try {
-                await this.setUserField(this.user.userId, field, value);
-                this.user.set(field as never, value);
-                if (field === 'facultyId') {
-                    await this.setUserField(this.user.userId, 'studyBase', '0');
-                    this.user.set('studyBase' as never, '0');
+                if(field === 'facultyId' || field === 'studyBase'){
+                    if(field === 'facultyId'){
+                        await API.request("mission.setSpecialization",
+                            {specialization: value, userId: this.user.userId});
+                        this.user.set('facultyId' as never, value);
+                        try {
+                            await API.request("mission.setBase", {baseId: '0', userId: this.user.userId});
+                            this.user.set('studyBase' as never, '0');
+                        }catch (e) {
+                            // Nothing is done
+                        }
+                    }
+                    if(field === 'studyBase'){
+                        await API.request("mission.setBase", {baseId: value, userId: this.user.userId});
+                        this.user.set('studyBase' as never, value);
+                    }
+                }else {
+                    await this.setUserField(this.user.userId, field, value);
+                    this.user.set(field as never, value);
                 }
                 next(true, 'Изменения сохранены!');
             } catch (e) {
