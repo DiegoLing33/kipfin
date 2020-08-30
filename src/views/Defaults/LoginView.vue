@@ -1,8 +1,8 @@
 <template>
     <div class="login-page">
-        <div class="login-header text-center p-3">
+        <div class="login-header text-center pb-3">
             <h1 class="font-weight-bold">КИП<span class="text-primary">ФИН</span></h1>
-            <div class="text-uppercase">Личный кабинет абитуриента</div>
+            <div class="text-uppercase">Личный кабинет</div>
         </div>
         <div class="form">
             <b-overlay style="margin: -45px; padding: 45px" :show="isLoading">
@@ -72,6 +72,7 @@ export default class LoginView extends Vue {
 .login-page {
     width: 460px;
     margin: 20px auto;
+    max-width: 95%;
 }
 
 .login-header {
