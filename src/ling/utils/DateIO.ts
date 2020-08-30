@@ -16,4 +16,9 @@ export default class DateIO {
     public static toStdDateTime(date: Date | number) {
         return DateIO.toStdDate(date) + " " + DateIO.toStdTime(date);
     }
+
+    public static fromUTCStringToStd(date: string){
+        const r = date.split('-');
+        return `${r[2]}.${r[1]}.${r[0]}`;
+    }
 }
