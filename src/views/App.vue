@@ -79,9 +79,8 @@ export default class App extends Vue {
                 {title: "Панель управления", icon: "house", url: "/admin"},
                 {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},
                 {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
-                {title: "Активность", icon: "clock-history", url: "/admin/fire"},
-                {title: "Статистика", icon: "bar-chart", url: "/admin/stats"},
                 {nav: "Пользователи"},
+                {title: "Группы студентов", icon: "people", url: "/admin/groups"},
                 {title: "Пользователи", icon: "search", url: "/admin/users"},
                 {title: "Роли пользователей", icon: "check2-circle\n", url: "/admin/roles"},
             ]];

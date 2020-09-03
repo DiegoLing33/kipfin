@@ -1,4 +1,5 @@
 import API, {APIResult, NumericString} from "@/app/api/API";
+import {StudentGroupModel} from "@/app/api/models/Student";
 
 export interface APIUserFlags {
     canEdit: '1'|'0';
@@ -89,6 +90,15 @@ export default class APIUsers {
      */
     public async setField(userId: NumericString|number, fieldName: string, fieldValue: string): Promise<APIResult> {
         return await API.request("users.setField", {userId, fieldName, fieldValue});
+    }
+
+
+    public async studentGroupsList(): Promise<{list: StudentGroupModel[]}>{
+        return API.request("studentGroups.list");
+    }
+
+    public async studentGroupById(id: NumericString): Promise<StudentGroupModel & {students: APIUserResults[]}>{
+        return API.request("studentGroups.byId", {id});
     }
 
 }

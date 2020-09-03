@@ -20,7 +20,8 @@ export default class StoreLoader {
      */
     public static wait(store: any, closure: () => void) {
         const __wait = setInterval(() => {
-            if (store.getters.isLoggedIn) {
+            if (!store.getters.user.isZero()) {
+                console.log(2);
                 clearInterval(__wait);
                 closure();
             }

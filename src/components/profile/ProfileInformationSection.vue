@@ -41,11 +41,11 @@
                 />
             </row-with-editable-field>
             <row-with-editable-field title="Группа:">
-                <editable-text-input
-                        :value="studentGroup"
+                <editable-select-input
+                        :value="studentGroup ? studentGroup.toString() : null"
+                        :options="$app.studentGroups"
                         placeholder="Не определено"
-                        :reformer="[$lp.reformers.uppercase, $lp.reformers.removeAllSpaces]"
-                        :callback="(v, n) => callback('studentGroup', v, n)"
+                        :callback="(v, n) => callback('studentGroupId', v, n)"
                         :can-edit="editablePrivate"
                 />
             </row-with-editable-field>
@@ -105,9 +105,12 @@
     import {EditableInputHandlerNext} from "@/ling/components/input/common/EditableInput";
     import RowWithEditableField from "@/components/profile/ProfileTabs/common/RowWithEditableField.vue";
     import EditableDateInput from "@/ling/components/input/EditableDateInput.vue";
+    import EditableSelectInput from "@/ling/components/input/EditableSelectInput.vue";
 
     @Component({
-        components: {EditableDateInput, RowWithEditableField, EditableTextInput, TextSmallMuted, UserTable}
+        components: {
+            EditableSelectInput,
+            EditableDateInput, RowWithEditableField, EditableTextInput, TextSmallMuted, UserTable}
     })
     export default class ProfileInformationSection extends Vue {
         @Prop({default: false}) editable!: boolean;

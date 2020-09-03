@@ -28,6 +28,7 @@ export interface AppPluginApp {
 
     modalShow(ctx: any, name: string): void;
     modalClose(ctx: any, name: string): void;
+    studentGroups: typeof KIPD.studentGroups;
 }
 
 declare module 'vue/types/vue' {
@@ -49,6 +50,7 @@ export default function AppPlugin(vue: any): void {
         basesClear: KIPD.basesClear,
         specializationsClear: KIPD.specializationsClear,
         specializationNoCode: KIPD.specializationsNoCode,
+        studentGroups: KIPD.studentGroups,
         bases: KIPD.bases,
         yesNo: {"0": "Нет", "1": "Да"},
         gender: {"1": "Мужской", "2": "Женский"},

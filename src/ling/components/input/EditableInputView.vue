@@ -19,7 +19,7 @@
                 </b-button>
             </b-col>
         </b-row>
-        <b-popover triggers="" :show="isEditState" :target="_uid + '_item'">
+        <b-popover placement="left" triggers="" :show="isEditState" :target="_uid + '_item'">
             Нажмите <strong>
             <b-icon-check/>
         </strong> для сохранения изменений. <a href="#" @click="reset">Отменить</a>

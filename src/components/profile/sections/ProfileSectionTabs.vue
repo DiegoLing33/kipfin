@@ -30,7 +30,7 @@
                     :birthday="user.raw.birthday"
                     :mail="user.raw.mail"
                     :phone="user.raw.phone"
-                    :student-group="user.raw.studentGroup"
+                    :student-group="user.raw.studentGroupId"
                     :student-identifier="user.raw.studentIdentifier"
 
                     :callback="onSave"/>

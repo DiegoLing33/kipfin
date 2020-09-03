@@ -13,6 +13,9 @@
                     <b-dropdown-divider />
                     <b-dropdown-item @click="$router.push('/support')">Поддержка</b-dropdown-item>
                 </b-nav-item-dropdown>
+                <b-nav-item-dropdown text="Приемная комиссия">
+                    <b-dropdown-item @click="$router.push('/admission/getdone')">Приказы о зачислении</b-dropdown-item>
+                </b-nav-item-dropdown>
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">

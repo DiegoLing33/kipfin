@@ -25,19 +25,6 @@
                 </div>
             </div>
         </template>
-        <b-alert variant="success" :show="true">
-            <h4>Проекты приказов на зачисление (бюджет)</h4>
-            <ul>
-                <li><a href="/OIBAS2020.pdf">10.02.05 Обеспечение информационной безопасности автоматизированных систем</a></li>
-                <li><a href="/PKS2020.pdf">09.02.03 Программирование в компьютерных системах</a></li>
-            </ul>
-            <h4>Проекты приказов на зачисление (договор)</h4>
-            <p>
-                Формируются...
-            </p>
-            <p>Проект приказа - это приказ, который в данный момент находится на
-                подписи у ректора Финансового университета. Мы обновим списки, как только получим их.</p>
-        </b-alert>
         <b-alert
                 :show="true"
                 v-if="(user.raw.studentStatus === '0' || user.raw.studentStatus === '200') && user.group.groupId === '1'"
@@ -217,14 +204,14 @@
                             {specialization: value, userId: this.user.userId});
                         this.user.set('facultyId' as never, value);
                         try {
-                            await API.request("mission.setBase", {baseId: '0', userId: this.user.userId});
+                            await API.request("mission.setBase", {base: '0', userId: this.user.userId});
                             this.user.set('studyBase' as never, '0');
                         }catch (e) {
                             // Nothing is done
                         }
                     }
                     if(field === 'studyBase'){
-                        await API.request("mission.setBase", {baseId: value, userId: this.user.userId});
+                        await API.request("mission.setBase", {base: value, userId: this.user.userId});
                         this.user.set('studyBase' as never, value);
                     }
                 }else {

@@ -25,6 +25,10 @@ import LoginView from "@/views/Defaults/LoginView.vue";
 import SupportView from "@/views/Support/SupportView.vue";
 import SupportAppErrorView from "@/views/Support/App/SupportAppError.vue";
 import SupportAppRestoreView from "@/views/Support/App/SupportAppRestoreView.vue";
+import GetDoneView from "@/views/Admission/GetDoneView.vue";
+import AdminStudentGroups from "@/views/Admin/AdminStudentGroups.vue";
+import AdminGroupsEntityView from "@/views/Admin/Groups/AdminGroupsEntityView.vue";
+import StoreLoader from "@/app/client/StoreLoader";
 
 Vue.use(VueRouter)
 
@@ -32,6 +36,7 @@ const routes: Array<RouteConfig> = [
     {path: '/', name: 'Home', component: Home},
     {path: '/login', name: 'Login', component: LoginView},
     {path: '/create', name: 'Create LK', component: CreateProfileView},
+    {path: '/admission/getdone', name: 'Get Done', component: GetDoneView},
 
     {
         path: '/admin', name: 'Admin Home', component: AdminIndex,
@@ -68,6 +73,14 @@ const routes: Array<RouteConfig> = [
     {
         path: '/admin/news', name: 'Admin Admission News', component: AdminUpdates,
         meta: {requiredAuth: true, requiredAccess: 7}
+    },
+    {
+        path: '/admin/groups', name: 'Admin Student Groups', component: AdminStudentGroups,
+        meta: {requiredAuth: true, requiredAccess: 17}
+    },
+    {
+        path: '/admin/groups/i/:id', name: 'Admin Groups Entity', component: AdminGroupsEntityView,
+        meta: {requiredAuth: true, requiredAccess: 17}
     },
 
     {
@@ -112,19 +125,19 @@ const routes: Array<RouteConfig> = [
         meta: {requiredAuth: true}
     },
     {
-      path: "/support/error",
-      name :"Support app error page",
-      component: SupportAppErrorView,
+        path: "/support/error",
+        name: "Support app error page",
+        component: SupportAppErrorView,
     },
     {
-      path: "/support/restore",
-      name :"Support app restore page",
-      component: SupportAppRestoreView,
+        path: "/support/restore",
+        name: "Support app restore page",
+        component: SupportAppRestoreView,
     },
     {
-      path: "/support",
-      name :"Support home page",
-      component: SupportView,
+        path: "/support",
+        name: "Support home page",
+        component: SupportView,
     },
     {path: "/error/access", name: "Access Error View", component: AccessErrorView}
 ];
@@ -138,12 +151,14 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     if (to.meta.requiredAuth !== undefined) {
         if (store.getters.accountIsAuthenticated) {
-            if (to.meta.requiredAccess &&
-                !store.getters.user.group.hasAccess(to.meta.requiredAccess)) {
-                next("/error/access");
+            if (to.meta.requiredAccess) {
+                StoreLoader.wait(store, () => {
+                    if (!store.getters.user.group.hasAccess(to.meta.requiredAccess)) next("/error/access");
+                    else next();
+                });
             } else next();
         } else next("/login");
-    }else next();
+    } else next();
 });
 
 export default router
