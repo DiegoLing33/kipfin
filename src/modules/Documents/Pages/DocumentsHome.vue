@@ -3,8 +3,7 @@
             title="Документы"
             description="Хранилище документов"
     >
-        <guide-admission-documents/>
-        <file-uploader-view @updated="update" class="mb-2"/>
+        <document-uploader class=" mb-3 "  @updated="update"/>
         <documents-grid-view @updated="update" :documents="documents"/>
     </user-content>
 </template>
@@ -19,9 +18,11 @@
     import KFDocument from "@/modules/Documents/Common/KFDocument";
     import CountedString from "@/core/Common/CountedString";
     import GuideAdmissionDocuments from "@/modules/Admission/Components/guides/GuideAdmissionDocuments.vue";
+    import DocumentUploader from "@/modules/Documents/Components/DocumentUploader.vue";
 
     @Component({
         components: {
+            DocumentUploader,
             GuideAdmissionDocuments,
             DocumentsGridView,
             UserContent, FileUploaderView, SelectField
@@ -39,18 +40,13 @@
         async update(count: number|null, storage: string|null) {
 
             if (count !== null && storage !== null) {
-                const fileTypeString = this.$app.fileTypes[storage] || storage;
                 const loaded = CountedString.get(count, "загружен", "загружено", "загружено")
 
                 this.$toast.open("Успешно " + loaded + " " + count + " " +
-                    CountedString.get(count, "файл", "файлов", "файла") + ` (${fileTypeString})`);
+                    CountedString.get(count, "файл", "файла", "файлов"));
             }
             await this.$store.getters.user.updateFiles();
             this.documents = KFDocument.fromList(this.$store.getters.user.getFiles());
         }
     }
 </script>
-
-<style scoped>
-
-</style>
