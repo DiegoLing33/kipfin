@@ -64,10 +64,14 @@
                 const wait = setInterval(()=>{
                     if(!this.$store.getters.user.isZero()) {
                         clearInterval(wait);
-                        if(this.$store.getters.user.group.hasAccess(this.shouldHasAccess)){
-                            this.currentState = 0;
+                        if(this.shouldHasAccess !== null) {
+                            if (this.$store.getters.user.group.hasAccess(this.shouldHasAccess)) {
+                                this.currentState = 0;
+                            } else {
+                                this.currentState = 2;
+                            }
                         }else{
-                            this.currentState = 2;
+                            this.currentState = 0;
                         }
                     }
                 }, 10);

@@ -1,11 +1,13 @@
 <template>
-    <user-content
-            title="Документы"
-            description="Хранилище документов"
-    >
-        <document-uploader class=" mb-3 "  @updated="update"/>
-        <documents-grid-view @updated="update" :documents="documents"/>
-    </user-content>
+    <content-body :should-be-authorized="true">
+        <user-content
+                title="Документы"
+                description="Хранилище документов"
+        >
+            <document-uploader class=" mb-3 " @updated="update"/>
+            <documents-grid-view @updated="update" :documents="documents"/>
+        </user-content>
+    </content-body>
 </template>
 
 <script lang="ts">
@@ -19,9 +21,11 @@
     import CountedString from "@/core/Common/CountedString";
     import GuideAdmissionDocuments from "@/modules/Admission/Components/guides/GuideAdmissionDocuments.vue";
     import DocumentUploader from "@/modules/Documents/Components/DocumentUploader.vue";
+    import ContentBody from "@/modules/Security/Components/ContentBody.vue";
 
     @Component({
         components: {
+            ContentBody,
             DocumentUploader,
             GuideAdmissionDocuments,
             DocumentsGridView,
@@ -37,7 +41,7 @@
             });
         }
 
-        async update(count: number|null, storage: string|null) {
+        async update(count: number | null, storage: string | null) {
 
             if (count !== null && storage !== null) {
                 const loaded = CountedString.get(count, "загружен", "загружено", "загружено")
