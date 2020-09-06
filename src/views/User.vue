@@ -67,42 +67,39 @@
 
 <script lang="ts">
     import {Component, Mixins, Watch} from "vue-property-decorator";
-    import API from "@/app/api/API";
-    import KFUser from "@/app/client/KFUser";
-    import FastInputSwitch from "@/components/forms/fastinput/FastInputSwitch.vue";
-    import ProfileProgressView from "@/components/profile/ProfileProgressView.vue";
-    import UserCommentsByAdmission from "@/components/profile/UserCommentsByAdmission.vue";
-    import UserParents from "@/views/Profile/UserParents.vue";
-    import PassportView from "@/components/profile/PassportView.vue";
-    import AdmissionActionsUserView from "@/components/admin/admintools/AdmissionActionsUserView.vue";
-    import FileUploaderAdminView from "@/components/forms/FileUploaderAdminView.vue";
-    import UserStatusToolbox from "@/components/admin/admintools/UserStatusToolbox.vue";
-    import UserAvatarBox from "@/components/userbox/UserAvatarBox.vue";
-    import FiSelect from "@/ling/components/ficomponents/FiSelect.vue";
-    import ProfileInformationSection from "@/components/profile/ProfileInformationSection.vue";
-    import ProfileEducationSection from "@/components/profile/ProfileEducationSection.vue";
-    import UserContent from "@/components/theme/UserContent.vue";
-    import AdminHelper from "@/components/admin/admintools/AdminHelper.vue";
-    import LiModal from "@/ling/components/LiModal.vue";
-    import OneSUser from "@/components/admin/admintools/ones/OneSUser.vue";
-    import DocumentsGridView from "@/components/documents/DocumentsGridView.vue";
-    import KFDocument from "@/app/client/KFDocument";
-    import UserAdminSettings from "@/components/admin/UserAdminSettings.vue";
-    import StoreLoadedComponent from "@/components/mixins/StoreLoadedComponent.vue";
-    import CollapseCard from "@/components/theme/CollapseCard.vue";
-    import TaggedComponent from "@/ling/tagged/TaggedComponent.vue";
-    import UserControllerMixin from "@/components/mixins/controllers/UserControllerMixin.vue";
-    import UIControllerMixin from "@/components/mixins/controllers/UIControllerMixin.vue";
-    import ProfileTab from "@/components/tabs/ProfileTabs/ProfileTab.vue";
-    import ProfileBoardTab from "@/components/profile/ProfileTabs/ProfileBoardTab.vue";
-    import StudentControllerMixin from "@/components/mixins/controllers/StudentControllerMixin.vue";
-    import StudentSpecializationComponent from "@/components/student/StudentSpecializationComponent.vue";
-    import ProfileSectionTabs from "@/components/profile/sections/ProfileSectionTabs.vue";
+    import API from "@/core/app/api/API";
+    import KFUser from "@/modules/Users/Common/KFUser";
+    import ProfileProgressView from "@/modules/Profile/Components/ProfileProgressView.vue";
+    import UserCommentsByAdmission from "@/modules/Profile/Components/UserCommentsByAdmission.vue";
+    import UserParents from "@/modules/Profile/Pages/UserParents.vue";
+    import PassportView from "@/modules/Profile/Components/PassportView.vue";
+    import AdmissionActionsUserView from "@/modules/Admin/Components/admintools/AdmissionActionsUserView.vue";
+    import FileUploaderAdminView from "@/modules/Documents/Components/FileUploaderAdminView.vue";
+    import UserStatusToolbox from "@/modules/Admin/Components/admintools/UserStatusToolbox.vue";
+    import UserAvatarBox from "@/modules/Users/Components/UserBox/UserAvatarBox.vue";
+    import FiSelect from "@/modules/ling/components/ficomponents/FiSelect.vue";
+    import ProfileInformationSection from "@/modules/Profile/Components/ProfileInformationSection.vue";
+    import ProfileEducationSection from "@/modules/Profile/Components/ProfileEducationSection.vue";
+    import UserContent from "@/modules/Interface/Components/UserContent.vue";
+    import AdminHelper from "@/modules/Admin/Components/admintools/AdminHelper.vue";
+    import LiModal from "@/modules/ling/components/LiModal.vue";
+    import OneSUser from "@/modules/Admin/Components/admintools/ones/OneSUser.vue";
+    import DocumentsGridView from "@/modules/Documents/Components/DocumentsGridView.vue";
+    import KFDocument from "@/modules/Documents/Common/KFDocument";
+    import UserAdminSettings from "@/modules/Admin/Components/UserAdminSettings.vue";
+    import StoreLoadedComponent from "@/core/Components/mixins/StoreLoadedComponent.vue";
+    import CollapseCard from "@/modules/Interface/Components/CollapseCard.vue";
+    import TaggedComponent from "@/modules/Interface/Modules/Tagged/Components/TaggedComponent.vue";
+    import UserControllerMixin from "@/core/Components/mixins/controllers/UserControllerMixin.vue";
+    import UIControllerMixin from "@/core/Components/mixins/controllers/UIControllerMixin.vue";
+    import ProfileTab from "@/modules/Profile/Components/ProfileTabs/ProfileTab.vue";
+    import ProfileBoardTab from "@/modules/Profile/Components/ProfileTabs/ProfileBoardTab.vue";
+    import StudentControllerMixin from "@/core/Components/mixins/controllers/StudentControllerMixin.vue";
+    import ProfileSectionTabs from "@/modules/Profile/Components/sections/ProfileSectionTabs.vue";
 
     @Component({
         components: {
             ProfileSectionTabs,
-            StudentSpecializationComponent,
             ProfileBoardTab,
             ProfileTab,
             TaggedComponent,
@@ -124,7 +121,6 @@
             UserParents,
             UserCommentsByAdmission,
             ProfileProgressView,
-            FastInputSwitch,
         }
     })
     export default class UserView extends Mixins(StoreLoadedComponent, UserControllerMixin,
@@ -160,6 +156,15 @@
                 this.user.onDataChanged = (name, value) => {
                     this.$store.getters.user[name] = value;
                 };
+            }
+
+            if(this.user.raw.studentGroupId){
+                const groups = await API.users.studentGroupsList();
+                groups.list.forEach(value => {
+                    if(value.studentGroupId.toString() === this.user.raw.studentGroupId.toString()){
+                        this.$set(this.user, "studentTeacherName", value.studentGroupTeacherName);
+                    }
+                });
             }
         }
 

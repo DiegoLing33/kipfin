@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import BoxHint from "@/components/theme/BoxHint.vue";
+import BoxHint from "@/modules/Interface/Components/BoxHint.vue";
 
 @Component({
     components: {BoxHint}

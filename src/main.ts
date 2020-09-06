@@ -1,15 +1,15 @@
 import Vue from 'vue'
 import App from './views/App.vue'
 import './registerServiceWorker'
-import router from './app/router'
-import store from './app/store'
+import router from './core/Routes'
+import store from './core/Store'
 import BootstrapVue, {BootstrapVueIcons} from "bootstrap-vue";
 import VueCookie from "vue-cookies-ts";
-import AppPlugin from "@/app/plugins/AppPlugin";
-import {APIPlugin} from "@/app/api/API";
-import AccountPlugin from "@/app/plugins/account/AccountPlugin";
-import UIPlugin from "@/app/plugins/ui/UIPlugin";
-import LingPlugin from "@/ling/LingPlugin";
+import AppPlugin from "@/core/app/plugins/AppPlugin";
+import {APIPlugin} from "@/core/app/api/API";
+import AccountPlugin from "@/core/app/plugins/account/AccountPlugin";
+import UIPlugin from "@/core/app/plugins/ui/UIPlugin";
+import LingPlugin from "@/modules/ling/LingPlugin";
 
 // Vue toast plugin
 const VueToast = require('vue-toast-notification/dist/index') as any;
@@ -24,8 +24,8 @@ Vue.use(APIPlugin);
 Vue.use(AccountPlugin);
 Vue.use(UIPlugin);
 Vue.use(VueToast, {position: 'top'});
-Vue.use(VueContentPlaceholders)
-Vue.use(VSelect)
+Vue.use(VueContentPlaceholders);
+Vue.use(VSelect);
 Vue.use(LingPlugin);
 
 Vue.config.productionTip = false

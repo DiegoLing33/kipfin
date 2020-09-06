@@ -11,15 +11,15 @@
 <script lang="ts">
 
 import {Component, Vue, Watch} from "vue-property-decorator";
-import NavigationBar from "@/components/theme/navigation/NavigationBar.vue";
-import WrapperContainer from "@/components/theme/WrapperContainer.vue";
-import LiModal from "@/ling/components/LiModal.vue";
+import NavigationBar from "@/modules/Interface/Components/navigation/NavigationBar.vue";
+import WrapperContainer from "@/modules/Interface/Components/WrapperContainer.vue";
+import LiModal from "@/modules/ling/components/LiModal.vue";
 import {mapState} from "vuex";
 import {
     ACCOUNT_TOKEN_STORAGE,
     COMMIT_AUTH_REQUEST_SUCCESS,
     DISPATCH_USER_REQUEST
-} from "@/app/store/authentication";
+} from "@/modules/Authentication/Store/authentication";
 
 /**
  * Main application class
@@ -76,9 +76,8 @@ export default class App extends Vue {
             menuItems = [...menuItems, ...[
                 {title: "Чаты", icon: "chat", url: "/chat"},
                 {nav: "Прием"},
-                {title: "Панель управления", icon: "house", url: "/admin"},
+                {title: "Приемная комиссия", icon: "house", url: "/admission"},
                 {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},
-                {title: "Feed файлов", icon: "upload", url: "/admin/feed"},
                 {nav: "Пользователи"},
                 {title: "Группы студентов", icon: "people", url: "/admin/groups"},
                 {title: "Пользователи", icon: "search", url: "/admin/users"},

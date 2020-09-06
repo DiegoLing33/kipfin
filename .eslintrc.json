@@ -21,5 +21,8 @@
     "rules": {
         "camelcase": "off",
         "no-mixed-requires": "off"
-    }
+    },
+    "ignorePatterns": [
+        "*.console.js"
+    ]
 }

@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator";
-import ButtonLoginOrCreate from "@/components/app/ButtonLoginOrCreate.vue";
+import ButtonLoginOrCreate from "@/core/Components/ButtonLoginOrCreate.vue";
 
 @Component({
     components: {ButtonLoginOrCreate}
