@@ -68,6 +68,8 @@ export default class App extends Vue {
 
     get menu() {
         let menuItems: Array<unknown> = [
+            {title: "Новости", icon: "newspaper", url: "/feed"},
+            {nav: "Кабинет"},
             {title: "Мой кабинет", icon: 'person-fill', url: "/user"},
             {title: "Мои документы", icon: 'files', url: "/documents"},
             {title: "Паспортные данные", icon: "card-heading", url: "/user/passport"},
@@ -89,10 +91,7 @@ export default class App extends Vue {
                 {title: "Законные представители", icon: "people-fill", url: "/user/parents"},
                 {title: "Чат с приемной комиссией", icon: "chat", url: "/user/chat"},
             ]];
-        return [...menuItems, ...[
-            {nav: "Новости"},
-            {title: "Новости", icon: "newspaper", url: "/feed"},
-        ]];
+        return menuItems;
     }
 
 }
