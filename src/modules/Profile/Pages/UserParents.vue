@@ -6,6 +6,9 @@
             :fields="tableFields"
             :items="parents"
     >
+        <template v-slot:cell(phone)="row">
+            {{$lp.reformers.phone(row.item.phone)}}
+        </template>
         <template v-slot:cell(type)="row">
             {{$app.parentName[row.item.type]}}
         </template>
