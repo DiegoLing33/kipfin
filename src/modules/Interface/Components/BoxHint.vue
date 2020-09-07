@@ -1,5 +1,5 @@
 <template>
-    <div class="box-hint text-center">
+    <div :class="className">
         <text-small-muted>
             <slot>{{text}}</slot>
         </text-small-muted>
@@ -15,6 +15,12 @@ import TextSmallMuted from "@/modules/Interface/Components/text/TextSmallMuted.v
 export default class BoxHint extends Vue {
     @Prop({default: false}) block!: boolean;
     @Prop({default: ""}) text!: string;
+
+    get className(){
+        const src = 'box-hint text-center';
+        if(this.block) return src + ' w-100';
+        return src;
+    }
 }
 </script>
 
