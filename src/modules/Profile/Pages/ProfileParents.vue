@@ -14,6 +14,9 @@
                 <template v-slot:cell(type)="row">
                     {{$app.parentName[row.item.type]}}
                 </template>
+                <template v-slot:cell(phone)="row">
+                    {{$lp.reformers.phone(row.item.phone)}}
+                </template>
                 <template v-slot:cell(mail)="row">
                     <div style="word-break: break-all">
                         {{row.item.mail}}
