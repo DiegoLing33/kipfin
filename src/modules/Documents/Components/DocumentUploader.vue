@@ -11,8 +11,9 @@
                 Нажмите сюда, чтобы добавить новый файл
             </div>
         </div>
-        <div v-else>
-            <b-row class="mb-3 pb-3 pt-3 rwef" style="vertical-align: middle; align-items: center">
+        <div class="border border-primary" style="border-radius: 5px" v-else>
+            <b-row class="mb-3 mx-0 pb-3 pt-3 rwef"
+                   style="vertical-align: middle; align-items: center; background-color: whitesmoke; border-top-left-radius: 5px; border-top-right-radius: 5px">
                 <b-col sm="1">
                     <b>#</b>
                 </b-col>
@@ -29,7 +30,8 @@
                 </b-col>
             </b-row>
             <b-row style="vertical-align: middle; align-items: center"
-                   v-for="(file, i) of files" :key="i + '_' + new Date().getTime()" class="rwef pb-3 mb-3">
+                   v-for="(file, i) of files" :key="i + '_' + new Date().getTime()"
+                   class="pb-3 mb-3 mx-0 rwef">
                 <b-col sm="1">
                     {{(i + 1)}}
                 </b-col>
@@ -52,15 +54,17 @@
                     </b-button>
                 </b-col>
             </b-row>
-            <div class="mb-5">
+            <div class="">
+                <b-button variant="link" @click="onClick">
+                    Добавить еще файлы
+                </b-button>
                 <b-button
+                        style="border-bottom-left-radius: 5px; border-bottom-right-radius: 5px"
+                        squared
                         :disabled="busy"
                         @click="onSend"
                         variant="primary" block>
                     Отправить
-                </b-button>
-                <b-button variant="link" @click="onClick">
-                    Добавить еще файлы
                 </b-button>
             </div>
         </div>
