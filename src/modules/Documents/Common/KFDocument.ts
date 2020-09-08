@@ -13,7 +13,7 @@ export default class KFDocument {
     /**
      * The source URL
      */
-    public static readonly sourceURL = 'http://kipfin.ru/new/index.php?class=files&method=file&fileId=';
+    public static readonly sourceURL = 'http://kipfin.ru/api/index.php?class=files&method=file&fileId=';
 
     /**
      * Creates zero file

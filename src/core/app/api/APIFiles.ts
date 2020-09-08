@@ -1,5 +1,6 @@
 import API, {APIResult, NumericString} from "@/core/app/api/API";
 import {Dict} from "@/core/app/types";
+import Server from "@/core/app/api/Server";
 
 export interface APIFileResult {
     file_id: NumericString;
@@ -64,7 +65,7 @@ export default class APIFiles {
      * @param encrypt
      */
     public async upload(files: Blob | Blob[], storage: string, encrypt = false): Promise<APIResult> {
-        return await API.request("files.upload", {type: storage, encrypt}, {files: files});
+        return await Server.request("files2.upload", {type: storage, encrypt}, {files: files});
     }
 
     /**
@@ -76,7 +77,7 @@ export default class APIFiles {
      * @param status
      */
     public async uploadX(files: Blob | Blob[], storage: string, userId: string, status = "1000"): Promise<APIResult> {
-        return await API.request("files.uploadX", {type: storage, userId, status}, {files: files});
+        return await Server.request("files2.uploadX", {type: storage, userId, status}, {files: files});
     }
 
 }
