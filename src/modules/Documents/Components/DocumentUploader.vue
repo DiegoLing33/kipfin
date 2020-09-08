@@ -40,10 +40,10 @@
                     {{file.name}}
                 </b-col>
                 <b-col sm="4">
-                    <select-box
-                            :disabled="busy"
-                            @input="(e) => $set(storages, file.name + file.size, e.value || null)"
-                            :options="$app.fileTypes"></select-box>
+                    <b-form-select
+                            :value="storages[file.name + file.size]"
+                            @change="(e) => $set(storages, file.name + file.size, e || null)"
+                            :options="options" />
                 </b-col>
                 <b-col class="text-muted small">
                     {{getFileState(file)}}
@@ -91,6 +91,7 @@
         protected storages = dict();
         protected loaded = dict<boolean>();
         protected busy = false;
+        protected selectedType = null;
 
         getFileStorageIndex(file: File) {
             return file.name + file.size;
@@ -109,6 +110,10 @@
 
             this.files = this.files.filter(value => value !== file);
         }
+
+        protected options = Object.keys(this.$app.fileTypes).map(value => {
+            return {text: this.$app.fileTypes[value], value: value};
+        })
 
         onSend() {
             this.send();
