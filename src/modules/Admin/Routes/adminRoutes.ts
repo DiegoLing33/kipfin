@@ -10,6 +10,7 @@ import AdminStats from "@/modules/Admin/Pages/AdminStats.vue";
 import AdminUpdates from "@/modules/Admin/Pages/AdminUpdates.vue";
 import AdminStudentGroups from "@/modules/Admin/Pages/AdminStudentGroups.vue";
 import AdminGroupsEntityView from "@/modules/Admin/Pages/Groups/AdminGroupsEntityView.vue";
+import {adminStudentMotionsRoutes} from "@/modules/Admin/Modules/StudentMotions/Routes";
 
 export const adminRoutes = Array<RouteConfig>(
     {
@@ -56,4 +57,5 @@ export const adminRoutes = Array<RouteConfig>(
         path: '/admin/groups/i/:id', name: 'Admin Groups Entity', component: AdminGroupsEntityView,
         meta: {requiredAuth: true, requiredAccess: 17}
     },
+    ...adminStudentMotionsRoutes,
 );

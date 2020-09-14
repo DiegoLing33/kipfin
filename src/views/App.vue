@@ -79,9 +79,9 @@ export default class App extends Vue {
                 {title: "Чаты", icon: "chat", url: "/chat"},
                 {nav: "Прием"},
                 {title: "Приемная комиссия", icon: "house", url: "/admission"},
-                {title: "Анкеты на поступление", icon: "list", url: "/admin/list"},
-                {nav: "Пользователи"},
                 {title: "Группы студентов", icon: "people", url: "/admin/groups"},
+                {title: "Движение студентов", icon: "journal-arrow-up", url: "/admin/student/motions"},
+                {nav: 'Секция'},
                 {title: "Пользователи", icon: "search", url: "/admin/users"},
                 {title: "Роли пользователей", icon: "check2-circle\n", url: "/admin/roles"},
             ]];
