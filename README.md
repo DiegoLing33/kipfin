@@ -1,29 +1,5 @@
-# spo
+## Official Financial University under the Government of Russian Federation College app
 
-## Project setup
-```
-yarn install
-```
+This app includes admission and students data
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Run your unit tests
-```
-yarn test:unit
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+*(It was private, but now is public - thats why this readme.md so poor)*
