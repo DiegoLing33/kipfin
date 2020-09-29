@@ -13,11 +13,13 @@ import {usersRoutes} from "@/modules/Users/Routes";
 import {documentsRoutes} from "@/modules/Documents/Routes";
 import {errorsRoutes} from "@/modules/Errors/Routes";
 import {admissionRoutes} from "@/modules/Admission/Routes";
+import foodRoutes from "@/modules/Food/Routes";
 
 Vue.use(VueRouter)
 
 const routes: Array<RouteConfig> = [
     {path: '/', name: 'Home', component: Home},
+    ...foodRoutes,
     ...admissionRoutes,
     ...adminRoutes,
     ...profileRoutes,

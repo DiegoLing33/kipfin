@@ -10,6 +10,9 @@
                         <router-link
                                 :class="('d-block p-1 sub-nav ' + ($route.path.endsWith(item.url) ? 'sub-active' : ''))"
                                 v-else :to="item.url">
+                            <template v-if="item.a">
+                                <b-badge variant="warning" class="mr-2">NEW</b-badge>
+                            </template>
                             <b-icon :icon="item.icon"/>
                             {{item.title}}
                         </router-link>
